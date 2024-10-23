@@ -60,6 +60,11 @@ private DcMotor leftBack;
 //    public static int startingHeight = 0;
 //    public static int floorHeight = 1604;
     public static double outspeed = -1;
+    public static int armSpeed = 0;
+    public static int startingHeight = 0;
+    public static int scoringHeight = 0;
+    public static int maxHeight = 0;
+    public static int pickupHeight = 0;
 
 
 
@@ -104,23 +109,23 @@ private DcMotor leftBack;
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-//            double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
-//            double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
-//            double rx = gamepad1.right_stick_x;
+            double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
+            double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
+            double rx = gamepad1.right_stick_x;
 
-            // Denominator is the largest motor power (absolute value) or 1
-            // This ensures all the powers maintain the same ratio,
-            // but only if at least one is out of the range [-1, 1]
-//            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-//            double frontLeftPower = (y + x + rx) / denominator;
-//            double backLeftPower = (y - x + rx) / denominator;
-//            double frontRightPower = (y - x - rx) / denominator;
-//            double backRightPower = (y + x - rx) / denominator;
-//
-//            leftFront.setPower(frontLeftPower);
-//            leftBack.setPower(backLeftPower);
-//            rightFront.setPower(frontRightPower);
-//            rightBack.setPower(backRightPower);
+//             Denominator is the largest motor power (absolute value) or 1
+//             This ensures all the powers maintain the same ratio,
+//             but only if at least one is out of the range [-1, 1]
+            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+            double frontLeftPower = (y + x + rx) / denominator;
+            double backLeftPower = (y - x + rx) / denominator;
+            double frontRightPower = (y - x - rx) / denominator;
+            double backRightPower = (y + x - rx) / denominator;
+
+            leftFront.setPower(frontLeftPower);
+            leftBack.setPower(backLeftPower);
+            rightFront.setPower(frontRightPower);
+            rightBack.setPower(backRightPower);
 
             if (gamepad1.a){
             speed = 1;
@@ -139,6 +144,26 @@ private DcMotor leftBack;
             }
             if (gamepad1.x){
                 armHeight = -1;
+            }
+            if (gamepad1.dpad_up){
+                elevatorMotor.setTargetPosition(startingHeight);
+                elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevatorMotor.setPower (0.5);
+            }
+            if (gamepad1.dpad_down){
+                elevatorMotor.setTargetPosition(scoringHeight);
+                elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevatorMotor.setPower (0.5);
+            }
+            if (gamepad1.dpad_left){
+                elevatorMotor.setTargetPosition(maxHeight);
+                elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevatorMotor.setPower (0.5);
+            }
+            if (gamepad1.dpad_right){
+                elevatorMotor.setTargetPosition(pickupHeight);
+                elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevatorMotor.setPower (0.5);
             }
 
 
