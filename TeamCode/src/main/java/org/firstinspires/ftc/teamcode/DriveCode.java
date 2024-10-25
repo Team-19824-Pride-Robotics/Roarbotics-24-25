@@ -53,6 +53,7 @@ private DcMotor leftBack;
     private CRServo intakeServo;
     private Servo armServo;
     private DcMotor elevatorMotor;
+    private Servo boxServo;
 
     //variables for arm and bucket height
 //    public static int scoringHeight = 235;
@@ -136,7 +137,6 @@ private DcMotor leftBack;
                 speed = outspeed;
             }
             else {
-
                speed = 0;
             }
             if (gamepad1.y){
@@ -145,6 +145,7 @@ private DcMotor leftBack;
             if (gamepad1.x){
                 armHeight = -1;
             }
+
             if (gamepad1.dpad_up){
                 elevatorMotor.setTargetPosition(startingHeight);
                 elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
