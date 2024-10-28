@@ -157,7 +157,7 @@ private DcMotor leftBack;
             }
             // Middle position
             if (gamepad2.right_stick_button){
-                armHeight = 0);
+                armHeight = 0;
             }
 
             if (gamepad2.dpad_up){
