@@ -54,19 +54,24 @@ private DcMotor leftBack;
     private Servo armServo;
     private DcMotor elevatorMotor;
     private Servo boxServo;
+    private Servo slides;
+    private Servo bucketServo;
 
     //variables for arm and bucket height
+    //JakeTake Values //ed
 //    public static int scoringHeight = 235;
 //    public static int drivingHeight = 1411;
 //    public static int startingHeight = 0;
 //    public static int floorHeight = 1604;
     public static double outspeed = -1;
-    public static int armSpeed = 0;
     public static int startingHeight = 0;
     public static int scoringHeight = 0;
     public static int maxHeight = 0;
     public static int pickupHeight = 0;
-
+    public static double slidesOut = 0;
+    public static double slidesIn = 0;
+    public static double bucketIntake = 0;
+    public static double bucketOut = 0;
 
 
     @Override
@@ -74,6 +79,8 @@ private DcMotor leftBack;
 
        double speed = 0;
        double armHeight = 0;
+       double slidePosition = 0;
+       double bucketPosition = 0;
 
 
 
@@ -88,6 +95,7 @@ private DcMotor leftBack;
         intakeServo = hardwareMap.get(CRServo.class,"intakeServo");
         armServo = hardwareMap.get(Servo.class,"armServo");
         elevatorMotor = hardwareMap.get(DcMotor.class, "elevatorMotor");
+        bucketServo = hardwareMap.get(Servo.class, "bucketServo");
        // imu = hardwareMap.get(IMU.class, "imu");
 
         telemetry.addData("Status", "Initialized");
@@ -128,49 +136,69 @@ private DcMotor leftBack;
             rightFront.setPower(frontRightPower);
             rightBack.setPower(backRightPower);
 
-            if (gamepad1.a){
+            if (gamepad1.a || gamepad2.a){
             speed = 1;
 
             }
-            if (gamepad1.b){
+            if (gamepad1.b || gamepad2.b){
 
                 speed = outspeed;
             }
             else {
                speed = 0;
             }
-            if (gamepad1.y){
+            // Outake position
+            if (gamepad2.y){
                 armHeight = 1;
             }
-            if (gamepad1.x){
+            //Intake Position
+            if (gamepad2.x){
                 armHeight = -1;
             }
+            // Middle position
+            if (gamepad2.right_stick_button){
+                armHeight = 0)
+            }
 
-            if (gamepad1.dpad_up){
+            if (gamepad2.dpad_up){
                 elevatorMotor.setTargetPosition(startingHeight);
                 elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevatorMotor.setPower (0.5);
             }
-            if (gamepad1.dpad_down){
+            if (gamepad2.dpad_down){
                 elevatorMotor.setTargetPosition(scoringHeight);
                 elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevatorMotor.setPower (0.5);
             }
-            if (gamepad1.dpad_left){
+            if (gamepad2.dpad_left){
                 elevatorMotor.setTargetPosition(maxHeight);
                 elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevatorMotor.setPower (0.5);
             }
-            if (gamepad1.dpad_right){
+            if (gamepad2.dpad_right){
                 elevatorMotor.setTargetPosition(pickupHeight);
                 elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevatorMotor.setPower (0.5);
             }
+            if (gamepad2.left_bumper){
+                slidePosition = slidesIn;
+            }
+            if (gamepad2.right_bumper){
+                slidePosition = slidesOut;
+            }
+            if (gamepad2.left_trigger > 0.5){
+                bucketPosition = bucketIntake;
+            }
+            if (gamepad2.right_trigger > 0.5){
+                bucketPosition = bucketOut;
+            }
+
 
 
             intakeServo.setPower(speed);
-
-            armServo.setPosition(armSpeed);
+          armServo.setPosition(armHeight);
+          slides.setPosition(slidePosition);
+          bucketServo.setPosition(bucketPosition);
 
 
 
