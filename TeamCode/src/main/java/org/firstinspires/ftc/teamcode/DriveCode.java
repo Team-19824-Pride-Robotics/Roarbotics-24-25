@@ -54,7 +54,7 @@ private DcMotor leftBack;
     private Servo armServo;
     private DcMotor elevatorMotor;
     private Servo boxServo;
-    private Servo slides;
+    private Servo slideServo;
     private Servo bucketServo;
 
     //variables for arm and bucket height
@@ -84,7 +84,7 @@ private DcMotor leftBack;
 
 
 
-        arm = hardwareMap.get(DcMotor.class, "arm");
+       // arm = hardwareMap.get(DcMotor.class, "arm");
       //  intake = hardwareMap.get(DcMotor.class, "Intake");
         //control_Hub = hardwareMap.get(Blinker.class, "Control Hub");
         //expansion_Hub_2 = hardwareMap.get(Blinker.class, "Expansion Hub 2");
@@ -96,6 +96,7 @@ private DcMotor leftBack;
         armServo = hardwareMap.get(Servo.class,"armServo");
         elevatorMotor = hardwareMap.get(DcMotor.class, "elevatorMotor");
         bucketServo = hardwareMap.get(Servo.class, "bucketServo");
+        slideServo = hardwareMap.get(Servo.class, "slideServo");
        // imu = hardwareMap.get(IMU.class, "imu");
 
         telemetry.addData("Status", "Initialized");
@@ -137,7 +138,7 @@ private DcMotor leftBack;
             rightBack.setPower(backRightPower);
 
             if (gamepad1.a || gamepad2.a){
-            speed = 1;
+                speed = 1;
 
             }
             if (gamepad1.b || gamepad2.b){
@@ -197,7 +198,7 @@ private DcMotor leftBack;
 
             intakeServo.setPower(speed);
           armServo.setPosition(armHeight);
-          slides.setPosition(slidePosition);
+          slideServo.setPosition(slidePosition);
           bucketServo.setPosition(bucketPosition);
 
 
