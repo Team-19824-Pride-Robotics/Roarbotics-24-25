@@ -63,12 +63,12 @@ private DcMotor leftBack;
 //    public static int drivingHeight = 1411;
 //    public static int startingHeight = 0;
 //    public static int floorHeight = 1604;
-    public static double outspeed = -0.3;
-    public static int inspeed = 1;
+    public static double inspeed = -1;
+    public static double outspeed = 0.3;
     public static int startingHeight = 0;
-    public static int scoringHeight = 0;
+    public static int scoringHeight = 100;
     public static int maxHeight = 0;
-    public static int pickupHeight = 0;
+    public static int pickupHeight = -100;
     public static double inHeight = 0.03;
     public static double outHeight = 0.65;
     public static double midHeight = 0.25;
@@ -83,8 +83,8 @@ private DcMotor leftBack;
     public void runOpMode() {
 
        double speed = 0;
-       double armHeight = 0;
-       double slidePosition = 0;
+       double armHeight = 0.65;
+       double slidePosition = 0.55;
        double bucketPosition = 0;
 
 
@@ -142,16 +142,16 @@ private DcMotor leftBack;
             rightFront.setPower(frontRightPower);
             rightBack.setPower(backRightPower);
 
-//            if (gamepad1.a || gamepad2.a){
-//                speed = inspeed;
-//
-//            }
+            if (gamepad1.a || gamepad2.a){
+                speed = inspeed;
+
+            }
             if (gamepad1.b || gamepad2.b){
 
                 speed = outspeed;
             }
-            else {
-               speed = inspeed;
+            if (gamepad2.start) {
+               speed = 0;
             }
             // Outake position
             if (gamepad2.y){
