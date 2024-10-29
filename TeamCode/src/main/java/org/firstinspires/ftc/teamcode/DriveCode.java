@@ -45,7 +45,7 @@ public class DriveCode extends LinearOpMode {
 
     // Declare OpMode members.
    // private DcMotor arm;
-    private DcMotor intake;
+   // private DcMotor intake;
 private DcMotor leftBack;
    private DcMotor rightBack;
    private DcMotor leftFront;
@@ -142,16 +142,16 @@ private DcMotor leftBack;
             rightFront.setPower(frontRightPower);
             rightBack.setPower(backRightPower);
 
-            if (gamepad1.a || gamepad2.a){
-                speed = (inspeed);
-
-            }
+//            if (gamepad1.a || gamepad2.a){
+//                speed = inspeed;
+//
+//            }
             if (gamepad1.b || gamepad2.b){
 
                 speed = outspeed;
             }
             else {
-               speed = 0;
+               speed = inspeed;
             }
             // Outake position
             if (gamepad2.y){
