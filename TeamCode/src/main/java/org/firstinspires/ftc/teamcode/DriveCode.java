@@ -44,7 +44,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class DriveCode extends LinearOpMode {
 
     // Declare OpMode members.
-    private DcMotor arm;
+   // private DcMotor arm;
     private DcMotor intake;
 private DcMotor leftBack;
    private DcMotor rightBack;
@@ -53,7 +53,7 @@ private DcMotor leftBack;
     private CRServo intakeServo;
     private Servo armServo;
     private DcMotor elevatorMotor;
-    private Servo boxServo;
+    //private Servo boxServo;
     private Servo slideServo;
     private Servo bucketServo;
 
@@ -111,7 +111,7 @@ private DcMotor leftBack;
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
 //        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
 //        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
-        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
         // Wait for the game to start (driver presses START)
@@ -224,7 +224,7 @@ private DcMotor leftBack;
 
 
             telemetry.addData("Status", "Running");
-            telemetry.addData ("ArmHeight:", arm.getCurrentPosition());
+           // telemetry.addData ("ArmHeight:", arm.getCurrentPosition());
             telemetry.addData("speed",  speed);
             telemetry.update();
 
