@@ -116,7 +116,7 @@ private DcMotor leftBack;
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
 //        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
 //        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
-        //arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        elevatorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
         // Wait for the game to start (driver presses START)
@@ -200,8 +200,7 @@ private DcMotor leftBack;
             }
 
 
-
-            intakeServo.setPower(speed);
+          intakeServo.setPower(speed);
           armServo.setPosition(armHeight);
           slideServo.setPosition(slidePosition);
           bucketServo.setPosition(bucketPosition);
