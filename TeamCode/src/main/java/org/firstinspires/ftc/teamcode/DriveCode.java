@@ -62,8 +62,8 @@ public class DriveCode extends LinearOpMode {
     public static double midHeight = 0.25;
     public static double slidesOut = 0.3;
     public static double slidesIn = 0.4;
-    public static double bucketIntake = 0;
-    public static double bucketOut = 0;
+    public static double bucketIntake = 0.6;
+    public static double bucketOut = 0.3;
 
     @Override
     public void runOpMode() {
@@ -71,7 +71,7 @@ public class DriveCode extends LinearOpMode {
        double speed = 0;
        double armHeight = 0.65;
        double slidePosition = 0.55;
-       double bucketPosition = 0;
+       double bucketPosition = 0.6;
 
         leftBack = hardwareMap.get(DcMotor.class, "leftBack");
         rightBack = hardwareMap.get(DcMotor.class, "rightBack");
@@ -84,7 +84,8 @@ public class DriveCode extends LinearOpMode {
         slideServo = hardwareMap.get(Servo.class, "slideServo");
 
         elevatorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
         if (isStopRequested()) return;
 
