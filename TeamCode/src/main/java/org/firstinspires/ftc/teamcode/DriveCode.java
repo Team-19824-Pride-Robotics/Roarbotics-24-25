@@ -64,6 +64,7 @@ public class DriveCode extends LinearOpMode {
     public static double slidesIn = 0.4;
     public static double bucketIntake = 0.6;
     public static double bucketOut = 0.3;
+    public static double bucketMid = 0;
 
     @Override
     public void runOpMode() {
@@ -145,15 +146,20 @@ public class DriveCode extends LinearOpMode {
             }
             if (gamepad2.left_bumper){
                 slidePosition = slidesIn;
+                armHeight = outHeight;
             }
             if (gamepad2.right_bumper){
                 slidePosition = slidesOut;
+                armHeight = inHeight;
             }
             if (gamepad2.left_trigger > 0.5){
                 bucketPosition = bucketIntake;
             }
             if (gamepad2.right_trigger > 0.5){
                 bucketPosition = bucketOut;
+            }
+            if (gamepad2.left_stick_button){
+                bucketPosition = bucketMid;
             }
 
 
