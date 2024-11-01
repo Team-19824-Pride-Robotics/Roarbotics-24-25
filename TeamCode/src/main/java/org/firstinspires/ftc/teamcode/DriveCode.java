@@ -62,8 +62,8 @@ public class DriveCode extends LinearOpMode {
     public static double midHeight = 0.25;
     public static double slidesOut = 0.3;
     public static double slidesIn = 0.4;
-    public static double bucketIntake = 0.6;
-    public static double bucketOut = 0.3;
+    public static double bucketIntake = 0.55;
+    public static double bucketOut = 0.15;
     public static double bucketMid = 0;
 
     @Override
