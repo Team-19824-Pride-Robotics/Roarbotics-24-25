@@ -61,18 +61,18 @@ public class DriveCode extends LinearOpMode {
     public static double outHeight = 0.65;
     public static double midHeight = 0.25;
     public static double slidesOut = 0.3;
-    public static double slidesIn = 0.4;
+    public static double slidesIn = 0.33;
     public static double bucketIntake = 0.55;
-    public static double bucketOut = 0.15;
-    public static double bucketMid = 0;
+    public static double bucketOut = 0.02;
+    public static double bucketMid = 0.3;
 
     @Override
     public void runOpMode() {
 
        double speed = 0;
        double armHeight = 0.65;
-       double slidePosition = 0.55;
-       double bucketPosition = 0.6;
+       double slidePosition = 0;
+       double bucketPosition = 0.3;
 
         leftBack = hardwareMap.get(DcMotor.class, "leftBack");
         rightBack = hardwareMap.get(DcMotor.class, "rightBack");
