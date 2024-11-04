@@ -58,11 +58,11 @@ public class DriveCode extends LinearOpMode {
     public static int highBucketHeight = -4000;
     public static int lowBucketHeight = -2000;
     public static double inHeight = 0.03;
-    public static double outHeight = 0.65;
+    public static double outHeight = 0.63;
     public static double midHeight = 0.25;
-    public static double slidesOut = 0.85;
-    public static double slidesIn = 0.83;
-    public static double bucketIntake = 0.55;
+    public static double slidesOut = 0.82;
+    public static double slidesIn = 0.85;
+    public static double bucketIntake = 0.5;
     public static double bucketOut = 0.02;
     public static double bucketMid = 0.3;
 
@@ -70,7 +70,7 @@ public class DriveCode extends LinearOpMode {
     public void runOpMode() {
 
        double speed = 0;
-       double armHeight = 0.65;
+       double armHeight = 0.63;
        double slidePosition = 1;
        double bucketPosition = 0.3;
 
@@ -147,10 +147,12 @@ public class DriveCode extends LinearOpMode {
             if (gamepad2.left_bumper){
                 slidePosition = slidesIn;
                 armHeight = outHeight;
+                bucketPosition = bucketIntake;
             }
             if (gamepad2.right_bumper){
                 slidePosition = slidesOut;
                 armHeight = inHeight;
+                bucketPosition = bucketMid;
             }
             if (gamepad2.left_trigger > 0.5){
                 bucketPosition = bucketIntake;
