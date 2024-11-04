@@ -52,18 +52,18 @@ public class DriveCode extends LinearOpMode {
     private Servo slideServo;
     private Servo bucketServo;
 
-    public static double inSpeed = -1;
-    public static double outSpeed = 1;
+    public static double intakeSpeed = -1;
+    public static double intakeOutSpeed = 1;
     public static int startingHeight = 0;
     public static int highBucketHeight = -4000;
     public static int lowBucketHeight = -2000;
-    public static double inHeight = 0.03;
-    public static double outHeight = 0.63;
-    public static double midHeight = 0.25;
-    public static double slidesOut = 0.82;
+    public static double armIntakeHeight = 0.03;
+    public static double armOuttakeHeight = 0.63;
+    public static double armMidHeight = 0.25;
+    public static double slidesExtended = 0.82;
     public static double slidesIn = 0.85;
     public static double bucketIntake = 0.5;
-    public static double bucketOut = 0.02;
+    public static double bucketDump = 0.02;
     public static double bucketMid = 0.3;
 
     @Override
@@ -107,25 +107,25 @@ public class DriveCode extends LinearOpMode {
             rightBack.setPower(backRightPower);
 
             if (gamepad1.a || gamepad2.a){
-                speed = inSpeed;
+                speed = intakeSpeed;
             }
             if (gamepad1.b || gamepad2.b){
-                speed = outSpeed;
+                speed = intakeOutSpeed;
             }
             if (gamepad2.start || gamepad1.options) {
                speed = 0;
             }
             // Outake position
             if (gamepad2.y){
-                armHeight = inHeight;
+                armHeight = armIntakeHeight;
             }
             //Intake Position
             if (gamepad2.x){
-                armHeight = outHeight;
+                armHeight = armOuttakeHeight;
             }
             // Middle position
             if (gamepad2.right_stick_button){
-                armHeight = midHeight;
+                armHeight = armMidHeight;
             }
 
             if (gamepad2.dpad_down){
@@ -146,19 +146,19 @@ public class DriveCode extends LinearOpMode {
             }
             if (gamepad2.left_bumper){
                 slidePosition = slidesIn;
-                armHeight = outHeight;
+                armHeight = armOuttakeHeight;
                 bucketPosition = bucketIntake;
             }
             if (gamepad2.right_bumper){
-                slidePosition = slidesOut;
-                armHeight = inHeight;
+                slidePosition = slidesExtended;
+                armHeight = armIntakeHeight;
                 bucketPosition = bucketMid;
             }
             if (gamepad2.left_trigger > 0.5){
                 bucketPosition = bucketIntake;
             }
             if (gamepad2.right_trigger > 0.5){
-                bucketPosition = bucketOut;
+                bucketPosition = bucketDump;
             }
             if (gamepad2.left_stick_button){
                 bucketPosition = bucketMid;
