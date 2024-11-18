@@ -139,14 +139,14 @@ public class DriveCode extends LinearOpMode {
 
 
             intakeServo1.setPower(speed);
-            intakeServo2.setPower(-speed);
-            armServo.setPosition(armHeight);
-            slideServo.setPosition(slidePosition);
-            bucketServo.setPosition(bucketPosition);
+//            intakeServo2.setPower(-speed);
+//            armServo.setPosition(armHeight);
+//            slideServo.setPosition(slidePosition);
+//            bucketServo.setPosition(bucketPosition);
 
 
             telemetry.addData("Status", "Running");
-            telemetry.addData("lift height",  elevatorMotor.getCurrentPosition());
+            //telemetry.addData("lift height",  elevatorMotor.getCurrentPosition());
             telemetry.update();
 
         }
