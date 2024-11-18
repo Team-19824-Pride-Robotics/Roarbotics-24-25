@@ -1,32 +1,3 @@
-/* Copyright (c) 2017 FIRST. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted (subject to the limitations in the disclaimer below) provided that
- * the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of FIRST nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
@@ -46,7 +17,8 @@ public class DriveCode extends LinearOpMode {
     private DcMotor rightBack;
     private DcMotor leftFront;
     private DcMotor rightFront;
-    private CRServo intakeServo;
+    private CRServo intakeServo1;
+    private CRServo intakeServo2;
     private Servo armServo;
     private DcMotor elevatorMotor;
     private Servo slideServo;
@@ -74,19 +46,20 @@ public class DriveCode extends LinearOpMode {
        double slidePosition = 1;
        double bucketPosition = 0.3;
 
-        leftBack = hardwareMap.get(DcMotor.class, "leftBack");
-        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
-        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
-        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
-        intakeServo = hardwareMap.get(CRServo.class,"intakeServo");
+//        leftBack = hardwareMap.get(DcMotor.class, "leftBack");
+//        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
+//        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+//        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+        intakeServo1 = hardwareMap.get(CRServo.class,"intakeServo1");
+        intakeServo2 = hardwareMap.get(CRServo.class,"intakeServo2");
         armServo = hardwareMap.get(Servo.class,"armServo");
-        elevatorMotor = hardwareMap.get(DcMotor.class, "elevatorMotor");
-        bucketServo = hardwareMap.get(Servo.class, "bucketServo");
-        slideServo = hardwareMap.get(Servo.class, "slideServo");
-
-        elevatorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+//        elevatorMotor = hardwareMap.get(DcMotor.class, "elevatorMotor");
+//        bucketServo = hardwareMap.get(Servo.class, "bucketServo");
+//        slideServo = hardwareMap.get(Servo.class, "slideServo");
+//
+//        elevatorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+//        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
         if (isStopRequested()) return;
 
@@ -101,10 +74,10 @@ public class DriveCode extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
 
-            leftFront.setPower(frontLeftPower);
-            leftBack.setPower(backLeftPower);
-            rightFront.setPower(frontRightPower);
-            rightBack.setPower(backRightPower);
+//            leftFront.setPower(frontLeftPower);
+//            leftBack.setPower(backLeftPower);
+//            rightFront.setPower(frontRightPower);
+//            rightBack.setPower(backRightPower);
 
             if (gamepad1.a || gamepad2.a){
                 speed = intakeSpeed;
@@ -128,27 +101,27 @@ public class DriveCode extends LinearOpMode {
                 armHeight = armMidHeight;
             }
 
-            if (gamepad2.dpad_down){
-                elevatorMotor.setTargetPosition(startingHeight);
-                elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                elevatorMotor.setPower (1);
-            }
-            if (gamepad2.dpad_up){
-                elevatorMotor.setTargetPosition(highBucketHeight);
-                elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                elevatorMotor.setPower (1);
-            }
-
-            if (gamepad2.dpad_right){
-                elevatorMotor.setTargetPosition(lowBucketHeight);
-                elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                elevatorMotor.setPower (1);
-            }
-            if (gamepad2.left_bumper){
-                slidePosition = slidesIn;
-                armHeight = armOuttakeHeight;
-                bucketPosition = bucketIntake;
-            }
+//            if (gamepad2.dpad_down){
+//                elevatorMotor.setTargetPosition(startingHeight);
+//                elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                elevatorMotor.setPower (1);
+//            }
+//            if (gamepad2.dpad_up){
+//                elevatorMotor.setTargetPosition(highBucketHeight);
+//                elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                elevatorMotor.setPower (1);
+//            }
+//
+//            if (gamepad2.dpad_right){
+//                elevatorMotor.setTargetPosition(lowBucketHeight);
+//                elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                elevatorMotor.setPower (1);
+//            }
+//            if (gamepad2.left_bumper){
+//                slidePosition = slidesIn;
+//                armHeight = armOuttakeHeight;
+//                bucketPosition = bucketIntake;
+//            }
             if (gamepad2.right_bumper){
                 slidePosition = slidesExtended;
                 armHeight = armIntakeHeight;
@@ -165,14 +138,15 @@ public class DriveCode extends LinearOpMode {
             }
 
 
-          intakeServo.setPower(speed);
-          armServo.setPosition(armHeight);
-          slideServo.setPosition(slidePosition);
-          bucketServo.setPosition(bucketPosition);
+            intakeServo1.setPower(speed);
+//            intakeServo2.setPower(-speed);
+//            armServo.setPosition(armHeight);
+//            slideServo.setPosition(slidePosition);
+//            bucketServo.setPosition(bucketPosition);
 
 
             telemetry.addData("Status", "Running");
-            telemetry.addData("lift height",  elevatorMotor.getCurrentPosition());
+            //telemetry.addData("lift height",  elevatorMotor.getCurrentPosition());
             telemetry.update();
 
         }
