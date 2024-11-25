@@ -20,7 +20,7 @@ public class DriveCode extends LinearOpMode {
     private CRServo intakeServo1;
     private CRServo intakeServo2;
     private Servo armServo;
-    private DcMotor elevatorMotor;
+  //  private DcMotor elevatorMotor;
     private Servo slideServo;
     private Servo bucketServo;
 
@@ -46,21 +46,23 @@ public class DriveCode extends LinearOpMode {
        double slidePosition = 1;
        double bucketPosition = 0.3;
 
-//        leftBack = hardwareMap.get(DcMotor.class, "leftBack");
-//        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
-//        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
-//        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+        leftBack = hardwareMap.get(DcMotor.class, "leftBack");
+        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
+        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         intakeServo1 = hardwareMap.get(CRServo.class,"intakeServo1");
         intakeServo2 = hardwareMap.get(CRServo.class,"intakeServo2");
         armServo = hardwareMap.get(Servo.class,"armServo");
-//        elevatorMotor = hardwareMap.get(DcMotor.class, "elevatorMotor");
-//        bucketServo = hardwareMap.get(Servo.class, "bucketServo");
-//        slideServo = hardwareMap.get(Servo.class, "slideServo");
-//
-//        elevatorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-//        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+     //   elevatorMotor = hardwareMap.get(DcMotor.class, "elevatorMotor");
+        bucketServo = hardwareMap.get(Servo.class, "bucketServo");
+        slideServo = hardwareMap.get(Servo.class, "slideServo");
+
+       // elevatorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+
         waitForStart();
+
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
@@ -74,10 +76,10 @@ public class DriveCode extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
 
-//            leftFront.setPower(frontLeftPower);
-//            leftBack.setPower(backLeftPower);
-//            rightFront.setPower(frontRightPower);
-//            rightBack.setPower(backRightPower);
+            leftFront.setPower(frontLeftPower);
+            leftBack.setPower(backLeftPower);
+            rightFront.setPower(frontRightPower);
+            rightBack.setPower(backRightPower);
 
             if (gamepad1.a || gamepad2.a){
                 speed = intakeSpeed;
@@ -117,11 +119,11 @@ public class DriveCode extends LinearOpMode {
 //                elevatorMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //                elevatorMotor.setPower (1);
 //            }
-//            if (gamepad2.left_bumper){
-//                slidePosition = slidesIn;
-//                armHeight = armOuttakeHeight;
-//                bucketPosition = bucketIntake;
-//            }
+            if (gamepad2.left_bumper){
+                slidePosition = slidesIn;
+                armHeight = armOuttakeHeight;
+                bucketPosition = bucketIntake;
+            }
             if (gamepad2.right_bumper){
                 slidePosition = slidesExtended;
                 armHeight = armIntakeHeight;
@@ -137,12 +139,11 @@ public class DriveCode extends LinearOpMode {
                 bucketPosition = bucketMid;
             }
 
-
             intakeServo1.setPower(speed);
-//            intakeServo2.setPower(-speed);
-//            armServo.setPosition(armHeight);
-//            slideServo.setPosition(slidePosition);
-//            bucketServo.setPosition(bucketPosition);
+            intakeServo2.setPower(-speed);
+            armServo.setPosition(armHeight);
+            slideServo.setPosition(slidePosition);
+            bucketServo.setPosition(bucketPosition);
 
 
             telemetry.addData("Status", "Running");
