@@ -406,7 +406,7 @@ public class BlueSpecimenAuto extends LinearOpMode {
 
                 ));
 
-        
+
 
                 //claw.openClaw(),
                 //if an action needs time to run (like a claw opening), use a SleepAction
