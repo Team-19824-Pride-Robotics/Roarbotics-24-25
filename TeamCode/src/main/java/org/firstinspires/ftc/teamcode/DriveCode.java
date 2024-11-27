@@ -25,6 +25,7 @@ public class DriveCode extends LinearOpMode {
     private DcMotorEx liftMotor2;
     private Servo slideServo;
     private Servo bucketServo;
+    private Servo specimenArmServo;
 
 
     public static double in_speed = -1;
@@ -42,8 +43,9 @@ public class DriveCode extends LinearOpMode {
     public static double bucket_dump = 0.02;
     public static double bucket_mid = 0.3;
     public static double dump_time = 0.5;
-
     public static double driveSlow = 0.5;
+    public static double specimen_pickup = 0.1;
+    public static double specimen_score = 0.9;
 
     private boolean last_A = false;
     private boolean arm_go_down = false;
@@ -59,6 +61,8 @@ public class DriveCode extends LinearOpMode {
        double armHeight = 0.63;
        double slidePosition = 1;
        double bucketPosition = 0.3;
+       double specimenPosition = 0.1;
+
        int liftHeight = 1000;
        int target;
 
@@ -81,6 +85,7 @@ public class DriveCode extends LinearOpMode {
         armServo = hardwareMap.get(Servo.class,"armServo");
         bucketServo = hardwareMap.get(Servo.class, "bucketServo");
         slideServo = hardwareMap.get(Servo.class, "slideServo");
+        specimenArmServo = hardwareMap.get(Servo.class, "specArmServo");
 
         liftMotor1 = hardwareMap.get(DcMotorEx.class, "liftMotor1");
         liftMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -89,7 +94,6 @@ public class DriveCode extends LinearOpMode {
         liftMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         liftMotor2.setDirection(DcMotorEx.Direction.REVERSE);
-
 
 
         waitForStart();
@@ -181,6 +185,7 @@ public class DriveCode extends LinearOpMode {
             }
 
             //if the color sensor has detected a sample, turn the intake off
+            //if it's the wrong color, outtake it automatically
 
 
 
@@ -188,11 +193,18 @@ public class DriveCode extends LinearOpMode {
 
 
             /***************************************************************
-             Lift code -- the lift has two components: lift motors and bucket
+             Lift code -- the lift has three components: lift motors, specimen arm, and bucket
              Lift is controlled by a PID loop (run to position), position is set by encoders
              Bucket has three positions: transfer, mid, and dump
+             Specimen arm has two positions: pickup and score
              ***************************************************************/
 
+            if(gamepad2.right_trigger > 0.1) {
+                specimenPosition = specimen_pickup;
+            }
+            if(gamepad2.left_trigger > 0.1) {
+                specimenPosition = specimen_score;
+            }
             if(gamepad2.dpad_right) {
                 liftHeight = lift_low_bucket;
                 bucketPosition = bucket_mid;
@@ -234,6 +246,7 @@ public class DriveCode extends LinearOpMode {
             armServo.setPosition(armHeight);
             slideServo.setPosition(slidePosition);
             bucketServo.setPosition(bucketPosition);
+            specimenArmServo.setPosition(specimenPosition);
 
 
             telemetry.addData("Status", "Running");
