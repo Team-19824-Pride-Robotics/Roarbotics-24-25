@@ -42,6 +42,16 @@ public class BlueSpecimenAuto extends LinearOpMode {
     public static double slides_mid = 0.85;
     public static double arm_down = 0.03;
     public static double arm_transfer = 0.63;
+    public static double pickup_speed = 5;
+
+    public static double x0 = 26;
+    public static double x1 = 18;
+    public static double x2 = 7;
+    public static double x3 = 0;
+    public static double x4 = 12;
+    public static double y2 = -37;
+    public static double y3 = -4;
+    public static double y4 = -8;
 
 
     public class Intake {
@@ -319,31 +329,31 @@ public class BlueSpecimenAuto extends LinearOpMode {
 
         //segment 1 - parallel with raise lift and arm at score height
         segment1 = drive.actionBuilder(drive.pose)
-                .lineToX(26)
+                .lineToX(x0)
                 .build();
         //segment 2 - parallel with lift to pickup position
         segment2 = drive.actionBuilder(drive.pose)
-                .lineToX(18)
+                .lineToX(x1)
                 .turn(Math.toRadians(-180))
                 .setTangent(0)
-                .splineToConstantHeading(new Vector2d(7, -37), Math.toRadians(180))
+                .splineToConstantHeading(new Vector2d(x2, y2), Math.toRadians(180))
                 .build();
         //segment 3 - slowly!
         segment3 = drive.actionBuilder(drive.pose)
-                .lineToX(0, new TranslationalVelConstraint(5))
+                .lineToX(x3, new TranslationalVelConstraint(pickup_speed))
                 .build();
         //segment 4 - back off the wall and turn
         segment4 = drive.actionBuilder(drive.pose)
-                .lineToX(12)
+                .lineToX(x4)
                 .turn(Math.toRadians(-180))
                 .build();
         //segment 5 - parallel with arm at score height
         segment5 = drive.actionBuilder(drive.pose)
-                .splineToConstantHeading(new Vector2d(26, -4), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(x0, y3), Math.toRadians(0))
                 .build();
         //segment 6 - to score the third one at a new location
         segment6 = drive.actionBuilder(drive.pose)
-                .splineToConstantHeading(new Vector2d(26, -8), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(x0, y4), Math.toRadians(0))
                 .build();
 
         waitForStart();

@@ -56,12 +56,13 @@ public class DriveCode extends LinearOpMode {
     @Override
     public void runOpMode() {
 
+
        double intakeSpeed = 0;
        double driveSpeed = 1;
-       double armHeight = 0.63;
-       double slidePosition = 1;
-       double bucketPosition = 0.3;
-       double specimenPosition = 0.1;
+       double armHeight = 0;
+       double slidePosition = 0;
+       double bucketPosition = 0;
+       double specimenPosition = 0;
 
        int liftHeight = 1000;
        int target;
@@ -154,16 +155,6 @@ public class DriveCode extends LinearOpMode {
             }
             last_A = gamepad2.a;
 
-            // pressing B toggles the slides position between mid and transfer
-            if (gamepad2.b && !last_B) {
-                slide_go_away = !slide_go_away;
-                if (slide_go_away) {
-                    slidePosition = slides_mid;
-                } else {
-                    slidePosition = slides_transfer;
-                }
-            }
-            last_B = gamepad2.b;
 
             //bumpers control the intake spinners
             if (gamepad1.left_bumper || gamepad2.left_bumper){
@@ -176,13 +167,24 @@ public class DriveCode extends LinearOpMode {
                 intakeSpeed = 0;
             }
 
-            //dPad down moves everything to transfer positions
+            //dPad down moves everything to transfer positions (except slides)
             if(gamepad2.dpad_down) {
                 slidePosition = slides_mid;
                 armHeight = arm_transfer;
                 liftHeight = lift_transfer;
                 bucketPosition = bucket_transfer;
             }
+
+            // pressing B toggles the slides position between mid and transfer
+            if (gamepad2.b && !last_B) {
+                slide_go_away = !slide_go_away;
+                if (slide_go_away) {
+                    slidePosition = slides_mid;
+                } else {
+                    slidePosition = slides_transfer;
+                }
+            }
+            last_B = gamepad2.b;
 
             //if the color sensor has detected a sample, turn the intake off
             //if it's the wrong color, outtake it automatically
