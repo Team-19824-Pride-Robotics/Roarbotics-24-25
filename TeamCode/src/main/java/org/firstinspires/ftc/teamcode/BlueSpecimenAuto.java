@@ -323,27 +323,27 @@ public class BlueSpecimenAuto extends LinearOpMode {
                 .build();
         //segment 2 - parallel with lift to pickup position
         segment2 = drive.actionBuilder(drive.pose)
-                .lineToX(-44)
+                .lineToX(18)
                 .turn(Math.toRadians(-180))
                 .setTangent(0)
-                .splineToConstantHeading(new Vector2d(-55, -45), Math.toRadians(180))
+                .splineToConstantHeading(new Vector2d(7, -37), Math.toRadians(180))
                 .build();
         //segment 3 - slowly!
         segment3 = drive.actionBuilder(drive.pose)
-                .lineToX(-62, new TranslationalVelConstraint(5))
+                .lineToX(0, new TranslationalVelConstraint(5))
                 .build();
         //segment 4 - back off the wall and turn
         segment4 = drive.actionBuilder(drive.pose)
-                .lineToX(-50)
+                .lineToX(12)
                 .turn(Math.toRadians(-180))
                 .build();
         //segment 5 - parallel with arm at score height
         segment5 = drive.actionBuilder(drive.pose)
-                .splineToConstantHeading(new Vector2d(-36, -12), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(26, -4), Math.toRadians(0))
                 .build();
         //segment 6 - to score the third one at a new location
         segment6 = drive.actionBuilder(drive.pose)
-                .splineToConstantHeading(new Vector2d(-36, -16), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(26, -8), Math.toRadians(0))
                 .build();
 
         waitForStart();
