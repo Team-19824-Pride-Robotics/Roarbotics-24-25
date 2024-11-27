@@ -315,6 +315,7 @@ public class BlueSpecimenAuto extends LinearOpMode {
         Action segment3;
         Action segment4;
         Action segment5;
+        Action segment6;
 
         //segment 1 - parallel with raise lift and arm at score height
         segment1 = drive.actionBuilder(drive.pose)
@@ -339,6 +340,10 @@ public class BlueSpecimenAuto extends LinearOpMode {
         //segment 5 - parallel with arm at score height
         segment5 = drive.actionBuilder(drive.pose)
                 .splineToConstantHeading(new Vector2d(-36, -12), Math.toRadians(0))
+                .build();
+        //segment 6 - to score the third one at a new location
+        segment6 = drive.actionBuilder(drive.pose)
+                .splineToConstantHeading(new Vector2d(-36, -16), Math.toRadians(0))
                 .build();
 
         waitForStart();
@@ -371,11 +376,37 @@ public class BlueSpecimenAuto extends LinearOpMode {
                 new ParallelAction(
                         segment5,
                         lift.specArmScore()
-                )
+                ),
+                new ParallelAction(
+                        segment2,
+                        lift.specimenPickupHeight(),
+                        lift.specArmPickup()
+                ),
 
+                segment3,
+
+                lift.specimenScoreHeight(),  //this takes the specimen off the wall
+
+                new SleepAction(2),  //it needs time to go up before driving away
+
+                segment4,
+
+                new ParallelAction(
+                        segment6,
+                        lift.specArmScore()
+                ),
+                new ParallelAction(
+                        segment2,
+                        lift.specimenPickupHeight(),
+                        lift.specArmPickup()
+                ),
+
+                segment3
 
 
                 ));
+
+        
 
                 //claw.openClaw(),
                 //if an action needs time to run (like a claw opening), use a SleepAction
