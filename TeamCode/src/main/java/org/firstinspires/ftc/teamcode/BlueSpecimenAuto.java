@@ -43,15 +43,22 @@ public class BlueSpecimenAuto extends LinearOpMode {
     public static double arm_down = 0.03;
     public static double arm_transfer = 0.63;
     public static double pickup_speed = 5;
+    public static double lift_time = 1;
 
     public static double x0 = 26;
-    public static double x1 = 18;
-    public static double x2 = 7;
-    public static double x3 = 0;
-    public static double x4 = 12;
-    public static double y2 = -37;
-    public static double y3 = -4;
-    public static double y4 = -8;
+    public static double x1 = 22;
+    public static double x2 = 22;
+    public static double y2 = -27;
+    public static double x3 = 50;
+    public static double x4 = 7;
+    public static double y3 = -47;
+
+    public static double x5 = 0;
+    public static double x6 = 12;
+    public static double y4 = -4;
+
+    public static double x7 = 17;
+    public static double y5 = -37;
 
 
     public class Intake {
@@ -326,35 +333,62 @@ public class BlueSpecimenAuto extends LinearOpMode {
         Action segment4;
         Action segment5;
         Action segment6;
+        Action segment7;
+        Action segment8;
 
-        //segment 1 - parallel with raise lift and arm at score height
+        //segment 1 - drives up to the sub and scores the preload
+        // parallel with lift to score height
         segment1 = drive.actionBuilder(drive.pose)
                 .lineToX(x0)
                 .build();
-        //segment 2 - parallel with lift to pickup position
+
+        //segment 2 - backs off the sub and strafes right to clear it
+        // parallel with lift to pickup position
         segment2 = drive.actionBuilder(drive.pose)
                 .lineToX(x1)
-                .turn(Math.toRadians(-180))
-                .setTangent(0)
-                .splineToConstantHeading(new Vector2d(x2, y2), Math.toRadians(180))
+                .strafeTo(new Vector2d(x2, y2))
                 .build();
-        //segment 3 - slowly!
+
+        //segment 3 - moves on a diagonal to get behind the sample
         segment3 = drive.actionBuilder(drive.pose)
-                .lineToX(x3, new TranslationalVelConstraint(pickup_speed))
+                .setTangent(135)
+                .lineToX(x3)
                 .build();
-        //segment 4 - back off the wall and turn
+
+        //segment 4 - spline path with a 180 built in, gets in position to push
         segment4 = drive.actionBuilder(drive.pose)
-                .lineToX(x4)
-                .turn(Math.toRadians(-180))
+                .setTangent(0)
+                .splineToLinearHeading(new Pose2d(52, -37, Math.toRadians(180)), Math.toRadians(180))
                 .build();
-        //segment 5 - parallel with arm at score height
+
+        //segment 5 - push two samples into the zone
         segment5 = drive.actionBuilder(drive.pose)
-                .splineToConstantHeading(new Vector2d(x0, y3), Math.toRadians(0))
+                .lineToX(x4)
+                .lineToX(x3)
+                .strafeTo(new Vector2d(x3, y3))
+                .setTangent(135)
+                .lineToX(x4)
                 .build();
-        //segment 6 - to score the third one at a new location
+
+        //segment 6 - slowly! to pick up the specimen
         segment6 = drive.actionBuilder(drive.pose)
-                .splineToConstantHeading(new Vector2d(x0, y4), Math.toRadians(0))
+                .lineToX(x5, new TranslationalVelConstraint(pickup_speed))
                 .build();
+
+        //segment 7 - spline path back to the sub with a 180
+        //parallel with lift to scoring position
+        segment7 = drive.actionBuilder(drive.pose)
+                .lineToX(x6)
+                .splineToLinearHeading(new Pose2d(x0, y4, Math.toRadians(0)), Math.toRadians(0))
+                .build();
+
+        //segment 8 - spline path back to the zone with a 180
+        // parallel with lift to pickup position
+        segment8 = drive.actionBuilder(drive.pose)
+                .lineToX(x7)
+                .splineToLinearHeading(new Pose2d(x4, y5, Math.toRadians(0)), Math.toRadians(0))
+                .build();
+
 
         waitForStart();
 
@@ -377,51 +411,56 @@ public class BlueSpecimenAuto extends LinearOpMode {
 
                 segment3,
 
-                lift.specimenScoreHeight(),  //this takes the specimen off the wall
-
-                new SleepAction(2),  //it needs time to go up before driving away
-
                 segment4,
 
+                segment5,
+
+                segment6,
+
+                lift.specimenScoreHeight(),  //this takes the specimen off the wall
+
+                new SleepAction(lift_time),  //it needs time to go up before driving away
+
                 new ParallelAction(
-                        segment5,
+                        segment7,
                         lift.specArmScore()
                 ),
+
                 new ParallelAction(
-                        segment2,
+                        segment8,
                         lift.specimenPickupHeight(),
                         lift.specArmPickup()
                 ),
 
-                segment3,
+                segment6,
 
                 lift.specimenScoreHeight(),  //this takes the specimen off the wall
 
-                new SleepAction(2),  //it needs time to go up before driving away
-
-                segment4,
+                new SleepAction(lift_time),  //it needs time to go up before driving away
 
                 new ParallelAction(
-                        segment6,
+                        segment7,
                         lift.specArmScore()
                 ),
+
                 new ParallelAction(
-                        segment2,
+                        segment8,
                         lift.specimenPickupHeight(),
                         lift.specArmPickup()
                 ),
 
-                segment3
+                segment6,
 
+                lift.specimenScoreHeight(),  //this takes the specimen off the wall
+
+                new SleepAction(lift_time),  //it needs time to go up before driving away
+
+                new ParallelAction(
+                        segment7,
+                        lift.specArmScore()
+                )
 
                 ));
-
-
-
-                //claw.openClaw(),
-                //if an action needs time to run (like a claw opening), use a SleepAction
-//                new SleepAction(2),
-//                trajectoryActionCloseOut));
 
 
     }
