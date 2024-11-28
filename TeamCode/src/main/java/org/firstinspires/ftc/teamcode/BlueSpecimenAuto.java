@@ -351,7 +351,7 @@ public class BlueSpecimenAuto extends LinearOpMode {
 
         //segment 3 - moves on a diagonal to get behind the sample
         segment3 = drive.actionBuilder(drive.pose)
-                .setTangent(135)
+                .setTangent(0)
                 .lineToX(x3)
                 .build();
 
@@ -366,7 +366,7 @@ public class BlueSpecimenAuto extends LinearOpMode {
                 .lineToX(x4)
                 .lineToX(x3)
                 .strafeTo(new Vector2d(x3, y3))
-                .setTangent(135)
+                .setTangent(0)
                 .lineToX(x4)
                 .build();
 
