@@ -175,7 +175,7 @@ public class BlueSpecimenAuto extends LinearOpMode {
 
         private DcMotorEx liftMotor1;
         private DcMotorEx liftMotor2;
-        private Servo specimenArmServo;
+        private Servo specArmServo;
         private Servo bucketServo;
 
         public Lift(HardwareMap hardwareMap) {
@@ -188,7 +188,7 @@ public class BlueSpecimenAuto extends LinearOpMode {
             liftMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             liftMotor2.setDirection(DcMotorEx.Direction.REVERSE);
 
-            specimenArmServo = hardwareMap.get(Servo.class,"specimenArmServo");
+            specArmServo = hardwareMap.get(Servo.class,"specArmServo");
             bucketServo = hardwareMap.get(Servo.class, "bucketServo");
 
         }
@@ -293,7 +293,7 @@ public class BlueSpecimenAuto extends LinearOpMode {
         public class SpecArmPickup implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                specimenArmServo.setPosition(spec_arm_pickup);
+                specArmServo.setPosition(spec_arm_pickup);
                 return false;
             }
         }
@@ -304,7 +304,7 @@ public class BlueSpecimenAuto extends LinearOpMode {
         public class SpecArmScore implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                specimenArmServo.setPosition(spec_arm_score);
+                specArmServo.setPosition(spec_arm_score);
                 return false;
             }
         }
@@ -320,7 +320,7 @@ public class BlueSpecimenAuto extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         // instantiate your MecanumDrive at a particular pose.
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, Math.toRadians(0)));
+        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, Math.toRadians(180)));
         // make an Intake instance
         Intake intake = new Intake(hardwareMap);
         // make a Lift instance
