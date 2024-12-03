@@ -244,7 +244,7 @@ public class DriveCode extends LinearOpMode {
 
             //send all the servos to their current positions
             intakeServo1.setPower(intakeSpeed);
-            intakeServo2.setPower(intakeSpeed);
+            intakeServo2.setPower(-intakeSpeed);
             armServo.setPosition(armHeight);
             slideServo.setPosition(slidePosition);
             bucketServo.setPosition(bucketPosition);
