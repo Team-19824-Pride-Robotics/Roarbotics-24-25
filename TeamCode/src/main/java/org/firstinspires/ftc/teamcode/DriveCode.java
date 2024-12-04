@@ -31,21 +31,21 @@ public class DriveCode extends LinearOpMode {
     public static double in_speed = -1;
     public static double out_speed = 1;
     public static int lift_transfer = 0;
-    public static int lift_high_bucket = -4000;
-    public static int lift_low_bucket = -2000;
+    public static int lift_high_bucket = -3200;
+    public static int lift_low_bucket = -1000;
     public static double arm_down = 0.03;
-    public static double arm_transfer = 0.63;
-    public static double arm_mid = 0.25;
-    public static double slides_extended = 0.82;
-    public static double slides_transfer = 0.85;
-    public static double slides_mid = 0.85;
-    public static double bucket_transfer = 0.5;
-    public static double bucket_dump = 0.02;
+    public static double arm_transfer = 0.72;
+    public static double arm_mid = 0.15;
+    public static double slides_extended = 0.40;
+    public static double slides_transfer = 0.65;
+    public static double slides_mid = 0.60;
+    public static double bucket_transfer = 0.14;
+    public static double bucket_dump = 0.9;
     public static double bucket_mid = 0.3;
     public static double dump_time = 0.5;
     public static double driveSlow = 0.5;
-    public static double specimen_pickup = 0.1;
-    public static double specimen_score = 0.9;
+    public static double specimen_pickup = 0.03;
+    public static double specimen_score = 0.6;
 
     private boolean last_A = false;
     private boolean arm_go_down = false;
@@ -59,12 +59,12 @@ public class DriveCode extends LinearOpMode {
 
        double intakeSpeed = 0;
        double driveSpeed = 1;
-       double armHeight = 0;
-       double slidePosition = 0;
-       double bucketPosition = 0;
-       double specimenPosition = 0;
+       double armHeight = 0.74;
+       double slidePosition = 0.65;
+       double bucketPosition = 0.14;
+       double specimenPosition = 0.03;
 
-       int liftHeight = 1000;
+       int liftHeight = 0;
        int target;
 
         leftBack = hardwareMap.get(DcMotor.class, "leftBack");
@@ -217,14 +217,16 @@ public class DriveCode extends LinearOpMode {
             }
 
             if(gamepad2.right_stick_button) {
-                resetRuntime();
-                if (getRuntime() < dump_time) {
                     bucketPosition = bucket_dump;
                 }
-                else {
-                    bucketPosition = bucket_mid;
-                }
+
+            if(gamepad2.left_stick_button) {
+                specimenPosition = specimen_score;
             }
+            else {
+                specimenPosition = specimen_pickup;
+            }
+
 
 
             /***************************************************************
@@ -233,11 +235,11 @@ public class DriveCode extends LinearOpMode {
              ***************************************************************/
 
             //send the lift motors to the current value of the liftHeight variable
-            target = Range.clip(liftHeight, 0, 2400);
+           // target = Range.clip(liftHeight, 0, 2400);
 
-            liftMotor1.setTargetPosition(target);
+            liftMotor1.setTargetPosition(liftHeight);
             liftMotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotor2.setTargetPosition(target);
+            liftMotor2.setTargetPosition(liftHeight);
             liftMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             liftMotor1.setPower(1);
             liftMotor2.setPower(1);
