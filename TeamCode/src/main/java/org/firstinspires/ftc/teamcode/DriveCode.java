@@ -34,8 +34,8 @@ public class DriveCode extends LinearOpMode {
     public static int lift_high_bucket = -4000;
     public static int lift_low_bucket = -2000;
     public static double arm_down = 0.03;
-    public static double arm_transfer = 0.63;
-    public static double arm_mid = 0.25;
+    public static double arm_transfer = 0.74;
+    public static double arm_mid = 0.15;
     public static double slides_extended = 0.82;
     public static double slides_transfer = 0.85;
     public static double slides_mid = 0.85;
@@ -59,7 +59,7 @@ public class DriveCode extends LinearOpMode {
 
        double intakeSpeed = 0;
        double driveSpeed = 1;
-       double armHeight = 0;
+       double armHeight = 0.74;
        double slidePosition = 0;
        double bucketPosition = 0;
        double specimenPosition = 0;
