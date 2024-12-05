@@ -33,6 +33,8 @@ public class DriveCode extends LinearOpMode {
     public static int lift_transfer = 0;
     public static int lift_high_bucket = -3200;
     public static int lift_low_bucket = -1000;
+    public static int lift_spec_pickup = -500;
+    public static int lift_spec_score = -1000;
     public static double arm_down = 0.03;
     public static double arm_transfer = 0.72;
     public static double arm_mid = 0.15;
@@ -163,6 +165,13 @@ public class DriveCode extends LinearOpMode {
             else if (gamepad1.right_bumper || gamepad2.right_bumper){
                 intakeSpeed = out_speed;
             }
+
+            //if the color sensor detects the wrong color for our alliance, spit out the sample
+
+//            else if (color sensor has detected the wrong color sample) {
+//                intakeSpeed = out_speed;
+//            }
+
             else {
                 intakeSpeed = 0;
             }
@@ -186,8 +195,9 @@ public class DriveCode extends LinearOpMode {
             }
             last_B = gamepad2.b;
 
-            //if the color sensor has detected a sample, turn the intake off
-            //if it's the wrong color, outtake it automatically
+            //if the color sensor has detected a sample, turn on LED indicator light
+            // so the drivers know they have it
+
 
 
 
@@ -201,12 +211,7 @@ public class DriveCode extends LinearOpMode {
              Specimen arm has two positions: pickup and score
              ***************************************************************/
 
-            if(gamepad2.right_trigger > 0.1) {
-                specimenPosition = specimen_pickup;
-            }
-            if(gamepad2.left_trigger > 0.1) {
-                specimenPosition = specimen_score;
-            }
+
             if(gamepad2.dpad_right) {
                 liftHeight = lift_low_bucket;
                 bucketPosition = bucket_mid;
@@ -216,15 +221,19 @@ public class DriveCode extends LinearOpMode {
                 bucketPosition = bucket_mid;
             }
 
-            if(gamepad2.right_stick_button) {
+            if(gamepad2.right_trigger > 0.1) {
                     bucketPosition = bucket_dump;
                 }
 
             if(gamepad2.left_stick_button) {
                 specimenPosition = specimen_score;
+                liftHeight = lift_spec_score;
             }
             else {
                 specimenPosition = specimen_pickup;
+            }
+            if(gamepad2.right_stick_button) {
+                liftHeight = lift_spec_score;
             }
 
 
