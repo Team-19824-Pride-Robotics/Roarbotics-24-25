@@ -33,8 +33,8 @@ public class DriveCode extends LinearOpMode {
     public static int lift_transfer = 0;
     public static int lift_high_bucket = -3200;
     public static int lift_low_bucket = -1000;
-    public static int lift_spec_pickup = -500;
-    public static int lift_spec_score = -1000;
+    public static int lift_spec_pickup = -250;
+    public static int lift_spec_score = -700;
     public static double arm_down = 0.03;
     public static double arm_transfer = 0.72;
     public static double arm_mid = 0.15;
@@ -233,7 +233,7 @@ public class DriveCode extends LinearOpMode {
                 specimenPosition = specimen_pickup;
             }
             if(gamepad2.right_stick_button) {
-                liftHeight = lift_spec_score;
+                liftHeight = lift_spec_pickup;
             }
 
 

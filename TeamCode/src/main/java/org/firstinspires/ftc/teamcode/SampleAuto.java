@@ -23,7 +23,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
-@Autonomous(name = "SpecimenAuto")
+@Autonomous(name = "SampleAuto")
 public class SampleAuto extends LinearOpMode {
 
     public static double in_speed = -1;
