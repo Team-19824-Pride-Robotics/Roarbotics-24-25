@@ -401,8 +401,8 @@ public class SpecimenAuto extends LinearOpMode {
                         segment1,
                         lift.specimenScoreHeight(),
                         lift.specArmScore()
-                ),
-
+                )
+/*
                 new ParallelAction(
                         segment2,
                         lift.specimenPickupHeight(),
@@ -459,6 +459,8 @@ public class SpecimenAuto extends LinearOpMode {
                         segment7,
                         lift.specArmScore()
                 )
+
+ */
 
                 ));
 
