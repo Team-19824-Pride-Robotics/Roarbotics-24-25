@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -319,16 +320,18 @@ public class SpecimenAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
+
         // instantiate your MecanumDrive at a particular pose.
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, Math.toRadians(0)));
+        Pose2d initialPose = new Pose2d(0, 0, Math.toRadians(180));
+        MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         // make an Intake instance
         Intake intake = new Intake(hardwareMap);
         // make a Lift instance
         Lift lift = new Lift(hardwareMap);
 
 
-        Action segment1;
-        Action segment2;
+        TrajectoryActionBuilder segment1;
+        TrajectoryActionBuilder segment2;
         Action segment3;
         Action segment4;
         Action segment5;
@@ -338,24 +341,24 @@ public class SpecimenAuto extends LinearOpMode {
 
         //segment 1 - drives up to the sub and scores the preload
         // parallel with lift to score height
-        segment1 = drive.actionBuilder(drive.pose)
-                .lineToXConstantHeading(x0)
-                .build();
+        segment1 = drive.actionBuilder(initialPose)
+                .lineToXConstantHeading(x0);
+
+        Action seg1 = segment1.build();
 
         //segment 2 - backs off the sub and strafes right to clear it
         // parallel with lift to pickup position
-        segment2 = drive.actionBuilder(drive.pose)
-               // .lineToXLinearHeading(x1, Math.toRadians(180))
+        segment2 = segment1.endTrajectory().fresh()
                 .lineToXConstantHeading(x1)
-                //.strafeTo(new Vector2d(x1, y2))
-                .build();
+                .strafeTo(new Vector2d(x1, y2));
+
+        Action seg2 = segment2.build();
 
         //segment 3 - moves on a diagonal to get behind the sample
         segment3 = drive.actionBuilder(drive.pose)
                 .setTangent(0)
                 .lineToX(x3)
                 .build();
-
         //segment 4 - spline path with a 180 built in, gets in position to push
         segment4 = drive.actionBuilder(drive.pose)
                 .setTangent(0)
@@ -393,20 +396,23 @@ public class SpecimenAuto extends LinearOpMode {
 
         waitForStart();
 
+
+
+
         if (isStopRequested()) return;
 
 
         Actions.runBlocking(new SequentialAction(
 
                 new ParallelAction(
-                        segment1,
+                        seg1,
                         lift.specimenScoreHeight(),
                         lift.specArmScore()
                 ),
 
 
                 new ParallelAction(
-                        segment4,
+                        seg2,
                         lift.specimenPickupHeight(),
                         lift.specArmPickup()
                 )
