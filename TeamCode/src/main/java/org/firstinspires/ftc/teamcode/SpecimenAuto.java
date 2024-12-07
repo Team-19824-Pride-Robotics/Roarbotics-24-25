@@ -45,7 +45,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double pickup_speed = 5;
     public static double lift_time = 1;
 
-    public static double x0 = 26;
+    public static double x0 = -80;
     public static double x1 = 22;
     public static double x2 = 22;
     public static double y2 = -27;
@@ -320,7 +320,7 @@ public class SpecimenAuto extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         // instantiate your MecanumDrive at a particular pose.
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, Math.toRadians(180)));
+        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, Math.toRadians(0)));
         // make an Intake instance
         Intake intake = new Intake(hardwareMap);
         // make a Lift instance
@@ -339,14 +339,15 @@ public class SpecimenAuto extends LinearOpMode {
         //segment 1 - drives up to the sub and scores the preload
         // parallel with lift to score height
         segment1 = drive.actionBuilder(drive.pose)
-                .lineToX(x0)
+                .lineToXConstantHeading(x0)
                 .build();
 
         //segment 2 - backs off the sub and strafes right to clear it
         // parallel with lift to pickup position
         segment2 = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(x1, 0), Math.toRadians(180))
-               // .strafeTo(new Vector2d(x2, y2))
+               // .lineToXLinearHeading(x1, Math.toRadians(180))
+                .lineToXConstantHeading(x1)
+                //.strafeTo(new Vector2d(x1, y2))
                 .build();
 
         //segment 3 - moves on a diagonal to get behind the sample
@@ -358,7 +359,7 @@ public class SpecimenAuto extends LinearOpMode {
         //segment 4 - spline path with a 180 built in, gets in position to push
         segment4 = drive.actionBuilder(drive.pose)
                 .setTangent(0)
-                .splineToLinearHeading(new Pose2d(52, -37, Math.toRadians(180)), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(20, 0, Math.toRadians(0)), Math.toRadians(0))
                 .build();
 
         //segment 5 - push two samples into the zone
@@ -401,15 +402,16 @@ public class SpecimenAuto extends LinearOpMode {
                         segment1,
                         lift.specimenScoreHeight(),
                         lift.specArmScore()
-                )
-/*
-                new ParallelAction(
-                        segment2,
-                        lift.specimenPickupHeight(),
-                        lift.specArmPickup()
                 ),
 
-                segment3,
+
+                new ParallelAction(
+                        segment4,
+                        lift.specimenPickupHeight(),
+                        lift.specArmPickup()
+                )
+/*
+                segment3
 
                 segment4,
 
