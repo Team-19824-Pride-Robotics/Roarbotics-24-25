@@ -30,13 +30,13 @@ public class SpecimenAuto extends LinearOpMode {
     public static double out_speed = 0.5;
     public static int lift_high_bucket = -4000;
     public static int lift_transfer = 0;
-    public static int lift_spec_pickup = 0;
+    public static int lift_spec_pickup = -250;
     public static int lift_spec_score = -700;
     public static double bucket_dump = 0.02;
     public static double bucket_transfer = 0.02;
     public static double bucket_mid = 0.3;
-    public static double spec_arm_pickup = 0;
-    public static double spec_arm_score = 0;
+    public static double spec_arm_pickup = 0.03;
+    public static double spec_arm_score = 0.6;
     public static double slides_extended = 0.82;
     public static double slides_transfer = 0.85;
     public static double slides_mid = 0.85;
