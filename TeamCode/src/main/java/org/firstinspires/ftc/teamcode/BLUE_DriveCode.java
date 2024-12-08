@@ -8,11 +8,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 
-@TeleOp(name="DriveCode")
+@TeleOp(name="BLUE_DriveCode")
 @Config
-public class DriveCode extends LinearOpMode {
+public class BLUE_DriveCode extends LinearOpMode {
 
     private DcMotor leftBack;
     private DcMotor rightBack;
@@ -54,10 +56,12 @@ public class DriveCode extends LinearOpMode {
     private boolean last_B = false;
     private boolean slide_go_away = false;
 
+    private DigitalChannel greenLED;
+    ColorSensor color_sense;
+
 
     @Override
     public void runOpMode() {
-
 
        double intakeSpeed = 0;
        double driveSpeed = 1;
@@ -65,6 +69,11 @@ public class DriveCode extends LinearOpMode {
        double slidePosition = 0.65;
        double bucketPosition = 0.14;
        double specimenPosition = 0.03;
+
+        int red = color_sense.red();
+        int blue = color_sense.blue();
+        int green = color_sense.green();
+        double sample = ((OpticalDistanceSensor)color_sense).getLightDetected();
 
        int liftHeight = 0;
        int target;
@@ -97,6 +106,10 @@ public class DriveCode extends LinearOpMode {
         liftMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         liftMotor2.setDirection(DcMotorEx.Direction.REVERSE);
+
+        color_sense = hardwareMap.get(ColorSensor.class, "color_sense");
+        greenLED = hardwareMap.get(DigitalChannel.class, "green");
+        greenLED.setMode(DigitalChannel.Mode.OUTPUT);
 
 
         waitForStart();
@@ -157,7 +170,7 @@ public class DriveCode extends LinearOpMode {
             }
             last_A = gamepad2.a;
 
-
+            
             //bumpers control the intake spinners
             if (gamepad1.left_bumper || gamepad2.left_bumper){
                 intakeSpeed = in_speed;
@@ -168,9 +181,9 @@ public class DriveCode extends LinearOpMode {
 
             //if the color sensor detects the wrong color for our alliance, spit out the sample
 
-//            else if (color sensor has detected the wrong color sample) {
-//                intakeSpeed = out_speed;
-//            }
+            else if (red > 100) {
+                intakeSpeed = out_speed;
+            }
 
             else {
                 intakeSpeed = 0;
@@ -195,12 +208,10 @@ public class DriveCode extends LinearOpMode {
             }
             last_B = gamepad2.b;
 
-            //if the color sensor has detected a sample, turn on LED indicator light
+            //if the color sensor has detected a BLUE or YELLOW sample, turn on LED indicator light
             // so the drivers know they have it
 
-
-
-
+            greenLED.setState(blue > 100 || green > 50);
 
 
 
@@ -263,8 +274,12 @@ public class DriveCode extends LinearOpMode {
 
 
             telemetry.addData("Status", "Running");
-            telemetry.addData("lift1 height",  liftMotor1.getCurrentPosition());
-            telemetry.addData("lift2 height",  liftMotor2.getCurrentPosition());
+            telemetry.addData("RED", red);
+            telemetry.addData("BLUE", blue);
+            telemetry.addData("GREEN", green);
+            telemetry.addData("COLOR", sample);
+//            telemetry.addData("lift1 height",  liftMotor1.getCurrentPosition());
+//            telemetry.addData("lift2 height",  liftMotor2.getCurrentPosition());
             telemetry.update();
 
         }
