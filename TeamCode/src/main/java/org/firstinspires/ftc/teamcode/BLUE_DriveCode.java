@@ -170,7 +170,7 @@ public class BLUE_DriveCode extends LinearOpMode {
             }
             last_A = gamepad2.a;
 
-            
+
             //bumpers control the intake spinners
             if (gamepad1.left_bumper || gamepad2.left_bumper){
                 intakeSpeed = in_speed;
@@ -235,6 +235,10 @@ public class BLUE_DriveCode extends LinearOpMode {
             if(gamepad2.right_trigger > 0.1) {
                     bucketPosition = bucket_dump;
                 }
+
+            if(gamepad2.left_trigger > 0.1) {
+                bucketPosition = bucket_mid;
+            }
 
             if(gamepad2.left_stick_button) {
                 specimenPosition = specimen_score;
