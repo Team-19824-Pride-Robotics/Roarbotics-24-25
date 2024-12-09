@@ -46,11 +46,11 @@ public class SpecimenAuto extends LinearOpMode {
     public static double pickup_speed = 5;
     public static double lift_time = 1;
 
-    public static double x0 = -80;
-    public static double x1 = 22;
+    public static double x0 = 80;
+    public static double x1 = 50;
     public static double x2 = 22;
-    public static double y2 = -27;
-    public static double x3 = 50;
+    public static double y2 = -60;
+    public static double x3 = 120;
     public static double x4 = 7;
     public static double y3 = -47;
 
@@ -332,7 +332,9 @@ public class SpecimenAuto extends LinearOpMode {
 
         TrajectoryActionBuilder segment1;
         TrajectoryActionBuilder segment2;
-        Action segment3;
+        TrajectoryActionBuilder segment2_5;
+        TrajectoryActionBuilder segment3;
+
         Action segment4;
         Action segment5;
         Action segment6;
@@ -346,19 +348,29 @@ public class SpecimenAuto extends LinearOpMode {
 
         Action seg1 = segment1.build();
 
-        //segment 2 - backs off the sub and strafes right to clear it
-        // parallel with lift to pickup position
+        //segment 2 - backs off the sub
+
         segment2 = segment1.endTrajectory().fresh()
-                .lineToXConstantHeading(x1)
-                .strafeTo(new Vector2d(x1, y2));
+                .lineToXConstantHeading(x1);
+
 
         Action seg2 = segment2.build();
 
+        //segment 2.5 - strafes right to clear the sub
+        // parallel with lift to pickup position
+
+        segment2_5 = segment2.endTrajectory().fresh()
+                  .strafeTo(new Vector2d(x1, y2));
+
+        Action seg2_5 = segment2_5.build();
+
         //segment 3 - moves on a diagonal to get behind the sample
-        segment3 = drive.actionBuilder(drive.pose)
+        segment3 = segment2_5.endTrajectory().fresh()
                 .setTangent(0)
-                .lineToX(x3)
-                .build();
+                .lineToX(x3);
+
+        Action seg3 = segment3.build();
+
         //segment 4 - spline path with a 180 built in, gets in position to push
         segment4 = drive.actionBuilder(drive.pose)
                 .setTangent(0)
@@ -410,15 +422,16 @@ public class SpecimenAuto extends LinearOpMode {
                         lift.specArmScore()
                 ),
 
+                seg2,
 
                 new ParallelAction(
-                        seg2,
+                        seg2_5,
                         lift.specimenPickupHeight(),
                         lift.specArmPickup()
-                )
-/*
-                segment3
+                ),
 
+                seg3
+/*
                 segment4,
 
                 segment5,
