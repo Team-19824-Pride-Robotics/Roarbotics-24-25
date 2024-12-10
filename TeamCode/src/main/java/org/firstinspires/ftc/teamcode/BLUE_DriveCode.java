@@ -25,7 +25,7 @@ public class BLUE_DriveCode extends LinearOpMode {
     private Servo armServo;
     private DcMotorEx liftMotor1;
     private DcMotorEx liftMotor2;
-    private Servo slideServo;
+    private DcMotorEx slidesMotor;
     private Servo bucketServo;
     private Servo specimenArmServo;
 
@@ -40,9 +40,9 @@ public class BLUE_DriveCode extends LinearOpMode {
     public static double arm_down = 0.03;
     public static double arm_transfer = 0.72;
     public static double arm_mid = 0.15;
-    public static double slides_extended = 0.40;
-    public static double slides_transfer = 0.65;
-    public static double slides_mid = 0.55;
+    public static int slides_extended = -210;
+    public static int slides_transfer = -10;
+    public static int slides_mid = -100;
     public static double bucket_transfer = 0.23;
     public static double bucket_dump = 0.9;
     public static double bucket_mid = 0.5;
@@ -67,7 +67,7 @@ public class BLUE_DriveCode extends LinearOpMode {
        double intakeSpeed = 0;
        double driveSpeed = 1;
        double armHeight = 0.74;
-       double slidePosition = 0.65;
+       int slidePosition = 0;
        double bucketPosition = 0.23;
        double specimenPosition = 0.03;
 
@@ -97,7 +97,6 @@ public class BLUE_DriveCode extends LinearOpMode {
         intakeServo2 = hardwareMap.get(CRServo.class,"intakeServo2");
         armServo = hardwareMap.get(Servo.class,"armServo");
         bucketServo = hardwareMap.get(Servo.class, "bucketServo");
-        slideServo = hardwareMap.get(Servo.class, "slideServo");
         specimenArmServo = hardwareMap.get(Servo.class, "specArmServo");
 
         liftMotor1 = hardwareMap.get(DcMotorEx.class, "liftMotor1");
@@ -107,6 +106,10 @@ public class BLUE_DriveCode extends LinearOpMode {
         liftMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         liftMotor2.setDirection(DcMotorEx.Direction.REVERSE);
+
+        slidesMotor = hardwareMap.get(DcMotorEx.class, "slidesMotor");
+        slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slidesMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         color_sense = hardwareMap.get(ColorSensor.class, "color_sense");
         greenLED = hardwareMap.get(DigitalChannel.class, "green");
@@ -281,11 +284,14 @@ public class BLUE_DriveCode extends LinearOpMode {
             liftMotor1.setPower(1);
             liftMotor2.setPower(1);
 
+            slidesMotor.setTargetPosition(slidePosition);
+            slidesMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            slidesMotor.setPower(0.5);
+
             //send all the servos to their current positions
             intakeServo1.setPower(intakeSpeed);
             intakeServo2.setPower(-intakeSpeed);
             armServo.setPosition(armHeight);
-            slideServo.setPosition(slidePosition);
             bucketServo.setPosition(bucketPosition);
             specimenArmServo.setPosition(specimenPosition);
 
