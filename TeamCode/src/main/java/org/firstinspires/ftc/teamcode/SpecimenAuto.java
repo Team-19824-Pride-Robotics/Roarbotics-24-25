@@ -51,8 +51,10 @@ public class SpecimenAuto extends LinearOpMode {
     public static double x2 = 22;
     public static double y2 = -60;
     public static double x3 = 120;
-    public static double x4 = 7;
-    public static double y3 = -47;
+    public static double x8 = 120;
+    public static double y6 = -85;
+    public static double x4 = 14;
+    public static double y3 = -110;
 
     public static double x5 = 0;
     public static double x6 = 12;
@@ -334,9 +336,9 @@ public class SpecimenAuto extends LinearOpMode {
         TrajectoryActionBuilder segment2;
         TrajectoryActionBuilder segment2_5;
         TrajectoryActionBuilder segment3;
+        TrajectoryActionBuilder segment4;
+        TrajectoryActionBuilder segment5;
 
-        Action segment4;
-        Action segment5;
         Action segment6;
         Action segment7;
         Action segment8;
@@ -372,19 +374,21 @@ public class SpecimenAuto extends LinearOpMode {
         Action seg3 = segment3.build();
 
         //segment 4 - spline path with a 180 built in, gets in position to push
-        segment4 = drive.actionBuilder(drive.pose)
+        segment4 = segment3.endTrajectory().fresh()
                 .setTangent(0)
-                .splineToLinearHeading(new Pose2d(20, 0, Math.toRadians(0)), Math.toRadians(0))
-                .build();
+                .splineToLinearHeading(new Pose2d(x8, y6, Math.toRadians(0)), Math.toRadians(0));
+
+        Action seg4 = segment4.build();
 
         //segment 5 - push two samples into the zone
-        segment5 = drive.actionBuilder(drive.pose)
+        segment5 = segment4.endTrajectory().fresh()
                 .lineToX(x4)
                 .lineToX(x3)
                 .strafeTo(new Vector2d(x3, y3))
                 .setTangent(0)
-                .lineToX(x4)
-                .build();
+                .lineToX(x4);
+
+        Action seg5 = segment5.build();
 
         //segment 6 - slowly! to pick up the specimen
         segment6 = drive.actionBuilder(drive.pose)
@@ -430,12 +434,12 @@ public class SpecimenAuto extends LinearOpMode {
                         lift.specArmPickup()
                 ),
 
-                seg3
+                seg3,
+
+                seg4,
+
+                seg5
 /*
-                segment4,
-
-                segment5,
-
                 segment6,
 
                 lift.specimenScoreHeight(),  //this takes the specimen off the wall
