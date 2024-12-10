@@ -30,8 +30,8 @@ public class BLUE_DriveCode extends LinearOpMode {
     private Servo specimenArmServo;
 
 
-    public static double in_speed = -1;
-    public static double out_speed = 1;
+    public static double in_speed = 1;
+    public static double out_speed = -1;
     public static int lift_transfer = 0;
     public static int lift_high_bucket = -3200;
     public static int lift_low_bucket = -1000;
@@ -42,10 +42,10 @@ public class BLUE_DriveCode extends LinearOpMode {
     public static double arm_mid = 0.15;
     public static double slides_extended = 0.40;
     public static double slides_transfer = 0.65;
-    public static double slides_mid = 0.60;
-    public static double bucket_transfer = 0.14;
+    public static double slides_mid = 0.55;
+    public static double bucket_transfer = 0.23;
     public static double bucket_dump = 0.9;
-    public static double bucket_mid = 0.3;
+    public static double bucket_mid = 0.5;
     public static double dump_time = 0.5;
     public static double driveSlow = 0.5;
     public static double specimen_pickup = 0.03;
@@ -57,6 +57,7 @@ public class BLUE_DriveCode extends LinearOpMode {
     private boolean slide_go_away = false;
 
     private DigitalChannel greenLED;
+    private DigitalChannel redLED;
     ColorSensor color_sense;
 
 
@@ -67,13 +68,13 @@ public class BLUE_DriveCode extends LinearOpMode {
        double driveSpeed = 1;
        double armHeight = 0.74;
        double slidePosition = 0.65;
-       double bucketPosition = 0.14;
+       double bucketPosition = 0.23;
        double specimenPosition = 0.03;
 
-        int red = color_sense.red();
-        int blue = color_sense.blue();
-        int green = color_sense.green();
-        double sample = ((OpticalDistanceSensor)color_sense).getLightDetected();
+        int red;
+        int blue;
+        int green;
+        double sample;
 
        int liftHeight = 0;
        int target;
@@ -110,6 +111,8 @@ public class BLUE_DriveCode extends LinearOpMode {
         color_sense = hardwareMap.get(ColorSensor.class, "color_sense");
         greenLED = hardwareMap.get(DigitalChannel.class, "green");
         greenLED.setMode(DigitalChannel.Mode.OUTPUT);
+        redLED = hardwareMap.get(DigitalChannel.class, "red");
+        redLED.setMode(DigitalChannel.Mode.OUTPUT);
 
 
         waitForStart();
@@ -117,6 +120,12 @@ public class BLUE_DriveCode extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
+
+            //go get the values from the color sensor
+            red = color_sense.red();
+            blue = color_sense.blue();
+            green = color_sense.green();
+            sample = ((OpticalDistanceSensor)color_sense).getLightDetected();
 
             /****************************************************************
              Drive code -- basic mecanum drive with a variable to allow driver to
@@ -172,18 +181,20 @@ public class BLUE_DriveCode extends LinearOpMode {
 
 
             //bumpers control the intake spinners
-            if (gamepad1.left_bumper || gamepad2.left_bumper){
+            if (gamepad1.right_bumper || gamepad2.right_bumper){
                 intakeSpeed = in_speed;
             }
-            else if (gamepad1.right_bumper || gamepad2.right_bumper){
+            else if (gamepad1.left_bumper || gamepad2.left_bumper){
                 intakeSpeed = out_speed;
             }
-
+/*
             //if the color sensor detects the wrong color for our alliance, spit out the sample
 
-            else if (red > 100) {
+            else if (red > 1000 && green < 3000) {
                 intakeSpeed = out_speed;
             }
+
+ */
 
             else {
                 intakeSpeed = 0;
@@ -211,7 +222,9 @@ public class BLUE_DriveCode extends LinearOpMode {
             //if the color sensor has detected a BLUE or YELLOW sample, turn on LED indicator light
             // so the drivers know they have it
 
-            greenLED.setState(blue > 100 || green > 50);
+            greenLED.setState(true);
+           // redLED.set
+         //   blue > 100 || green > 50
 
 
 
