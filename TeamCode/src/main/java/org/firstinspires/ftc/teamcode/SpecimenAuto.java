@@ -55,6 +55,8 @@ public class SpecimenAuto extends LinearOpMode {
     public static double y6 = -85;
     public static double x4 = 14;
     public static double y3 = -110;
+    public static double x9 = 34;
+    public static double y7 = -90;
 
     public static double x5 = 0;
     public static double x6 = 12;
@@ -69,12 +71,12 @@ public class SpecimenAuto extends LinearOpMode {
         private CRServo intakeServo1;
         private CRServo intakeServo2;
         private Servo armServo;
-        private Servo slideServo;
+       // private Servo slideServo;
 
         public Intake(HardwareMap hardwareMap) {
 
             armServo = hardwareMap.get(Servo.class,"armServo");
-            slideServo = hardwareMap.get(Servo.class, "slideServo");
+            //slideServo = hardwareMap.get(Servo.class, "slideServo");
             intakeServo1 = hardwareMap.get(CRServo.class, "intakeServo1");
             intakeServo2 = hardwareMap.get(CRServo.class, "intakeServo2");
 
@@ -105,7 +107,7 @@ public class SpecimenAuto extends LinearOpMode {
         public class SlidesExtend implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                slideServo.setPosition(slides_extended);
+               // slideServo.setPosition(slides_extended);
                 return false;
             }
         }
@@ -116,7 +118,7 @@ public class SpecimenAuto extends LinearOpMode {
         public class SlidesTransfer implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                slideServo.setPosition(slides_transfer);
+                //slideServo.setPosition(slides_transfer);
                 return false;
             }
         }
@@ -127,7 +129,7 @@ public class SpecimenAuto extends LinearOpMode {
         public class SlidesMid implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                slideServo.setPosition(slides_mid);
+                //slideServo.setPosition(slides_mid);
                 return false;
             }
         }
@@ -338,9 +340,12 @@ public class SpecimenAuto extends LinearOpMode {
         TrajectoryActionBuilder segment3;
         TrajectoryActionBuilder segment4;
         TrajectoryActionBuilder segment5;
+        TrajectoryActionBuilder segment5_5;
+        TrajectoryActionBuilder segment6;
+        TrajectoryActionBuilder segment7;
 
-        Action segment6;
-        Action segment7;
+
+
         Action segment8;
 
         //segment 1 - drives up to the sub and scores the preload
@@ -390,17 +395,27 @@ public class SpecimenAuto extends LinearOpMode {
 
         Action seg5 = segment5.build();
 
+        //Segment 5_5, Backs Up and strafes over to avoid pushed specimen
+        segment5_5 = segment5.endTrajectory().fresh()
+                .lineToX(x9)
+                .strafeTo(new Vector2d(x9,y7));
+
+        Action seg5_5 = segment5_5.build();
+
         //segment 6 - slowly! to pick up the specimen
-        segment6 = drive.actionBuilder(drive.pose)
-                .lineToX(x5, new TranslationalVelConstraint(pickup_speed))
-                .build();
+        segment6 = segment5_5.endTrajectory().fresh()
+                .setTangent(Math.toRadians(180))
+                .lineToX(x5, new TranslationalVelConstraint(pickup_speed));
+
+        Action seg6 = segment6.build();
 
         //segment 7 - spline path back to the sub with a 180
         //parallel with lift to scoring position
-        segment7 = drive.actionBuilder(drive.pose)
+        segment7 = segment6.endTrajectory().fresh()
                 .lineToX(x6)
-                .splineToLinearHeading(new Pose2d(x0, y4, Math.toRadians(0)), Math.toRadians(0))
-                .build();
+                .splineToLinearHeading(new Pose2d(x0, y4, Math.toRadians(0)), Math.toRadians(0));
+
+        Action seg7 = segment7.build();
 
         //segment 8 - spline path back to the zone with a 180
         // parallel with lift to pickup position
@@ -438,14 +453,23 @@ public class SpecimenAuto extends LinearOpMode {
 
                 seg4,
 
-                seg5
+                seg5,
+
+                seg5_5,
+
+
+
+                seg6,
+
+                new ParallelAction(
+
+                       seg7,
+
+                         lift.specimenScoreHeight(),  //this takes the specimen off the wall
+
+                          new SleepAction(lift_time)  //it needs time to go up before driving away
+                )
 /*
-                segment6,
-
-                lift.specimenScoreHeight(),  //this takes the specimen off the wall
-
-                new SleepAction(lift_time),  //it needs time to go up before driving away
-
                 new ParallelAction(
                         segment7,
                         lift.specArmScore()
@@ -487,7 +511,7 @@ public class SpecimenAuto extends LinearOpMode {
 
  */
 
-                ));
+        ));
 
 
     }
