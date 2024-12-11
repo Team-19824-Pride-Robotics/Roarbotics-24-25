@@ -41,9 +41,9 @@ public class BLUE_DriveCode extends LinearOpMode {
     public static double arm_transfer = 0.72;
     public static double arm_mid = 0.15;
     public static int slides_extended = -210;
-    public static int slides_transfer = -10;
+    public static int slides_transfer = -50;
     public static int slides_mid = -100;
-    public static double bucket_transfer = 0.23;
+    public static double bucket_transfer = 0.20;
     public static double bucket_dump = 0.9;
     public static double bucket_mid = 0.5;
     public static double dump_time = 0.5;
@@ -68,7 +68,7 @@ public class BLUE_DriveCode extends LinearOpMode {
        double driveSpeed = 1;
        double armHeight = 0.74;
        int slidePosition = 0;
-       double bucketPosition = 0.23;
+       double bucketPosition = 0.20;
        double specimenPosition = 0.03;
 
         int red;
@@ -286,7 +286,7 @@ public class BLUE_DriveCode extends LinearOpMode {
 
             slidesMotor.setTargetPosition(slidePosition);
             slidesMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            slidesMotor.setPower(0.5);
+            slidesMotor.setPower(1);
 
             //send all the servos to their current positions
             intakeServo1.setPower(intakeSpeed);

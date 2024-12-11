@@ -346,15 +346,16 @@ public class SpecimenAuto extends LinearOpMode {
         //segment 1 - drives up to the sub and scores the preload
         // parallel with lift to score height
         segment1 = drive.actionBuilder(initialPose)
-                .lineToXConstantHeading(x0);
+                .setReversed(true)
+                .strafeToConstantHeading(new Vector2d(x0, 0));
 
         Action seg1 = segment1.build();
 
         //segment 2 - backs off the sub
 
         segment2 = segment1.endTrajectory().fresh()
-                .lineToXConstantHeading(x1);
-
+                .setReversed(true)
+                .strafeToConstantHeading(new Vector2d(x1, 0));
 
         Action seg2 = segment2.build();
 
@@ -362,7 +363,7 @@ public class SpecimenAuto extends LinearOpMode {
         // parallel with lift to pickup position
 
         segment2_5 = segment2.endTrajectory().fresh()
-                  .strafeTo(new Vector2d(x1, y2));
+                  .strafeTo(new Vector2d(x0, y2));
 
         Action seg2_5 = segment2_5.build();
 
@@ -426,20 +427,21 @@ public class SpecimenAuto extends LinearOpMode {
                         lift.specArmScore()
                 ),
 
+
                 seg2,
 
                 new ParallelAction(
                         seg2_5,
                         lift.specimenPickupHeight(),
                         lift.specArmPickup()
-                ),
-
+                )
+/*
                 seg3,
 
                 seg4,
 
                 seg5
-/*
+
                 segment6,
 
                 lift.specimenScoreHeight(),  //this takes the specimen off the wall
