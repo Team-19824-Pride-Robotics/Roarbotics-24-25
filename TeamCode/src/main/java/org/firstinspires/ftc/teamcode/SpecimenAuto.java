@@ -433,7 +433,8 @@ public class SpecimenAuto extends LinearOpMode {
                 new ParallelAction(
                         seg1,
                         lift.specimenScoreHeight(),
-                        lift.specArmScore()
+                        lift.specArmScore(),
+                        intake.armDown()
                 ),
 
 
