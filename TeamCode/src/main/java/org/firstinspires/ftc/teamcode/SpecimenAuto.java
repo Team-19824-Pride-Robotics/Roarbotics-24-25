@@ -38,9 +38,9 @@ public class SpecimenAuto extends LinearOpMode {
     public static double bucket_mid = 0.3;
     public static double spec_arm_pickup = 0.03;
     public static double spec_arm_score = 0.6;
-    public static double slides_extended = 0.82;
-    public static double slides_transfer = 0.85;
-    public static double slides_mid = 0.85;
+    public static int slides_extended = -210;
+    public static int slides_transfer = -50;
+    public static int slides_mid = -100;
     public static double arm_down = 0.03;
     public static double arm_transfer = 0.63;
     public static double pickup_speed = 5;
@@ -69,12 +69,14 @@ public class SpecimenAuto extends LinearOpMode {
         private CRServo intakeServo1;
         private CRServo intakeServo2;
         private Servo armServo;
-        private Servo slideServo;
+        private DcMotorEx slidesMotor;
 
         public Intake(HardwareMap hardwareMap) {
 
             armServo = hardwareMap.get(Servo.class,"armServo");
-            slideServo = hardwareMap.get(Servo.class, "slideServo");
+            slidesMotor = hardwareMap.get(DcMotorEx.class, "slidesMotor");
+            slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            slidesMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             intakeServo1 = hardwareMap.get(CRServo.class, "intakeServo1");
             intakeServo2 = hardwareMap.get(CRServo.class, "intakeServo2");
 
@@ -105,7 +107,9 @@ public class SpecimenAuto extends LinearOpMode {
         public class SlidesExtend implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                slideServo.setPosition(slides_extended);
+                slidesMotor.setTargetPosition(slides_extended);
+                slidesMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesMotor.setPower(1);
                 return false;
             }
         }
@@ -116,7 +120,9 @@ public class SpecimenAuto extends LinearOpMode {
         public class SlidesTransfer implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                slideServo.setPosition(slides_transfer);
+                slidesMotor.setTargetPosition(slides_transfer);
+                slidesMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesMotor.setPower(1);
                 return false;
             }
         }
@@ -127,7 +133,9 @@ public class SpecimenAuto extends LinearOpMode {
         public class SlidesMid implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                slideServo.setPosition(slides_mid);
+                slidesMotor.setTargetPosition(slides_mid);
+                slidesMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesMotor.setPower(1);
                 return false;
             }
         }
@@ -409,6 +417,7 @@ public class SpecimenAuto extends LinearOpMode {
                 .lineToX(x7)
                 .splineToLinearHeading(new Pose2d(x4, y5, Math.toRadians(0)), Math.toRadians(0))
                 .build();
+
 
 
         waitForStart();
