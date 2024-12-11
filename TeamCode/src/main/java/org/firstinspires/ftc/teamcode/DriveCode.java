@@ -12,9 +12,9 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
-@TeleOp(name="BLUE_DriveCode")
+@TeleOp(name="DriveCode")
 @Config
-public class BLUE_DriveCode extends LinearOpMode {
+public class DriveCode extends LinearOpMode {
 
     private DcMotor leftBack;
     private DcMotor rightBack;
