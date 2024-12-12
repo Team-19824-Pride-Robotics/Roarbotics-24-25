@@ -43,7 +43,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static int slides_mid = -100;
     public static double arm_down = 0.03;
     public static double arm_transfer = 0.63;
-    public static double pickup_speed = 5;
+    public static double pickup_speed = 15;
     public static double lift_time = 1;
 
     public static double x0 = 80;
@@ -345,9 +345,9 @@ public class SpecimenAuto extends LinearOpMode {
         TrajectoryActionBuilder segment2_5;
         TrajectoryActionBuilder segment3;
         TrajectoryActionBuilder segment4;
-        TrajectoryActionBuilder segment5;
+        TrajectoryActionBuilder segment6;
 
-        Action segment6;
+
         Action segment7;
         Action segment8;
 
@@ -377,32 +377,27 @@ public class SpecimenAuto extends LinearOpMode {
 
         //segment 3 - moves on a diagonal to get behind the sample
         segment3 = segment2_5.endTrajectory().fresh()
-                .setTangent(0)
-                .lineToX(x3);
+                .strafeToLinearHeading(new Vector2d(x3, y6), Math.toRadians(0));
 
         Action seg3 = segment3.build();
 
-        //segment 4 - spline path with a 180 built in, gets in position to push
+        //segment 4 - push a sample into the obs zone
         segment4 = segment3.endTrajectory().fresh()
-                .setTangent(0)
-                .splineToLinearHeading(new Pose2d(x8, y6, Math.toRadians(0)), Math.toRadians(0));
+                .strafeToConstantHeading(new Vector2d(x4, y6));
 
         Action seg4 = segment4.build();
-
+/*
         //segment 5 - push two samples into the zone
         segment5 = segment4.endTrajectory().fresh()
-                .lineToX(x4)
-                .lineToX(x3)
-                .strafeTo(new Vector2d(x3, y3))
-                .setTangent(0)
-                .lineToX(x4);
+                .strafeToConstantHeading(new Vector2d(x4, y6));
 
         Action seg5 = segment5.build();
-
+*/
         //segment 6 - slowly! to pick up the specimen
-        segment6 = drive.actionBuilder(drive.pose)
-                .lineToX(x5, new TranslationalVelConstraint(pickup_speed))
-                .build();
+        segment6 = segment4.endTrajectory().fresh()
+                .lineToX(x5, new TranslationalVelConstraint(pickup_speed));
+
+        Action seg6 = segment6.build();
 
         //segment 7 - spline path back to the sub with a 180
         //parallel with lift to scoring position
@@ -421,8 +416,6 @@ public class SpecimenAuto extends LinearOpMode {
 
 
         waitForStart();
-
-
 
 
         if (isStopRequested()) return;
@@ -450,9 +443,7 @@ public class SpecimenAuto extends LinearOpMode {
 
                 seg4,
 
-                seg5,
-
-                segment6,
+                seg6,
 
                 lift.specimenScoreHeight(),  //this takes the specimen off the wall
 
