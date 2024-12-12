@@ -346,10 +346,9 @@ public class SpecimenAuto extends LinearOpMode {
         TrajectoryActionBuilder segment3;
         TrajectoryActionBuilder segment4;
         TrajectoryActionBuilder segment6;
+        TrajectoryActionBuilder segment7;
+        TrajectoryActionBuilder segment8;
 
-
-        Action segment7;
-        Action segment8;
 
         //segment 1 - drives up to the sub and scores the preload
         // parallel with lift to score height
@@ -401,18 +400,18 @@ public class SpecimenAuto extends LinearOpMode {
 
         //segment 7 - spline path back to the sub with a 180
         //parallel with lift to scoring position
-        segment7 = drive.actionBuilder(drive.pose)
-                .lineToX(x6)
-                .splineToLinearHeading(new Pose2d(x0, y4, Math.toRadians(0)), Math.toRadians(0))
-                .build();
+        segment7 = segment6.endTrajectory().fresh()
+                .splineToLinearHeading(new Pose2d(x0, y4, Math.toRadians(180)), Math.toRadians(180));
+
+        Action seg7 = segment7.build();
 
         //segment 8 - spline path back to the zone with a 180
         // parallel with lift to pickup position
-        segment8 = drive.actionBuilder(drive.pose)
+        segment8 = segment7.endTrajectory().fresh()
                 .lineToX(x7)
-                .splineToLinearHeading(new Pose2d(x4, y5, Math.toRadians(0)), Math.toRadians(0))
-                .build();
+                .splineToLinearHeading(new Pose2d(x4, y6, Math.toRadians(0)), Math.toRadians(0));
 
+        Action seg8 = segment8.build();
 
 
         waitForStart();
@@ -447,48 +446,37 @@ public class SpecimenAuto extends LinearOpMode {
 
                 lift.specimenScoreHeight(),  //this takes the specimen off the wall
 
-                new SleepAction(lift_time)  //it needs time to go up before driving away
-/*
+                new SleepAction(lift_time),  //it needs time to go up before driving away
+
                 new ParallelAction(
-                        segment7,
+                        seg7,
                         lift.specArmScore()
                 ),
 
                 new ParallelAction(
-                        segment8,
+                        seg8,
                         lift.specimenPickupHeight(),
                         lift.specArmPickup()
                 ),
 
-                segment6,
+                seg6,
 
                 lift.specimenScoreHeight(),  //this takes the specimen off the wall
 
                 new SleepAction(lift_time),  //it needs time to go up before driving away
 
                 new ParallelAction(
-                        segment7,
+                        seg7,
                         lift.specArmScore()
                 ),
 
                 new ParallelAction(
-                        segment8,
+                        seg8,
                         lift.specimenPickupHeight(),
                         lift.specArmPickup()
-                ),
-
-                segment6,
-
-                lift.specimenScoreHeight(),  //this takes the specimen off the wall
-
-                new SleepAction(lift_time),  //it needs time to go up before driving away
-
-                new ParallelAction(
-                        segment7,
-                        lift.specArmScore()
                 )
 
- */
+
 
                 ));
 
