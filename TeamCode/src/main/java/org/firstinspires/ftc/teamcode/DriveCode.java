@@ -31,7 +31,8 @@ public class DriveCode extends LinearOpMode {
 
 
     public static double in_speed = 1;
-    public static double out_speed = -1;
+    public static double fast_out_speed = -1;
+    public static double slow_out_speed = -0.3;
     public static int lift_transfer = 0;
     public static int lift_high_bucket = -3200;
     public static int lift_low_bucket = -1000;
@@ -70,6 +71,7 @@ public class DriveCode extends LinearOpMode {
        int slidePosition = 0;
        double bucketPosition = 0.20;
        double specimenPosition = 0.03;
+       double out_speed = -1;
 
         int red;
         int blue;
@@ -221,6 +223,15 @@ public class DriveCode extends LinearOpMode {
                 }
             }
             last_B = gamepad2.b;
+
+            //sets the outspeed to slower
+            if (gamepad1.right_trigger > 0.5){
+                out_speed = slow_out_speed;
+            }
+            else {
+                out_speed = fast_out_speed;
+            }
+
 
             //if the color sensor has detected a BLUE or YELLOW sample, turn on LED indicator light
             // so the drivers know they have it

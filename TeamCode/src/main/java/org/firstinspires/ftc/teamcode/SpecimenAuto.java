@@ -444,20 +444,20 @@ public class SpecimenAuto extends LinearOpMode {
                         seg2_5,
                         lift.specimenPickupHeight(),
                         lift.specArmPickup()
-                )
-/*
+                ),
+
                 seg3,
 
                 seg4,
 
-                seg5
+                seg5,
 
                 segment6,
 
                 lift.specimenScoreHeight(),  //this takes the specimen off the wall
 
-                new SleepAction(lift_time),  //it needs time to go up before driving away
-
+                new SleepAction(lift_time)  //it needs time to go up before driving away
+/*
                 new ParallelAction(
                         segment7,
                         lift.specArmScore()
