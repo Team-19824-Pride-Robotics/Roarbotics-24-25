@@ -64,7 +64,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double y5 = -37;
     public static double x9 = 40;
     public static double y9 = 0;
-
+    public static double y11 = 20;
 
 
 
@@ -352,7 +352,9 @@ public class SpecimenAuto extends LinearOpMode {
         TrajectoryActionBuilder segment6;
         TrajectoryActionBuilder segment7;
         TrajectoryActionBuilder segment7_5;
+        TrajectoryActionBuilder segment7_6;
         TrajectoryActionBuilder segment8;
+        TrajectoryActionBuilder segment8_5;
 
 
         //segment 1 - drives up to the sub and scores the preload
@@ -403,7 +405,7 @@ public class SpecimenAuto extends LinearOpMode {
 
         Action seg6 = segment6.build();
 
-        //segment 7 - spline path back to the sub with a 180
+        //segment 7 - strafe back to the sub with a 180
         //parallel with lift to scoring position
         segment7 = segment6.endTrajectory().fresh()
                 .setReversed(true)
@@ -411,21 +413,32 @@ public class SpecimenAuto extends LinearOpMode {
 
         Action seg7 = segment7.build();
 
-        //segment 7 - spline path back to the sub with a 180
-        //parallel with lift to scoring position
+        //segment 7.5 - scoring second specimen
         segment7_5 = segment7.endTrajectory().fresh()
                 .setReversed(true)
-                .strafeToConstantHeading(new Vector2d(x0, 0));
+                .strafeToConstantHeading(new Vector2d(x0, y11));
 
         Action seg7_5 = segment7_5.build();
 
-        //segment 8 - spline path back to the zone with a 180
+        segment7_6 = segment7_5.endTrajectory().fresh()
+                .setReversed(true)
+                .strafeToConstantHeading(new Vector2d(x1, 0));
+
+        Action seg7_6 = segment7_6.build();
+
+        //segment 8 - strafe path back to the zone with a 180
         // parallel with lift to pickup position
-        segment8 = segment7.endTrajectory().fresh()
-                .lineToX(x7)
-                .splineToLinearHeading(new Pose2d(x4, y6, Math.toRadians(0)), Math.toRadians(0));
+        segment8 = segment7_6.endTrajectory().fresh()
+
+                .strafeToLinearHeading(new Vector2d(x4, y6), Math.toRadians(0));
 
         Action seg8 = segment8.build();
+
+//segment 6 - slowly! to pick up the specimen
+        segment8_5 = segment8.endTrajectory().fresh()
+                .lineToX(x5, new TranslationalVelConstraint(pickup_speed));
+
+        Action seg8_5 = segment8_5.build();
 
 
         waitForStart();
@@ -469,14 +482,17 @@ public class SpecimenAuto extends LinearOpMode {
                 ),
 
                 seg7_5,
+                new ParallelAction(
+                        seg7_6,
+                        lift.specimenPickupHeight()
+                ),
 
                 new ParallelAction(
                         seg8,
-                        lift.specimenPickupHeight(),
                         lift.specArmPickup()
                 ),
 
-                seg6,
+                seg8_5,
 
                 lift.specimenScoreHeight(),  //this takes the specimen off the wall
 
