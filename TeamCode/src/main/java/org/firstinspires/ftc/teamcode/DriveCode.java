@@ -28,6 +28,7 @@ public class DriveCode extends LinearOpMode {
     private DcMotorEx slidesMotor;
     private Servo bucketServo;
     private Servo specimenArmServo;
+    private Servo blockServo;
 
 
     public static double in_speed = 1;
@@ -51,6 +52,8 @@ public class DriveCode extends LinearOpMode {
     public static double driveSlow = 0.5;
     public static double specimen_pickup = 0.03;
     public static double specimen_score = 0.6;
+    public static double block_open = 0.25;
+    public static double block_closed = 0.4;
 
     private boolean last_A = false;
     private boolean arm_go_down = false;
@@ -72,6 +75,7 @@ public class DriveCode extends LinearOpMode {
        double bucketPosition = 0.20;
        double specimenPosition = 0.03;
        double out_speed = -1;
+
 
         int red;
         int blue;
@@ -100,6 +104,7 @@ public class DriveCode extends LinearOpMode {
         armServo = hardwareMap.get(Servo.class,"armServo");
         bucketServo = hardwareMap.get(Servo.class, "bucketServo");
         specimenArmServo = hardwareMap.get(Servo.class, "specArmServo");
+        blockServo = hardwareMap.get(Servo.class, "blockServo");
 
         liftMotor1 = hardwareMap.get(DcMotorEx.class, "liftMotor1");
         liftMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -119,6 +124,7 @@ public class DriveCode extends LinearOpMode {
         redLED = hardwareMap.get(DigitalChannel.class, "red");
         redLED.setMode(DigitalChannel.Mode.OUTPUT);
 
+        blockServo.setPosition(block_open);
 
         waitForStart();
 

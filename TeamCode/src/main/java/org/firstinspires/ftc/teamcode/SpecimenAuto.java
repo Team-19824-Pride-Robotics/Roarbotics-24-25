@@ -36,7 +36,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double bucket_dump = 0.02;
     public static double bucket_transfer = 0.02;
     public static double bucket_mid = 0.3;
-    public static double spec_arm_pickup = 0.03;
+    public static double spec_arm_pickup = 0.1;
     public static double spec_arm_score = 0.6;
     public static int slides_extended = -210;
     public static int slides_transfer = -50;
@@ -62,6 +62,10 @@ public class SpecimenAuto extends LinearOpMode {
 
     public static double x7 = 17;
     public static double y5 = -37;
+    public static double x9 = 40;
+    public static double y9 = 0;
+
+
 
 
     public class Intake {
@@ -347,6 +351,7 @@ public class SpecimenAuto extends LinearOpMode {
         TrajectoryActionBuilder segment4;
         TrajectoryActionBuilder segment6;
         TrajectoryActionBuilder segment7;
+        TrajectoryActionBuilder segment7_5;
         TrajectoryActionBuilder segment8;
 
 
@@ -401,9 +406,18 @@ public class SpecimenAuto extends LinearOpMode {
         //segment 7 - spline path back to the sub with a 180
         //parallel with lift to scoring position
         segment7 = segment6.endTrajectory().fresh()
-                .splineToLinearHeading(new Pose2d(x0, y4, Math.toRadians(180)), Math.toRadians(180));
+                .setReversed(true)
+                .strafeToLinearHeading(new Vector2d(x9, y9), Math.toRadians(180));
 
         Action seg7 = segment7.build();
+
+        //segment 7 - spline path back to the sub with a 180
+        //parallel with lift to scoring position
+        segment7_5 = segment7.endTrajectory().fresh()
+                .setReversed(true)
+                .strafeToConstantHeading(new Vector2d(x0, 0));
+
+        Action seg7_5 = segment7_5.build();
 
         //segment 8 - spline path back to the zone with a 180
         // parallel with lift to pickup position
@@ -429,12 +443,13 @@ public class SpecimenAuto extends LinearOpMode {
                         intake.armDown()
                 ),
 
-
-                seg2,
+                new ParallelAction(
+                        seg2,
+                        lift.specimenPickupHeight()
+                ),
 
                 new ParallelAction(
                         seg2_5,
-                        lift.specimenPickupHeight(),
                         lift.specArmPickup()
                 ),
 
@@ -452,6 +467,8 @@ public class SpecimenAuto extends LinearOpMode {
                         seg7,
                         lift.specArmScore()
                 ),
+
+                seg7_5,
 
                 new ParallelAction(
                         seg8,
