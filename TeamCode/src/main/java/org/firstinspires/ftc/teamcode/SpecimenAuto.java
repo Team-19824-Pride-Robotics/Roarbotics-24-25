@@ -53,7 +53,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double x3 = 120;
     public static double x8 = 120;
     public static double y6 = -85;
-    public static double x4 = 14;
+    public static double x4 = 20;
     public static double y3 = -110;
 
     public static double x5 = 0;
