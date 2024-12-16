@@ -67,15 +67,16 @@ public class SpecimenAuto extends LinearOpMode {
     public static double y9 = 0;
     public static double y11 = 20;
     public static double x10 = 30;
-    public static double y12 = 55;
+    public static double y12 = 0;
     public static double y13 = 110;
-    public static double x11 = 90;
-    public static double x12 = 150;
+    public static double x11 = 120;
+    public static double x12 = 20;
     public static double y14 = 105;
     public static double y15 = -66;
     public static double x13 = 25;
     public static double y16 = 80;
-
+    public static double y17 = -108;
+    public static double y18 = -108;
 
 
 
@@ -470,25 +471,25 @@ public class SpecimenAuto extends LinearOpMode {
 
         Action seg8 = segment8.build();
 
-//segment 6 - slowly! to pick up the specimen
+//segment 8_5 - slowly! to pick up the specimen
         segment8_5 = segment8.endTrajectory().fresh()
                 .strafeToConstantHeading(new Vector2d(x5,y6), new TranslationalVelConstraint(pickup_speed));
 
         Action seg8_5 = segment8_5.build();
-
+//
         segment9 = segment8_5.endTrajectory().fresh()
                 .setReversed(true)
                 .strafeToLinearHeading(new Vector2d(x9, y9), Math.toRadians(180));
 
         Action seg9 = segment9.build();
-
+//Turn Around and go to put specimen on the bar
         segment10 = segment9.endTrajectory().fresh()
 
                 .setReversed(true)
                 .strafeToConstantHeading(new Vector2d(x0, y11));
 
         Action seg10 = segment10.build();
-
+//goes back and to the right in anticipation of pushing the block
         segment11 = segment10.endTrajectory().fresh()
 
                 .strafeToConstantHeading(new Vector2d(x10, y12));
@@ -496,20 +497,20 @@ public class SpecimenAuto extends LinearOpMode {
         Action seg11 = segment11.build();
 
         segment12 = segment11.endTrajectory().fresh()
-
-                .strafeToConstantHeading(new Vector2d(x11, y13));
+                .setReversed(true)
+                .strafeToLinearHeading(new Vector2d(x11, y17), Math.toRadians(0));
 
         Action seg12 = segment12.build();
 
         segment13 = segment12.endTrajectory().fresh()
 
-                .strafeToConstantHeading(new Vector2d(x12, y14));
+                .strafeToConstantHeading(new Vector2d(x12, y18));
 
         Action seg13 = segment13.build();
 
         segment14 = segment13.endTrajectory().fresh()
-                .turn(Math.toRadians(-90))
-                .strafeToConstantHeading(new Vector2d(x12, y16));
+
+                .strafeToConstantHeading(new Vector2d(x12, y18));
 
         Action seg14 = segment14.build();
 
