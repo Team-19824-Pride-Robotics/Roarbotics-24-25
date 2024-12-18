@@ -41,8 +41,8 @@ public class SpecimenAuto extends LinearOpMode {
     public static int slides_extended = -210;
     public static int slides_transfer = -50;
     public static int slides_mid = -100;
-    public static double arm_down = 0.03;
-    public static double arm_transfer = 0.63;
+    public static double arm_down = 0.08;
+    public static double arm_transfer = 0.8;
     public static double pickup_speed = 25;
     public static double lift_time = 1;
     public static double spec_arm_park = 0.8;
@@ -75,8 +75,8 @@ public class SpecimenAuto extends LinearOpMode {
     public static double y15 = -66;
     public static double x13 = 25;
     public static double y16 = 80;
-    public static double y17 = -108;
-    public static double y18 = -108;
+    public static double y17 = -110;
+    public static double y18 = -110;
 
 
 
