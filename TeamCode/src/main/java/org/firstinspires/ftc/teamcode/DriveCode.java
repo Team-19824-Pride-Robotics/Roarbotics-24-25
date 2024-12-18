@@ -41,7 +41,7 @@ public class DriveCode extends LinearOpMode {
     public static int lift_spec_score = -700;
     public static double arm_down = 0.08;
     public static double arm_transfer = 0.8;
-    public static double arm_mid = 0.35;
+    public static double arm_mid = 0.3;
     public static int slides_extended = -210;
     public static int slides_transfer = -50;
     public static int slides_mid = -100;
@@ -52,7 +52,7 @@ public class DriveCode extends LinearOpMode {
     public static double driveSlow = 0.5;
     public static double specimen_pickup = 0.03;
     public static double specimen_score = 0.6;
-    public static double block_open = 0.25;
+    public static double block_open = 0;
     public static double block_closed = 0.4;
 
     private boolean last_A = false;
