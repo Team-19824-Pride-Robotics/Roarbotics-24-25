@@ -47,7 +47,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double lift_time = 1;
     public static double spec_arm_park = 0.8;
 
-    public static double x0 = 80;
+    public static double x0 = 72;
     public static double x1 = 50;
     public static double x2 = 22;
     public static double y2 = -60;
