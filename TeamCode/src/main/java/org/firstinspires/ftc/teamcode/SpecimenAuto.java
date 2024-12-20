@@ -47,7 +47,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double lift_time = 1;
     public static double spec_arm_park = 0.8;
 
-    public static double x0 = 72;
+    public static double x0 = 70;
     public static double x1 = 50;
     public static double x2 = 22;
     public static double y2 = -60;
@@ -77,6 +77,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double y16 = 80;
     public static double y17 = -110;
     public static double y18 = -110;
+    public static double x14 = 80;
 
 
 
@@ -409,7 +410,7 @@ public class SpecimenAuto extends LinearOpMode {
         // parallel with lift to pickup position
 
         segment2_5 = segment2.endTrajectory().fresh()
-                  .strafeTo(new Vector2d(x0, y2));
+                  .strafeTo(new Vector2d(x14, y2));
 
         Action seg2_5 = segment2_5.build();
 
@@ -453,7 +454,7 @@ public class SpecimenAuto extends LinearOpMode {
         //segment 7.5 - scoring second specimen
         segment7_5 = segment7.endTrajectory().fresh()
                 .setReversed(true)
-                .strafeToConstantHeading(new Vector2d(x0, y11));
+                .strafeToConstantHeading(new Vector2d(x14, y11));
 
         Action seg7_5 = segment7_5.build();
 
@@ -486,7 +487,7 @@ public class SpecimenAuto extends LinearOpMode {
         segment10 = segment9.endTrajectory().fresh()
 
                 .setReversed(true)
-                .strafeToConstantHeading(new Vector2d(x0, y11));
+                .strafeToConstantHeading(new Vector2d(x14, y11));
 
         Action seg10 = segment10.build();
 //goes back and to the right in anticipation of pushing the block
