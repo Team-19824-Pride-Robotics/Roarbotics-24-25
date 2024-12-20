@@ -44,8 +44,8 @@ public class DriveCode extends LinearOpMode {
     public static double arm_mid = 0.3;
     public static int slides_extended = -210;
     public static int slides_transfer = -50;
-    public static int slides_mid = -100;
-    public static double bucket_transfer = 0.28;
+    public static int slides_mid = -150;
+    public static double bucket_transfer = 0.33;
     public static double bucket_dump = 0.9;
     public static double bucket_mid = 0.5;
     public static double dump_time = 0.5;
@@ -61,7 +61,7 @@ public class DriveCode extends LinearOpMode {
     private boolean slide_go_away = false;
 
     private DigitalChannel greenLED;
-    private DigitalChannel redLED;
+   // private DigitalChannel redLED;
     ColorSensor color_sense;
 
 
@@ -121,8 +121,8 @@ public class DriveCode extends LinearOpMode {
         color_sense = hardwareMap.get(ColorSensor.class, "color_sense");
         greenLED = hardwareMap.get(DigitalChannel.class, "green");
         greenLED.setMode(DigitalChannel.Mode.OUTPUT);
-        redLED = hardwareMap.get(DigitalChannel.class, "red");
-        redLED.setMode(DigitalChannel.Mode.OUTPUT);
+//        redLED = hardwareMap.get(DigitalChannel.class, "red");
+//        redLED.setMode(DigitalChannel.Mode.OUTPUT);
 
         blockServo.setPosition(block_open);
 
@@ -243,12 +243,15 @@ public class DriveCode extends LinearOpMode {
             }
 
 
-            //if the color sensor has detected a BLUE or YELLOW sample, turn on LED indicator light
+            //if the color sensor has detected a sample, turn on LED indicator light
             // so the drivers know they have it
 
-            greenLED.setState(true);
-           // redLED.set
-         //   blue > 100 || green > 50
+         if (blue > 5000 || green > 5000 || red > 5000) {
+             greenLED.setState(true);
+         }
+         else {
+             greenLED.setState(false);
+         }
 
 
 
