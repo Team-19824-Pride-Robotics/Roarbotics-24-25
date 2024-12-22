@@ -28,7 +28,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class SampleAuto extends LinearOpMode {
 
     public static double in_speed = -1;
-    public static double out_speed = 0.5;
+    public static double out_speed = 1;
     public static int lift_high_bucket = -4000;
     public static int lift_transfer = 0;
     public static int lift_spec_pickup = -250;
@@ -40,7 +40,7 @@ public class SampleAuto extends LinearOpMode {
     public static double spec_arm_score = 0.6;
     public static int slides_extended = -210;
     public static int slides_transfer = -50;
-    public static int slides_mid = -150;
+    public static int slides_mid = -100;
     public static int slides_in = 0;
     public static double arm_down = 0.08;
     public static double arm_transfer = 0.8;
@@ -483,13 +483,12 @@ public class SampleAuto extends LinearOpMode {
                 ),
 
                 //intake the next sample
-
                 intake.spinFast(),
                 intake.armDown(),
                 new SleepAction(intake_time),
                 intake.noSpin(),
                 intake.armTransfer(),
-                intake.slidesTransfer(),
+                intake.slidesMid(),
 
                 new ParallelAction(
                         seg3,
@@ -497,8 +496,8 @@ public class SampleAuto extends LinearOpMode {
                 ),
 
                 //score the sample
-                intake.slidesMid(),
-                new SleepAction(0.5),
+//                intake.slidesMid(),
+//                new SleepAction(0.5),
                 lift.basketHeight(),
                 lift.bucketMid(),
                 new SleepAction(2),
@@ -513,13 +512,12 @@ public class SampleAuto extends LinearOpMode {
                 ),
 
                 //intake the next sample
-
                 intake.spinFast(),
                 intake.armDown(),
                 new SleepAction(intake_time),
                 intake.noSpin(),
                 intake.armTransfer(),
-                intake.slidesTransfer(),
+                intake.slidesMid(),
 
                 new ParallelAction(
                         seg5,
@@ -527,8 +525,8 @@ public class SampleAuto extends LinearOpMode {
                 ),
 
                 //score the sample
-                intake.slidesMid(),
-                new SleepAction(0.5),
+//                intake.slidesMid(),
+//                new SleepAction(0.5),
                 lift.basketHeight(),
                 lift.bucketMid(),
                 new SleepAction(2),
