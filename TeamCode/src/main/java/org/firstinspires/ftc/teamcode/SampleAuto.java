@@ -11,6 +11,7 @@ import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -30,35 +31,41 @@ public class SampleAuto extends LinearOpMode {
     public static double out_speed = 0.5;
     public static int lift_high_bucket = -4000;
     public static int lift_transfer = 0;
-    public static int lift_spec_pickup = 0;
-    public static int lift_spec_score = 0;
+    public static int lift_spec_pickup = -250;
+    public static int lift_spec_score = -700;
     public static double bucket_dump = 0.02;
     public static double bucket_transfer = 0.02;
     public static double bucket_mid = 0.3;
-    public static double spec_arm_pickup = 0;
-    public static double spec_arm_score = 0;
-    public static double slides_extended = 0.82;
-    public static double slides_transfer = 0.85;
-    public static double slides_mid = 0.85;
-    public static double arm_down = 0.03;
-    public static double arm_transfer = 0.63;
-    public static double pickup_speed = 5;
+    public static double spec_arm_pickup = 0.1;
+    public static double spec_arm_score = 0.6;
+    public static int slides_extended = -210;
+    public static int slides_transfer = -50;
+    public static int slides_mid = -150;
+    public static int slides_in = 0;
+    public static double arm_down = 0.08;
+    public static double arm_transfer = 0.8;
+    public static double pickup_speed = 25;
     public static double lift_time = 1;
+    public static double spec_arm_park = 0.8;
+    public static double intake_time = 1;
+    public static double block_open = 0;
+    public static double block_closed = 0.4;
 
-    public static double x0 = 26;
-    public static double x1 = 22;
-    public static double x2 = 22;
-    public static double y2 = -27;
-    public static double x3 = 50;
-    public static double x4 = 7;
-    public static double y3 = -47;
-
-    public static double x5 = 0;
-    public static double x6 = 12;
-    public static double y4 = -4;
-
-    public static double x7 = 17;
-    public static double y5 = -37;
+    public static double xs = 8;
+    public static double ys = 100;
+    public static double hs = 315;
+    public static double x1 = 44;
+    public static double y1 = 80;
+    public static double h1 = 0;
+    public static double x2 = 44;
+    public static double y2 = 90;
+    public static double h2 = 0;
+    public static double x3 = 44;
+    public static double y3 = 100;
+    public static double h3 = 20;
+    public static double xp = 104;
+    public static double yp = 26;
+    public static double hp = 90;
 
 
     public class Intake {
@@ -66,12 +73,18 @@ public class SampleAuto extends LinearOpMode {
         private CRServo intakeServo1;
         private CRServo intakeServo2;
         private Servo armServo;
-        private Servo slideServo;
+        private DcMotorEx slidesMotor;
+        private Servo blockServo;
 
         public Intake(HardwareMap hardwareMap) {
 
             armServo = hardwareMap.get(Servo.class,"armServo");
-            slideServo = hardwareMap.get(Servo.class, "slideServo");
+            blockServo = hardwareMap.get(Servo.class, "blockServo");
+
+            slidesMotor = hardwareMap.get(DcMotorEx.class, "slidesMotor");
+            slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            slidesMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
             intakeServo1 = hardwareMap.get(CRServo.class, "intakeServo1");
             intakeServo2 = hardwareMap.get(CRServo.class, "intakeServo2");
 
@@ -88,6 +101,21 @@ public class SampleAuto extends LinearOpMode {
             return new ArmDown();
         }
 
+
+
+        public class UnBlock implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                blockServo.setPosition(block_open);
+                return false;
+            }
+        }
+        public Action unBlock() { return new UnBlock(); }
+
+
+
+
+
         public class ArmTransfer implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
@@ -102,7 +130,9 @@ public class SampleAuto extends LinearOpMode {
         public class SlidesExtend implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                slideServo.setPosition(slides_extended);
+                slidesMotor.setTargetPosition(slides_extended);
+                slidesMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesMotor.setPower(1);
                 return false;
             }
         }
@@ -113,7 +143,9 @@ public class SampleAuto extends LinearOpMode {
         public class SlidesTransfer implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                slideServo.setPosition(slides_transfer);
+                slidesMotor.setTargetPosition(slides_transfer);
+                slidesMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesMotor.setPower(1);
                 return false;
             }
         }
@@ -124,13 +156,36 @@ public class SampleAuto extends LinearOpMode {
         public class SlidesMid implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                slideServo.setPosition(slides_mid);
+                slidesMotor.setTargetPosition(slides_mid);
+                slidesMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesMotor.setPower(1);
                 return false;
             }
         }
+
         public Action slidesMid() {
             return new SlidesMid();
         }
+
+
+
+        public class SlidesIn implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                slidesMotor.setTargetPosition(slides_in);
+                slidesMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slidesMotor.setPower(1);
+                return false;
+            }
+        }
+
+        public Action slidesIn() {
+            return new SlidesIn();
+        }
+
+
+
+
 
         public class SpinFast implements Action {
             @Override
@@ -319,77 +374,85 @@ public class SampleAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        // instantiate your MecanumDrive at a particular pose.
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, Math.toRadians(180)));
+        Pose2d initialPose = new Pose2d(0, 0, Math.toRadians(270));
+        MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         // make an Intake instance
         Intake intake = new Intake(hardwareMap);
         // make a Lift instance
         Lift lift = new Lift(hardwareMap);
 
 
-        Action segment1;
-        Action segment2;
-        Action segment3;
-        Action segment4;
-        Action segment5;
-        Action segment6;
-        Action segment7;
-        Action segment8;
+        TrajectoryActionBuilder segment1;
+        TrajectoryActionBuilder segment2;
+        TrajectoryActionBuilder segment3;
+        TrajectoryActionBuilder segment4;
+        TrajectoryActionBuilder segment5;
+        TrajectoryActionBuilder segment6;
+        TrajectoryActionBuilder segment7;
+        TrajectoryActionBuilder segment8;
 
-        //segment 1 - drives up to the sub and scores the preload
-        // parallel with lift to score height
-        segment1 = drive.actionBuilder(drive.pose)
-                .lineToX(x0)
-                .build();
+                //segment 1 - drives up to the basket and scores the preload
+                // parallel with lift to score position, add wait time for bucket to score
+                segment1 = drive.actionBuilder(initialPose)
+                        .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
 
-        //segment 2 - backs off the sub and strafes right to clear it
-        // parallel with lift to pickup position
-        segment2 = drive.actionBuilder(drive.pose)
-                .lineToX(x1)
-                .strafeTo(new Vector2d(x2, y2))
-                .build();
-
-        //segment 3 - moves on a diagonal to get behind the sample
-        segment3 = drive.actionBuilder(drive.pose)
-                .setTangent(0)
-                .lineToX(x3)
-                .build();
-
-        //segment 4 - spline path with a 180 built in, gets in position to push
-        segment4 = drive.actionBuilder(drive.pose)
-                .setTangent(0)
-                .splineToLinearHeading(new Pose2d(52, -37, Math.toRadians(180)), Math.toRadians(180))
-                .build();
-
-        //segment 5 - push two samples into the zone
-        segment5 = drive.actionBuilder(drive.pose)
-                .lineToX(x4)
-                .lineToX(x3)
-                .strafeTo(new Vector2d(x3, y3))
-                .setTangent(0)
-                .lineToX(x4)
-                .build();
-
-        //segment 6 - slowly! to pick up the specimen
-        segment6 = drive.actionBuilder(drive.pose)
-                .lineToX(x5, new TranslationalVelConstraint(pickup_speed))
-                .build();
-
-        //segment 7 - spline path back to the sub with a 180
-        //parallel with lift to scoring position
-        segment7 = drive.actionBuilder(drive.pose)
-                .lineToX(x6)
-                .splineToLinearHeading(new Pose2d(x0, y4, Math.toRadians(0)), Math.toRadians(0))
-                .build();
-
-        //segment 8 - spline path back to the zone with a 180
-        // parallel with lift to pickup position
-        segment8 = drive.actionBuilder(drive.pose)
-                .lineToX(x7)
-                .splineToLinearHeading(new Pose2d(x4, y5, Math.toRadians(0)), Math.toRadians(0))
-                .build();
+                Action seg1 = segment1.build();
 
 
+                //segment 2 - get in position to grab second sample
+                // parallel with lift and arm to pickup position, add wait time for pickup
+                segment2 = segment1.endTrajectory().fresh()
+                        .strafeToLinearHeading(new Vector2d(x1, y1), Math.toRadians(h1));
+
+                Action seg2 = segment2.build();
+
+
+                //segment 3 - moves in position to score the sample
+                // parallel with lift and arm to score position, add wait time for score
+                segment3 = segment2.endTrajectory().fresh()
+                        .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
+
+                Action seg3 = segment3.build();
+
+
+                //segment 4 - strafe over for the third sample
+                // parallel with lift and arm to pickup position, add wait time for pickup
+                segment4 = segment3.endTrajectory().fresh()
+                        .strafeToLinearHeading(new Vector2d(x2, y2), Math.toRadians(h2));
+
+                Action seg4 = segment4.build();
+
+
+                //segment 5 - moves in position to score the sample
+                // parallel with lift and arm to score position, add wait time for score
+                segment5 = segment4.endTrajectory().fresh()
+                        .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
+
+                Action seg5 = segment5.build();
+
+                //segment 6 - strafe to same position, new angle
+                // parallel with lift and arm to pickup position, add wait time for pickup
+                segment6 = segment5.endTrajectory().fresh()
+                        .strafeToLinearHeading(new Vector2d(x3, y3), Math.toRadians(h3));
+
+                Action seg6 = segment6.build();
+
+
+                //segment 5 - moves in position to score the sample
+                // parallel with lift and arm to score position, add wait time for score
+                segment7 = segment6.endTrajectory().fresh()
+                        .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
+
+                Action seg7 = segment7.build();
+
+                //segment 8 - park in ascent zone
+                segment8 = segment7.endTrajectory().fresh()
+                        .strafeToLinearHeading(new Vector2d(xp, yp), Math.toRadians(hp));
+
+                Action seg8 = segment8.build();
+
+
+        intake.unBlock();
         waitForStart();
 
         if (isStopRequested()) return;
@@ -397,68 +460,88 @@ public class SampleAuto extends LinearOpMode {
 
         Actions.runBlocking(new SequentialAction(
 
+                //put the slides out so the bucket can go up
+                intake.slidesMid(),
+                intake.armTransfer(),
+                new SleepAction(1),
+
                 new ParallelAction(
-                        segment1,
-                        lift.specimenScoreHeight(),
-                        lift.specArmScore()
+                        seg1,
+                        lift.basketHeight(),
+                        lift.bucketMid()
                 ),
 
+                //score the preloaded sample
+                lift.bucketDump(),
+                new SleepAction(1),
+
                 new ParallelAction(
-                        segment2,
-                        lift.specimenPickupHeight(),
-                        lift.specArmPickup()
+                        seg2,
+                        lift.transferHeight(),
+                        lift.bucketTransfer(),
+                        intake.slidesExtend()
                 ),
 
-                segment3,
+                //intake the next sample
 
-                segment4,
-
-                segment5,
-
-                segment6,
-
-                lift.specimenScoreHeight(),  //this takes the specimen off the wall
-
-                new SleepAction(lift_time),  //it needs time to go up before driving away
+                intake.spinFast(),
+                intake.armDown(),
+                new SleepAction(intake_time),
+                intake.noSpin(),
+                intake.armTransfer(),
+                intake.slidesTransfer(),
 
                 new ParallelAction(
-                        segment7,
-                        lift.specArmScore()
+                        seg3,
+                        intake.spinSlow()
                 ),
 
+                //score the sample
+                intake.slidesMid(),
+                new SleepAction(0.5),
+                lift.basketHeight(),
+                lift.bucketMid(),
+                new SleepAction(2),
+                lift.bucketDump(),
+                new SleepAction(0.5),
+
                 new ParallelAction(
-                        segment8,
-                        lift.specimenPickupHeight(),
-                        lift.specArmPickup()
+                        seg4,
+                        lift.transferHeight(),
+                        lift.bucketTransfer(),
+                        intake.slidesExtend()
                 ),
 
-                segment6,
+                //intake the next sample
 
-                lift.specimenScoreHeight(),  //this takes the specimen off the wall
-
-                new SleepAction(lift_time),  //it needs time to go up before driving away
+                intake.spinFast(),
+                intake.armDown(),
+                new SleepAction(intake_time),
+                intake.noSpin(),
+                intake.armTransfer(),
+                intake.slidesTransfer(),
 
                 new ParallelAction(
-                        segment7,
-                        lift.specArmScore()
+                        seg5,
+                        intake.spinSlow()
                 ),
 
-                new ParallelAction(
-                        segment8,
-                        lift.specimenPickupHeight(),
-                        lift.specArmPickup()
-                ),
-
-                segment6,
-
-                lift.specimenScoreHeight(),  //this takes the specimen off the wall
-
-                new SleepAction(lift_time),  //it needs time to go up before driving away
+                //score the sample
+                intake.slidesMid(),
+                new SleepAction(0.5),
+                lift.basketHeight(),
+                lift.bucketMid(),
+                new SleepAction(2),
+                lift.bucketDump(),
+                new SleepAction(0.5),
 
                 new ParallelAction(
-                        segment7,
-                        lift.specArmScore()
+                        seg8,
+                        lift.transferHeight(),
+                        intake.slidesIn()
                 )
+
+
 
                 ));
 
