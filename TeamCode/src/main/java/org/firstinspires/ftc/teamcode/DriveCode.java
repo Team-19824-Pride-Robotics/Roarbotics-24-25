@@ -32,26 +32,26 @@ public class DriveCode extends LinearOpMode {
 
 
     public static double in_speed = 1;
-    public static double fast_out_speed = -1;
+    public static double fast_out_speed = -0.5;
     public static double slow_out_speed = -0.3;
     public static int lift_transfer = 0;
     public static int lift_high_bucket = -3200;
     public static int lift_low_bucket = -1000;
     public static int lift_spec_pickup = -250;
-    public static int lift_spec_score = -700;
+    public static int lift_spec_score = -850;
     public static double arm_down = 0.08;
     public static double arm_transfer = 0.8;
     public static double arm_mid = 0.3;
     public static int slides_extended = -210;
-    public static int slides_transfer = -50;
+    public static int slides_transfer = -40;
     public static int slides_mid = -150;
-    public static double bucket_transfer = 0.28;
+    public static double bucket_transfer = 0.35;
     public static double bucket_dump = 1;
     public static double bucket_mid = 0.5;
     public static double dump_time = 0.5;
     public static double driveSlow = 0.5;
-    public static double specimen_pickup = 0.03;
-    public static double specimen_score = 0.6;
+    public static double specimen_pickup = 0.09;
+    public static double specimen_score = 0.635;
     public static double block_open = 0;
     public static double block_closed = 0.4;
 
@@ -246,7 +246,7 @@ public class DriveCode extends LinearOpMode {
             //if the color sensor has detected a sample, turn on LED indicator light
             // so the drivers know they have it
 
-         if (blue > 5000 || green > 5000 || red > 5000) {
+         if (blue > 1000 || green > 1000 || red > 1000) {
              greenLED.setState(true);
          }
          else {
