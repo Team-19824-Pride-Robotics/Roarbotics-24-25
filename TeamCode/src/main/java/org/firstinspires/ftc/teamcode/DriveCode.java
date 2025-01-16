@@ -32,27 +32,34 @@ public class DriveCode extends LinearOpMode {
 
 
     public static double in_speed = 1;
-    public static double fast_out_speed = -1;
+    public static double fast_out_speed = -0.5;
     public static double slow_out_speed = -0.3;
     public static int lift_transfer = 0;
     public static int lift_high_bucket = -3200;
     public static int lift_low_bucket = -1000;
     public static int lift_spec_pickup = -250;
-    public static int lift_spec_score = -700;
+    public static int lift_spec_score = -850;
     public static double arm_down = 0.08;
     public static double arm_transfer = 0.8;
-    public static double arm_mid = 0.35;
+    public static double arm_mid = 0.3;
     public static int slides_extended = -210;
+<<<<<<< HEAD
     public static int slides_transfer = -50;
     public static int slides_mid = -100;
-    public static double bucket_transfer = 0.223;
+    public static double bucket_transfer = 0.35;
     public static double bucket_dump = 0.9;
+=======
+    public static int slides_transfer = -40;
+    public static int slides_mid = -150;
+    public static double bucket_transfer = 0.3;
+    public static double bucket_dump = 1;
+>>>>>>> 97e0c548e42c794c0f14fb9af44b8053c8bdfc36
     public static double bucket_mid = 0.5;
     public static double dump_time = 0.5;
     public static double driveSlow = 0.5;
-    public static double specimen_pickup = 0.03;
-    public static double specimen_score = 0.6;
-    public static double block_open = 0.25;
+    public static double specimen_pickup = 0.09;
+    public static double specimen_score = 0.635;
+    public static double block_open = 0;
     public static double block_closed = 0.4;
 
     private boolean last_A = false;
@@ -61,7 +68,7 @@ public class DriveCode extends LinearOpMode {
     private boolean slide_go_away = false;
 
     private DigitalChannel greenLED;
-    private DigitalChannel redLED;
+   // private DigitalChannel redLED;
     ColorSensor color_sense;
 
 
@@ -72,7 +79,7 @@ public class DriveCode extends LinearOpMode {
        double driveSpeed = 1;
        double armHeight = 0.8;
        int slidePosition = 0;
-       double bucketPosition = 0.20;
+       double bucketPosition = 0.35;
        double specimenPosition = 0.03;
        double out_speed = -1;
 
@@ -121,8 +128,8 @@ public class DriveCode extends LinearOpMode {
         color_sense = hardwareMap.get(ColorSensor.class, "color_sense");
         greenLED = hardwareMap.get(DigitalChannel.class, "green");
         greenLED.setMode(DigitalChannel.Mode.OUTPUT);
-        redLED = hardwareMap.get(DigitalChannel.class, "red");
-        redLED.setMode(DigitalChannel.Mode.OUTPUT);
+//        redLED = hardwareMap.get(DigitalChannel.class, "red");
+//        redLED.setMode(DigitalChannel.Mode.OUTPUT);
 
         blockServo.setPosition(block_open);
 
@@ -243,12 +250,15 @@ public class DriveCode extends LinearOpMode {
             }
 
 
-            //if the color sensor has detected a BLUE or YELLOW sample, turn on LED indicator light
+            //if the color sensor has detected a sample, turn on LED indicator light
             // so the drivers know they have it
 
-            greenLED.setState(true);
-           // redLED.set
-         //   blue > 100 || green > 50
+         if (blue > 1000 || green > 1000 || red > 1000) {
+             greenLED.setState(true);
+         }
+         else {
+             greenLED.setState(false);
+         }
 
 
 
