@@ -31,7 +31,7 @@ public class DriveCode extends LinearOpMode {
 
 
     public static double in_speed = 1;
-    public static double fast_out_speed = -0.5;
+    public static double fast_out_speed = -1;
     public static double slow_out_speed = -0.3;
     public static int lift_transfer = 0;
     public static int lift_high_bucket = -3200;
@@ -52,6 +52,7 @@ public class DriveCode extends LinearOpMode {
     public static double specimen_pickup = 0.4;
     public static double specimen_score = 0.93;
     public static double block_open = 0;
+
     public static double block_closed = 0.4;
 
     private boolean last_A = false;
@@ -60,7 +61,7 @@ public class DriveCode extends LinearOpMode {
     private boolean slide_go_away = false;
 
     private DigitalChannel greenLED;
-   // private DigitalChannel redLED;
+    private DigitalChannel redLED;
     ColorSensor color_sense;
 
 
@@ -120,8 +121,8 @@ public class DriveCode extends LinearOpMode {
         color_sense = hardwareMap.get(ColorSensor.class, "color_sense");
         greenLED = hardwareMap.get(DigitalChannel.class, "green");
         greenLED.setMode(DigitalChannel.Mode.OUTPUT);
-//        redLED = hardwareMap.get(DigitalChannel.class, "red");
-//        redLED.setMode(DigitalChannel.Mode.OUTPUT);
+        redLED = hardwareMap.get(DigitalChannel.class, "red");
+        redLED.setMode(DigitalChannel.Mode.OUTPUT);
 
         blockServo.setPosition(block_open);
 
@@ -239,15 +240,12 @@ public class DriveCode extends LinearOpMode {
 
 
 
-            //if the color sensor has detected a sample, turn on LED indicator light
+            //if the color sensor has detected a BLUE or YELLOW sample, turn on LED indicator light
             // so the drivers know they have it
 
-         if (blue > 1000 || green > 1000 || red > 1000) {
-             greenLED.setState(true);
-         }
-         else {
-             greenLED.setState(false);
-         }
+            greenLED.setState(true);
+           // redLED.set
+         //   blue > 100 || green > 50
 
 
 
