@@ -15,7 +15,6 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 @TeleOp(name="DriveCode")
 @Config
 public class DriveCode extends LinearOpMode {
-
     private DcMotor leftBack;
     private DcMotor rightBack;
     private DcMotor leftFront;
@@ -37,21 +36,21 @@ public class DriveCode extends LinearOpMode {
     public static int lift_transfer = 0;
     public static int lift_high_bucket = -3200;
     public static int lift_low_bucket = -1000;
-    public static int lift_spec_pickup = -250;
-    public static int lift_spec_score = -850;
-    public static double arm_down = 0.08;
-    public static double arm_transfer = 0.8;
-    public static double arm_mid = 0.3;
+    public static int lift_spec_pickup = -400;
+    public static int lift_spec_score = -900;
+    public static double arm_down = 0.67;
+    public static double arm_transfer = 0.1;
+    public static double arm_mid = 0.55;
     public static int slides_extended = -210;
     public static int slides_transfer = -40;
     public static int slides_mid = -150;
-    public static double bucket_transfer = 0.3;
-    public static double bucket_dump = 1;
-    public static double bucket_mid = 0.5;
+    public static double bucket_transfer = 0.4;
+    public static double bucket_dump = 0.99;
+    public static double bucket_mid = 0.7;
     public static double dump_time = 0.5;
     public static double driveSlow = 0.5;
-    public static double specimen_pickup = 0.09;
-    public static double specimen_score = 0.635;
+    public static double specimen_pickup = 0.4;
+    public static double specimen_score = 0.93;
     public static double block_open = 0;
     public static double block_closed = 0.4;
 
@@ -70,10 +69,10 @@ public class DriveCode extends LinearOpMode {
 
        double intakeSpeed = 0;
        double driveSpeed = 1;
-       double armHeight = 0.8;
+       double armHeight = 0.1;
        int slidePosition = 0;
        double bucketPosition = 0.20;
-       double specimenPosition = 0.03;
+       double specimenPosition = 0.4;
        double out_speed = -1;
 
 
@@ -237,10 +236,7 @@ public class DriveCode extends LinearOpMode {
             else {
                 out_speed = fast_out_speed;
             }
-            if (gamepad1.dpad_down){
 
-
-            }
 
 
             //if the color sensor has detected a sample, turn on LED indicator light
