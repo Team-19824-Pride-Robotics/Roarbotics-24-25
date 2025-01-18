@@ -44,9 +44,9 @@ public class DriveCode extends LinearOpMode {
     public static int slides_extended = -210;
     public static int slides_transfer = -40;
     public static int slides_mid = -150;
-    public static double bucket_transfer = 0.4;
-    public static double bucket_dump = 0.99;
-    public static double bucket_mid = 0.7;
+    public static double bucket_transfer = 0.05;
+    public static double bucket_dump = 0.65;
+    public static double bucket_mid = 0.38;
     public static double dump_time = 0.5;
     public static double driveSlow = 0.5;
     public static double specimen_pickup = 0.4;
@@ -72,7 +72,7 @@ public class DriveCode extends LinearOpMode {
        double driveSpeed = 1;
        double armHeight = 0.1;
        int slidePosition = 0;
-       double bucketPosition = 0.20;
+       double bucketPosition = 0;
        double specimenPosition = 0.4;
        double out_speed = -1;
 
