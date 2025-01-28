@@ -41,16 +41,16 @@ public class DriveCode extends LinearOpMode {
     public static double arm_down = 0.67;
     public static double arm_transfer = 0.1;
     public static double arm_mid = 0.55;
-    public static int slides_extended = -210;
-    public static int slides_transfer = -40;
-    public static int slides_mid = -150;
+    public static int slides_extended = -350;
+    public static int slides_transfer = -150;
+    public static int slides_mid = -200;
     public static double bucket_transfer = 0.05;
-    public static double bucket_dump = 0.65;
-    public static double bucket_mid = 0.38;
+    public static double bucket_dump = 0.85;
+    public static double bucket_mid = 0.3;
     public static double dump_time = 0.5;
     public static double driveSlow = 0.5;
-    public static double specimen_pickup = 0.4;
-    public static double specimen_score = 0.93;
+    public static double specimen_pickup = 0;
+    public static double specimen_score = 0.66;
     public static double block_open = 0;
 
     public static double block_closed = 0.4;
@@ -264,6 +264,7 @@ public class DriveCode extends LinearOpMode {
             if(gamepad2.dpad_up) {
                 liftHeight = lift_high_bucket;
                 bucketPosition = bucket_mid;
+                slidePosition = slides_mid;
             }
 
             if(gamepad2.right_trigger > 0.1) {

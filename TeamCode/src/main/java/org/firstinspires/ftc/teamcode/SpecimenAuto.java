@@ -36,11 +36,11 @@ public class SpecimenAuto extends LinearOpMode {
     public static double bucket_dump = 0.65;
     public static double bucket_transfer = 0.05;
     public static double bucket_mid = 0.38;
-    public static double spec_arm_pickup = 0.4;
-    public static double spec_arm_score = 0.93;
-    public static int slides_extended = -210;
-    public static int slides_transfer = -50;
-    public static int slides_mid = -100;
+    public static double spec_arm_pickup = 0;
+    public static double spec_arm_score = 0.66;
+    public static int slides_extended = -350;
+    public static int slides_transfer = -100;
+    public static int slides_mid = -200;
     public static double arm_down = 0.08;
     public static double arm_transfer = 0.8;
     public static double pickup_speed = 25;
@@ -525,20 +525,20 @@ public class SpecimenAuto extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
 
                 new ParallelAction(
-                        seg1,
-                        lift.specimenScoreHeight(),
-                        lift.specArmScore(),
-                        intake.armDown()
+                        seg1
+                        //lift.specimenScoreHeight(),
+                        //lift.specArmScore(),
+                        //intake.armDown()
                 ),
 
                 new ParallelAction(
-                        seg2,
-                        lift.specimenPickupHeight()
+                        seg2
+                        //lift.specimenPickupHeight()
                 ),
 
                 new ParallelAction(
-                        seg2_5,
-                        lift.specArmPickup()
+                        seg2_5
+                        //lift.specArmPickup()
                 ),
 
                 seg3,
@@ -549,47 +549,47 @@ public class SpecimenAuto extends LinearOpMode {
 
                 seg6,
 
-                lift.specimenScoreHeight(),  //this takes the specimen off the wall
+                //lift.specimenScoreHeight(),  //this takes the specimen off the wall
 
 //                new SleepAction(lift_time),  //it needs time to go up before driving away
 
                 new ParallelAction(
-                        seg7,
-                        lift.specArmScore()
+                        seg7
+                        //lift.specArmScore()
                 ),
 
                 seg7_5,
                 new ParallelAction(
-                        seg7_6,
-                        lift.specimenPickupHeight()
+                        seg7_6
+                        //lift.specimenPickupHeight()
                 ),
 
                 new ParallelAction(
-                        seg8,
-                        lift.specArmPickup()
+                        seg8
+                        //lift.specArmPickup()
                 ),
 
                 seg8_5,
 
-                lift.specimenScoreHeight(),  //this takes the specimen off the wall
+                //lift.specimenScoreHeight(),  //this takes the specimen off the wall
 
 //                new SleepAction(lift_time),  //it needs time to go up before driving away
 
                 new ParallelAction(
-                        seg9,
-                        lift.specArmScore()
+                        seg9
+                        //lift.specArmScore()
                 ),
 
                 new ParallelAction(
-                        seg10,
-                        lift.specArmScore()
+                        seg10
+                        //lift.specArmScore()
                 ),
 
                 new ParallelAction(
-                       seg11,
-                        lift.transferHeight()
+                       seg11
+                        //lift.transferHeight()
                 ),
-                lift.specArmPickup(),
+                //lift.specArmPickup(),
 
                 seg12,
 
@@ -597,16 +597,16 @@ public class SpecimenAuto extends LinearOpMode {
 
                 new ParallelAction(
 
-                        seg14,
+                        seg14
 
-                        lift.specArmPark())
-
-
+                        //lift.specArmPark())
 
 
 
 
-                ));
+
+
+                )));
 
 
     }

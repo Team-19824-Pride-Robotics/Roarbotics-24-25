@@ -33,14 +33,14 @@ public class SampleAuto extends LinearOpMode {
     public static int lift_transfer = 0;
     public static int lift_spec_pickup = -250;
     public static int lift_spec_score = -700;
-    public static double bucket_dump = 0.02;
-    public static double bucket_transfer = 0.02;
+    public static double bucket_dump = 0.75;
+    public static double bucket_transfer = 0.05;
     public static double bucket_mid = 0.3;
-    public static double spec_arm_pickup = 0.1;
-    public static double spec_arm_score = 0.6;
-    public static int slides_extended = -210;
-    public static int slides_transfer = -50;
-    public static int slides_mid = -100;
+    public static double spec_arm_pickup = 0.4;
+    public static double spec_arm_score = 0.93;
+    public static int slides_extended = -350;
+    public static int slides_transfer = -100;
+    public static int slides_mid = -200;
     public static int slides_in = 0;
     public static double arm_down = 0.08;
     public static double arm_transfer = 0.8;
@@ -51,11 +51,11 @@ public class SampleAuto extends LinearOpMode {
     public static double block_open = 0;
     public static double block_closed = 0.4;
 
-    public static double xs = 8;
-    public static double ys = 100;
-    public static double hs = 315;
-    public static double x1 = 44;
-    public static double y1 = 80;
+    public static double xs = 150;
+    public static double ys = 10;
+    public static double hs = 0;
+    public static double x1 = 150;
+    public static double y1 = -20;
     public static double h1 = 0;
     public static double x2 = 44;
     public static double y2 = 90;
@@ -405,51 +405,55 @@ public class SampleAuto extends LinearOpMode {
                         .strafeToLinearHeading(new Vector2d(x1, y1), Math.toRadians(h1));
 
                 Action seg2 = segment2.build();
-
-
-                //segment 3 - moves in position to score the sample
-                // parallel with lift and arm to score position, add wait time for score
-                segment3 = segment2.endTrajectory().fresh()
-                        .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
-
-                Action seg3 = segment3.build();
-
-
-                //segment 4 - strafe over for the third sample
-                // parallel with lift and arm to pickup position, add wait time for pickup
-                segment4 = segment3.endTrajectory().fresh()
-                        .strafeToLinearHeading(new Vector2d(x2, y2), Math.toRadians(h2));
-
-                Action seg4 = segment4.build();
-
-
-                //segment 5 - moves in position to score the sample
-                // parallel with lift and arm to score position, add wait time for score
-                segment5 = segment4.endTrajectory().fresh()
-                        .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
-
-                Action seg5 = segment5.build();
-
-                //segment 6 - strafe to same position, new angle
-                // parallel with lift and arm to pickup position, add wait time for pickup
-                segment6 = segment5.endTrajectory().fresh()
-                        .strafeToLinearHeading(new Vector2d(x3, y3), Math.toRadians(h3));
-
-                Action seg6 = segment6.build();
-
-
-                //segment 5 - moves in position to score the sample
-                // parallel with lift and arm to score position, add wait time for score
-                segment7 = segment6.endTrajectory().fresh()
-                        .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
-
-                Action seg7 = segment7.build();
-
-                //segment 8 - park in ascent zone
-                segment8 = segment7.endTrajectory().fresh()
-                        .strafeToLinearHeading(new Vector2d(xp, yp), Math.toRadians(hp));
-
-                Action seg8 = segment8.build();
+//
+//
+//                //segment 3 - moves in position to score the sample
+//                // parallel with lift and arm to score position, add wait time for score
+//                segment3 = segment2.endTrajectory().fresh()
+//                        .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
+//
+//                Action seg3 = segment3.build();
+//
+//
+//
+//
+//                //segment 4 - strafe over for the third sample
+//                // parallel with lift and arm to pickup position, add wait time for pickup
+//                segment4 = segment3.endTrajectory().fresh()
+//                        .strafeToLinearHeading(new Vector2d(x2, y2), Math.toRadians(h2));
+//
+//
+//
+//                Action seg4 = segment4.build();
+//
+//
+//                //segment 5 - moves in position to score the sample
+//                // parallel with lift and arm to score position, add wait time for score
+//                segment5 = segment4.endTrajectory().fresh()
+//                        .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
+//
+//                Action seg5 = segment5.build();
+//
+//                //segment 6 - strafe to same position, new angle
+//                // parallel with lift and arm to pickup position, add wait time for pickup
+//                segment6 = segment5.endTrajectory().fresh()
+//                        .strafeToLinearHeading(new Vector2d(x3, y3), Math.toRadians(h3));
+//
+//                Action seg6 = segment6.build();
+//
+//
+//                //segment 5 - moves in position to score the sample
+//                // parallel with lift and arm to score position, add wait time for score
+//                segment7 = segment6.endTrajectory().fresh()
+//                        .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
+//
+//                Action seg7 = segment7.build();
+//
+//                //segment 8 - park in ascent zone
+//                segment8 = segment7.endTrajectory().fresh()
+//                        .strafeToLinearHeading(new Vector2d(xp, yp), Math.toRadians(hp));
+//
+//                Action seg8 = segment8.build();
 
 
         intake.unBlock();
@@ -466,78 +470,78 @@ public class SampleAuto extends LinearOpMode {
                 new SleepAction(1),
 
                 new ParallelAction(
-                        seg1,
-                        lift.basketHeight(),
-                        lift.bucketMid()
+                        seg1
+//                        lift.basketHeight(),
+//                        lift.bucketMid()
                 ),
 
                 //score the preloaded sample
-                lift.bucketDump(),
+//                lift.bucketDump(),
                 new SleepAction(1),
 
                 new ParallelAction(
-                        seg2,
-                        lift.transferHeight(),
-                        lift.bucketTransfer(),
-                        intake.slidesExtend()
-                ),
-
-                //intake the next sample
-                intake.spinFast(),
-                intake.armDown(),
-                new SleepAction(intake_time),
-                intake.noSpin(),
-                intake.armTransfer(),
-                intake.slidesMid(),
-
-                new ParallelAction(
-                        seg3,
-                        intake.spinSlow()
-                ),
-
-                //score the sample
-//                intake.slidesMid(),
-//                new SleepAction(0.5),
-                lift.basketHeight(),
-                lift.bucketMid(),
-                new SleepAction(2),
-                lift.bucketDump(),
-                new SleepAction(0.5),
-
-                new ParallelAction(
-                        seg4,
-                        lift.transferHeight(),
-                        lift.bucketTransfer(),
-                        intake.slidesExtend()
-                ),
-
-                //intake the next sample
-                intake.spinFast(),
-                intake.armDown(),
-                new SleepAction(intake_time),
-                intake.noSpin(),
-                intake.armTransfer(),
-                intake.slidesMid(),
-
-                new ParallelAction(
-                        seg5,
-                        intake.spinSlow()
-                ),
-
-                //score the sample
-//                intake.slidesMid(),
-//                new SleepAction(0.5),
-                lift.basketHeight(),
-                lift.bucketMid(),
-                new SleepAction(2),
-                lift.bucketDump(),
-                new SleepAction(0.5),
-
-                new ParallelAction(
-                        seg8,
-                        lift.transferHeight(),
-                        intake.slidesIn()
+                        seg2
+//                        lift.transferHeight(),
+//                        lift.bucketTransfer(),
+//                        intake.slidesExtend()
                 )
+
+//                //intake the next sample
+//                intake.spinFast(),
+//                intake.armDown(),
+//                new SleepAction(intake_time),
+//                intake.noSpin(),
+//                intake.armTransfer(),
+//                intake.slidesMid(),
+//
+//                new ParallelAction(
+//                        seg3,
+//                        intake.spinSlow()
+//                ),
+//
+//                //score the sample
+////                intake.slidesMid(),
+////                new SleepAction(0.5),
+//                lift.basketHeight(),
+//                lift.bucketMid(),
+//                new SleepAction(2),
+//                lift.bucketDump(),
+//                new SleepAction(0.5),
+//
+//                new ParallelAction(
+//                        seg4,
+//                        lift.transferHeight(),
+//                        lift.bucketTransfer(),
+//                        intake.slidesExtend()
+//                ),
+//
+//                //intake the next sample
+//                intake.spinFast(),
+//                intake.armDown(),
+//                new SleepAction(intake_time),
+//                intake.noSpin(),
+//                intake.armTransfer(),
+//                intake.slidesMid(),
+//
+//                new ParallelAction(
+//                        seg5,
+//                        intake.spinSlow()
+//                ),
+//
+//                //score the sample
+////                intake.slidesMid(),
+////                new SleepAction(0.5),
+//                lift.basketHeight(),
+//                lift.bucketMid(),
+//                new SleepAction(2),
+//                lift.bucketDump(),
+//                new SleepAction(0.5),
+//
+//                new ParallelAction(
+//                        seg8,
+//                        lift.transferHeight(),
+//                        intake.slidesIn()
+//                )
 
 
 
