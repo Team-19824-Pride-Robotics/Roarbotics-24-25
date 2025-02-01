@@ -45,7 +45,7 @@ public class DriveCode extends LinearOpMode {
     public static int slides_extended = -350;
     public static int slides_transfer = -150;
     public static int slides_mid = -200;
-    public static double bucket_transfer = 0.05;
+    public static double bucket_transfer = 0;
     public static double bucket_dump = 0.85;
     public static double bucket_mid = 0.3;
     public static double dump_time = 0.5;

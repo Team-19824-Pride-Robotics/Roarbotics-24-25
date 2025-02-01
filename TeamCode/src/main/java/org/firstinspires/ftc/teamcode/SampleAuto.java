@@ -33,8 +33,8 @@ public class SampleAuto extends LinearOpMode {
     public static int lift_transfer = 0;
     public static int lift_spec_pickup = -250;
     public static int lift_spec_score = -700;
-    public static double bucket_dump = 0.75;
-    public static double bucket_transfer = 0.05;
+    public static double bucket_dump = 0.85;
+    public static double bucket_transfer = 0;
     public static double bucket_mid = 0.3;
     public static double spec_arm_pickup = 0.4;
     public static double spec_arm_score = 0.93;
@@ -42,23 +42,24 @@ public class SampleAuto extends LinearOpMode {
     public static int slides_transfer = -100;
     public static int slides_mid = -200;
     public static int slides_in = 0;
-    public static double arm_down = 0.08;
-    public static double arm_transfer = 0.8;
+    public static double arm_down = 0.67;
+    public static double arm_transfer = 0.1;
     public static double pickup_speed = 25;
     public static double lift_time = 1;
     public static double spec_arm_park = 0.8;
-    public static double intake_time = 1;
+    public static double intake_time = 0.75;
     public static double block_open = 0;
     public static double block_closed = 0.4;
+    public static double arm_mid = 0.4;
 
-    public static double xs = 150;
-    public static double ys = 10;
-    public static double hs = 0;
-    public static double x1 = 150;
-    public static double y1 = -20;
+    public static double xs = 10;
+    public static double ys = 60;
+    public static double hs = 315;
+    public static double x1 = 40;
+    public static double y1 = 19;
     public static double h1 = 0;
-    public static double x2 = 44;
-    public static double y2 = 90;
+    public static double x2 = 0;
+    public static double y2 = 40;
     public static double h2 = 0;
     public static double x3 = 44;
     public static double y3 = 100;
@@ -99,6 +100,17 @@ public class SampleAuto extends LinearOpMode {
         }
         public Action armDown() {
             return new ArmDown();
+        }
+
+        public class ArmMid implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                armServo.setPosition(arm_mid);
+                return false;
+            }
+        }
+        public Action armMid() {
+            return new ArmMid();
         }
 
 
@@ -190,8 +202,8 @@ public class SampleAuto extends LinearOpMode {
         public class SpinFast implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                intakeServo1.setPower(in_speed);
-                intakeServo2.setPower(-in_speed);
+                intakeServo1.setPower(-in_speed);
+                intakeServo2.setPower(in_speed);
                 return false;
             }
         }
@@ -202,8 +214,8 @@ public class SampleAuto extends LinearOpMode {
         public class SpinSlow implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                intakeServo1.setPower(out_speed);
-                intakeServo2.setPower(-out_speed);
+                intakeServo1.setPower(-out_speed);
+                intakeServo2.setPower(out_speed);
                 return false;
             }
         }
@@ -383,8 +395,10 @@ public class SampleAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder segment1;
+        TrajectoryActionBuilder segment1_5;
         TrajectoryActionBuilder segment2;
         TrajectoryActionBuilder segment3;
+        TrajectoryActionBuilder segment3_5;
         TrajectoryActionBuilder segment4;
         TrajectoryActionBuilder segment5;
         TrajectoryActionBuilder segment6;
@@ -394,9 +408,14 @@ public class SampleAuto extends LinearOpMode {
                 //segment 1 - drives up to the basket and scores the preload
                 // parallel with lift to score position, add wait time for bucket to score
                 segment1 = drive.actionBuilder(initialPose)
-                        .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
+                        .strafeToLinearHeading(new Vector2d(x2, y2), Math.toRadians(hs));
 
                 Action seg1 = segment1.build();
+
+        segment1_5 = segment1.endTrajectory().fresh()
+                .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
+
+        Action seg1_5 = segment1_5.build();
 
 
                 //segment 2 - get in position to grab second sample
@@ -407,12 +426,17 @@ public class SampleAuto extends LinearOpMode {
                 Action seg2 = segment2.build();
 //
 //
-//                //segment 3 - moves in position to score the sample
-//                // parallel with lift and arm to score position, add wait time for score
-//                segment3 = segment2.endTrajectory().fresh()
-//                        .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
-//
-//                Action seg3 = segment3.build();
+                //segment 3 - moves in position to score the sample
+                // parallel with lift and arm to score position, add wait time for score
+                segment3 = segment2.endTrajectory().fresh()
+                        .strafeToLinearHeading(new Vector2d(x2, y2), Math.toRadians(hs));
+
+                Action seg3 = segment3.build();
+
+        segment3_5 = segment3.endTrajectory().fresh()
+                .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
+
+        Action seg3_5 = segment3_5.build();
 //
 //
 //
@@ -465,40 +489,58 @@ public class SampleAuto extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
 
                 //put the slides out so the bucket can go up
+                intake.unBlock(),
                 intake.slidesMid(),
-                intake.armTransfer(),
+                intake.armMid(),
+                lift.bucketMid(),
                 new SleepAction(1),
 
                 new ParallelAction(
-                        seg1
-//                        lift.basketHeight(),
-//                        lift.bucketMid()
+                        seg1,
+                        lift.basketHeight(),
+                        lift.bucketMid()
                 ),
 
+
+                seg1_5,
                 //score the preloaded sample
-//                lift.bucketDump(),
+
+
+                        lift.bucketDump(),
+
+
+
                 new SleepAction(1),
 
                 new ParallelAction(
-                        seg2
-//                        lift.transferHeight(),
-//                        lift.bucketTransfer(),
-//                        intake.slidesExtend()
-                )
+                        seg2,
+                        lift.bucketTransfer(),
+                        intake.slidesExtend()
+                ),
 
-//                //intake the next sample
-//                intake.spinFast(),
-//                intake.armDown(),
-//                new SleepAction(intake_time),
-//                intake.noSpin(),
-//                intake.armTransfer(),
-//                intake.slidesMid(),
-//
-//                new ParallelAction(
-//                        seg3,
-//                        intake.spinSlow()
-//                ),
-//
+                lift.transferHeight(),
+                //intake the next sample
+                intake.armMid(),
+                intake.spinFast(),
+                new SleepAction(0.5),
+                intake.armDown(),
+                new SleepAction(intake_time),
+                intake.noSpin(),
+                intake.armTransfer(),
+                intake.slidesMid(),
+                new SleepAction(0.5),
+                       new ParallelAction(
+                        seg3,
+                        intake.spinSlow()
+                       ),
+
+                        lift.basketHeight(),
+                        lift.bucketMid(),
+                    new SleepAction(0.5),
+                seg3_5,
+
+                lift.bucketDump(),
+                new SleepAction(0.5)
 //                //score the sample
 ////                intake.slidesMid(),
 ////                new SleepAction(0.5),
