@@ -28,6 +28,7 @@ public class DriveCode extends LinearOpMode {
     private Servo bucketServo;
     private Servo specimenArmServo;
     private Servo blockServo;
+    private Servo clawServo;
 
 
     public static double in_speed = 1;
@@ -52,7 +53,8 @@ public class DriveCode extends LinearOpMode {
     public static double specimen_pickup = 0;
     public static double specimen_score = 0.66;
     public static double block_open = 0;
-
+    public static double claw_open = 0.5;
+    public static double claw_closed = 0;
     public static double block_closed = 0.4;
 
     private boolean last_A = false;
@@ -75,6 +77,7 @@ public class DriveCode extends LinearOpMode {
        double bucketPosition = 0;
        double specimenPosition = 0.4;
        double out_speed = -1;
+       double claw_position = 0;
 
 
         int red;
@@ -105,6 +108,7 @@ public class DriveCode extends LinearOpMode {
         bucketServo = hardwareMap.get(Servo.class, "bucketServo");
         specimenArmServo = hardwareMap.get(Servo.class, "specArmServo");
         blockServo = hardwareMap.get(Servo.class, "blockServo");
+        clawServo = hardwareMap.get(Servo.class, "clawServo");
 
         liftMotor1 = hardwareMap.get(DcMotorEx.class, "liftMotor1");
         liftMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -178,7 +182,13 @@ public class DriveCode extends LinearOpMode {
                 slidePosition = slides_extended;
                 armHeight = arm_mid;
             }
+            if(gamepad2.y){
+                claw_position = claw_open;
+            }
 
+            if (gamepad2.dpad_left){
+                claw_position = claw_closed;
+            }
             // pressing A toggles the arm position between down and mid
             if (gamepad2.a && !last_A) {
                 arm_go_down = !arm_go_down;
@@ -313,6 +323,7 @@ public class DriveCode extends LinearOpMode {
             armServo.setPosition(armHeight);
             bucketServo.setPosition(bucketPosition);
             specimenArmServo.setPosition(specimenPosition);
+            clawServo.setPosition(claw_position);
 
 
             telemetry.addData("Status", "Running");
