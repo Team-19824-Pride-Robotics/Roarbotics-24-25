@@ -369,6 +369,23 @@ public class SampleAuto extends LinearOpMode {
             return new SpecArmPickup();
         }
 
+        public class SlowSlidesDown implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                sleep(500);
+                liftMotor1.setTargetPosition(lift_transfer);
+                liftMotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                liftMotor2.setTargetPosition(lift_transfer);
+                liftMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                liftMotor1.setPower(1);
+                liftMotor2.setPower(1);
+                return false;
+            }
+        }
+        public Action slowSlidesDown() {
+            return new SlowSlidesDown();
+        }
+
         public class SpecArmScore implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
@@ -528,10 +545,11 @@ public class SampleAuto extends LinearOpMode {
                 new ParallelAction(
                         seg2,
                         lift.bucketTransfer(),
-                        intake.slidesExtend()
+                        intake.slidesExtend(),
+                        lift.slowSlidesDown()
                 ),
 
-                lift.transferHeight(),
+
                 //intake the next sample
                 intake.armMid(),
                 intake.spinFast(),
@@ -556,11 +574,12 @@ public class SampleAuto extends LinearOpMode {
                 new SleepAction(0.5),
                 new ParallelAction(
                         seg4,
-                        lift.bucketTransfer(),
-                        intake.slidesExtend()
+                        lift.slowSlidesDown(),
+                        intake.slidesExtend(),
+                        lift.bucketTransfer()
                 ),
 
-                lift.transferHeight(),
+
                 //intake the next sample
                 intake.armMid(),
                 intake.spinFast(),
@@ -587,7 +606,8 @@ public class SampleAuto extends LinearOpMode {
         new ParallelAction(
                 seg6,
                 lift.bucketTransfer(),
-                intake.slidesExtend()
+                intake.slidesExtend(),
+                lift.slowSlidesDown()
         ),
 
                 lift.transferHeight(),
