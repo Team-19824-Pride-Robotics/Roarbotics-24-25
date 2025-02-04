@@ -52,7 +52,11 @@ public class DriveCode extends LinearOpMode {
     public static double driveSlow = 0.5;
     public static double specimen_pickup = 0;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public static double specimen_score = 0.66;
+=======
+    public static double specimen_score = 0.49;
+>>>>>>> Stashed changes
 =======
     public static double specimen_score = 0.49;
 >>>>>>> Stashed changes
