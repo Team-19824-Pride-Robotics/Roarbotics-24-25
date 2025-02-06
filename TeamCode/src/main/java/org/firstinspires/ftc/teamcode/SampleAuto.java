@@ -39,7 +39,7 @@ public class SampleAuto extends LinearOpMode {
     public static double spec_arm_pickup = 0.4;
     public static double spec_arm_score = 0.93;
     public static int slides_extended = -350;
-    public static int slides_transfer = -75;
+    public static int slides_transfer = -50;
     public static int slides_mid = -200;
     public static int slides_in = 0;
     public static double arm_down = 0.67;
@@ -51,6 +51,7 @@ public class SampleAuto extends LinearOpMode {
     public static double block_open = 0;
     public static double block_closed = 0.4;
     public static double arm_mid = 0.4;
+    public static double arm_mid2 = 0.2;
 
     public static double xs = 10;
     public static double ys = 60;
@@ -60,14 +61,14 @@ public class SampleAuto extends LinearOpMode {
     public static double h1 = 0;
     public static double x2 = 10;
     public static double y2 = 40;
-    public static double h2 = 55;
-    public static double x3 = 65;
+    public static double h2 = 58;
+    public static double x3 = 62;
     public static double y3 = 45;
     public static double h3 = 20;
     public static double xp = 104;
     public static double yp = 26;
     public static double hp = 90;
-    public static double y4 = 30;
+    public static double y4 = 34;
 
 
     public class Intake {
@@ -111,6 +112,17 @@ public class SampleAuto extends LinearOpMode {
             }
         }
         public Action armMid() {
+            return new ArmMid();
+        }
+
+        public class ArmMid2 implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                armServo.setPosition(arm_mid2);
+                return false;
+            }
+        }
+        public Action armMid2() {
             return new ArmMid();
         }
 
@@ -560,13 +572,13 @@ public class SampleAuto extends LinearOpMode {
                 intake.armTransfer(),
                 intake.slidesMid(),
                 new SleepAction(0.5),
-                       new ParallelAction(
+                new ParallelAction(
                         seg3,
-                        intake.spinSlow()
-                       ),
-
                         lift.basketHeight(),
-                        lift.bucketMid(),
+                        lift.bucketMid()
+                ),
+
+                intake.spinSlow(),
                     new SleepAction(0.5),
                 seg3_5,
 
@@ -591,19 +603,20 @@ public class SampleAuto extends LinearOpMode {
                 intake.slidesMid(),
                 new SleepAction(0.5),
 
-        new ParallelAction(
-                seg5,
-                intake.spinSlow()
-        ),
+                new ParallelAction(
+                        seg5,
+                        lift.basketHeight(),
+                        lift.bucketMid()
+                ),
 
-                lift.basketHeight(),
-                lift.bucketMid(),
+                intake.spinSlow(),
                 new SleepAction(0.5),
                 seg5_5,
 
                 lift.bucketDump(),
                 new SleepAction(0.5),
         new ParallelAction(
+                intake.armMid2(),
                 seg6,
                 lift.bucketTransfer(),
                 intake.slidesExtend(),
@@ -612,7 +625,6 @@ public class SampleAuto extends LinearOpMode {
 
                 lift.transferHeight(),
                 //intake the next sample
-                intake.armMid(),
                 intake.spinFast(),
                 new SleepAction(0.5),
                 intake.armDown(),
@@ -623,11 +635,12 @@ public class SampleAuto extends LinearOpMode {
                 new SleepAction(0.5),
                 new ParallelAction(
                         seg7,
-                        intake.spinSlow()
+                        lift.basketHeight(),
+                        lift.bucketMid()
                 ),
 
-                lift.basketHeight(),
-                lift.bucketMid(),
+
+                intake.spinSlow(),
                 new SleepAction(0.5),
                 seg7_5,
 
