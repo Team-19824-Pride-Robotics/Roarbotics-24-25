@@ -48,6 +48,11 @@ public class SpecimenAuto extends LinearOpMode {
     public static double pickup_speed = 25;
     public static double lift_time = 1;
     public static double spec_arm_park = 0.8;
+    public static double claw_time1 = 0;
+    public static double claw_time2 = 0;
+    public static double claw_time3 = 0;
+
+
 
     public static double x0 = 70;
     public static double x1 = 50;
@@ -208,6 +213,7 @@ public class SpecimenAuto extends LinearOpMode {
         private DcMotorEx liftMotor2;
         private Servo specArmServo;
         private Servo bucketServo;
+        private Servo clawServo;
 
         public Lift(HardwareMap hardwareMap) {
 
@@ -221,6 +227,7 @@ public class SpecimenAuto extends LinearOpMode {
 
             specArmServo = hardwareMap.get(Servo.class,"specArmServo");
             bucketServo = hardwareMap.get(Servo.class, "bucketServo");
+            clawServo = hardwareMap.get(Servo.class, "clawServo");
 
         }
 
