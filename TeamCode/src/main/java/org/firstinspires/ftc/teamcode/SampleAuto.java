@@ -33,9 +33,9 @@ public class SampleAuto extends LinearOpMode {
     public static int lift_transfer = 0;
     public static int lift_spec_pickup = -250;
     public static int lift_spec_score = -700;
-    public static double bucket_dump = 0.85;
-    public static double bucket_transfer = 0;
-    public static double bucket_mid = 0.3;
+    public static double bucket_dump = 1;
+    public static double bucket_transfer = 0.43;
+    public static double bucket_mid = 0.7;
     public static double spec_arm_pickup = 0.4;
     public static double spec_arm_score = 0.93;
     public static int slides_extended = -350;
