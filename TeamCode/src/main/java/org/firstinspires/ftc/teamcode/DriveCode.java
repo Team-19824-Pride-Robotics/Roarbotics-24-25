@@ -39,15 +39,19 @@ public class DriveCode extends LinearOpMode {
     public static int lift_low_bucket = -1000;
     public static int lift_spec_pickup = -400;
     public static int lift_spec_score = -900;
+    public static int lift_high_hang = -3500;
+    public static int lift_low_hang = -2500;
     public static double arm_down = 0.67;
     public static double arm_transfer = 0.1;
     public static double arm_mid = 0.55;
-    public static int slides_extended = -350;
-    public static int slides_transfer = -150;
-    public static int slides_mid = -200;
+    public static int slides_extended = -100;
+    public static int slides_transfer = -30;
+    public static int slides_mid = -80;
     public static double bucket_transfer = 0;
     public static double bucket_dump = 0.85;
     public static double bucket_mid = 0.3;
+
+
     public static double dump_time = 0.5;
     public static double driveSlow = 0.5;
     public static double specimen_pickup = 0;
@@ -276,6 +280,12 @@ public class DriveCode extends LinearOpMode {
                 bucketPosition = bucket_mid;
                 slidePosition = slides_mid;
             }
+            if(gamepad1.a) {
+                liftHeight = lift_high_hang;
+            }
+            if(gamepad1.b) {
+                liftHeight = lift_low_hang;
+            }
 
             if(gamepad2.right_trigger > 0.1) {
                     bucketPosition = bucket_dump;
@@ -331,6 +341,7 @@ public class DriveCode extends LinearOpMode {
             telemetry.addData("BLUE", blue);
             telemetry.addData("GREEN", green);
             telemetry.addData("COLOR", sample);
+            telemetry.addData("slideposition", slidesMotor.getCurrentPosition());
 //            telemetry.addData("lift1 height",  liftMotor1.getCurrentPosition());
 //            telemetry.addData("lift2 height",  liftMotor2.getCurrentPosition());
             telemetry.update();
