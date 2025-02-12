@@ -58,7 +58,7 @@ public class DriveCode extends LinearOpMode {
     public static double specimen_score = 0.66;
     public static double block_open = 0;
     public static double claw_open = 0.5;
-    public static double claw_closed = 0;
+    public static double claw_closed = 0.85;
     public static double block_closed = 0.4;
 
     private boolean last_A = false;
@@ -81,7 +81,7 @@ public class DriveCode extends LinearOpMode {
        double bucketPosition = 0;
        double specimenPosition = 0.4;
        double out_speed = -1;
-       double claw_position = 0;
+       double claw_position = 0.5;
 
 
         int red;
