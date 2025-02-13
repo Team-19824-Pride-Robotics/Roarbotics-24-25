@@ -41,9 +41,9 @@ public class DriveCode extends LinearOpMode {
     public static int lift_spec_score = -900;
     public static int lift_high_hang = -3500;
     public static int lift_low_hang = -2500;
-    public static double arm_down = 0.67;
-    public static double arm_transfer = 0.1;
-    public static double arm_mid = 0.55;
+    public static double arm_down = 0.1;
+    public static double arm_transfer = 0.9;
+    public static double arm_mid = 0.35;
     public static int slides_extended = -100;
     public static int slides_transfer = -30;
     public static int slides_mid = -80;
