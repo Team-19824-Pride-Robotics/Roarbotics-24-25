@@ -280,10 +280,10 @@ public class DriveCode extends LinearOpMode {
                 bucketPosition = bucket_mid;
                 slidePosition = slides_mid;
             }
-            if(gamepad1.a) {
+            if(gamepad1.dpad_up) {
                 liftHeight = lift_high_hang;
             }
-            if(gamepad1.b) {
+            if(gamepad1.dpad_down) {
                 liftHeight = lift_low_hang;
             }
 
