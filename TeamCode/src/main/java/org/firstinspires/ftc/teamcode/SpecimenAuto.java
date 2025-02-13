@@ -65,13 +65,13 @@ public class SpecimenAuto extends LinearOpMode {
     public static double x4 = 20;
     public static double y3 = -110;
 
-    public static double x5 = -7;
-    public static double x6 = 12;
+    public static double x5 = 35;
+    public static double x6 = 0;
     public static double y4 = -4;
 
     public static double x7 = 17;
     public static double y5 = -37;
-    public static double x9 = 40;
+    public static double x9 = 35;
     public static double y9 = 0;
     public static double y11 = 20;
     public static double x10 = 30;
@@ -80,12 +80,14 @@ public class SpecimenAuto extends LinearOpMode {
     public static double x11 = 120;
     public static double x12 = 20;
     public static double y14 = 105;
-    public static double y15 = -66;
-    public static double x13 = 25;
+    public static double y15 = -100;
+    public static double x13 = 120;
     public static double y16 = 80;
     public static double y17 = -110;
     public static double y18 = -110;
     public static double x14 = 80;
+    public static double y19 = -115;
+    public static double y20 = -125;
 
 
 
@@ -369,6 +371,42 @@ public class SpecimenAuto extends LinearOpMode {
         public Action specArmScore() {
             return new SpecArmScore();
         }
+        public class clawOpenOne implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                new SleepAction(claw_time1);
+                clawServo.setPosition(claw_open);
+                return false;
+            }
+        }
+        public Action clawOpenOne() {
+            return new clawOpenOne();
+
+        }
+        public class clawOpen2 implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                new SleepAction(claw_time2);
+                clawServo.setPosition(claw_open);
+                return false;
+            }
+        }
+        public Action clawOpen2() {
+            return new clawOpen2();
+
+        }
+        public class clawOpen3 implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                new SleepAction(claw_time3);
+                clawServo.setPosition(claw_open);
+                return false;
+            }
+        }
+        public Action clawOpen3() {
+            return new clawOpen3();
+
+        }
 
     }
 
@@ -400,11 +438,11 @@ public class SpecimenAuto extends LinearOpMode {
         TrajectoryActionBuilder segment8;
         TrajectoryActionBuilder segment8_5;
         TrajectoryActionBuilder segment9;
-        TrajectoryActionBuilder segment10;
-        TrajectoryActionBuilder segment11;
-        TrajectoryActionBuilder segment12;
-        TrajectoryActionBuilder segment13;
-        TrajectoryActionBuilder segment14;
+//        TrajectoryActionBuilder segment10;
+//        TrajectoryActionBuilder segment11;
+//        TrajectoryActionBuilder segment12;
+//        TrajectoryActionBuilder segment13;
+//        TrajectoryActionBuilder segment14;
         //segment 1 - drives up to the sub and scores the preload
         // parallel with lift to score height
         segment1 = drive.actionBuilder(initialPose)
@@ -441,94 +479,88 @@ public class SpecimenAuto extends LinearOpMode {
 
         Action seg4 = segment4.build();
 
-        //segment 5 - push two samples into the zone
+        //segment 5 - gets ready to move behind the second sample
         segment5 = segment4.endTrajectory().fresh()
-                .strafeToConstantHeading(new Vector2d(x13, y15));
+                .strafeToConstantHeading(new Vector2d(x3, y15));
 
         Action seg5 = segment5.build();
-//
-//        segment5_5 = segment5.endTrajectory().fresh()
-//                .strafeToConstantHeading(new Vector2d(x4, y6));
-//
-//        Action seg5_5 = segment5_5.build();
 
-        //segment 6 - slowly! to pick up the specimen
+
+        //segment 6 - gets behind the second sample
         segment6 = segment5.endTrajectory().fresh()
-                .strafeToConstantHeading(new Vector2d(x5,y15), new TranslationalVelConstraint(pickup_speed));
+                .strafeToConstantHeading(new Vector2d(x3,y19));
 
         Action seg6 = segment6.build();
 
-        //segment 7 - strafe back to the sub with a 180
-        //parallel with lift to scoring position
+        //segment 7 - pushes the 2nd sample into the obs zone
         segment7 = segment6.endTrajectory().fresh()
-                .setReversed(true)
-                .strafeToLinearHeading(new Vector2d(x9, y9), Math.toRadians(180));
+//                .setReversed(true)
+                .strafeToConstantHeading(new Vector2d(x4,y19));
 
         Action seg7 = segment7.build();
 
-        //segment 7.5 - scoring second specimen
+        //segment 7.5 - backing up to get behind the 3rd sample
         segment7_5 = segment7.endTrajectory().fresh()
-                .setReversed(true)
-                .strafeToConstantHeading(new Vector2d(x14, y11));
+//                .setReversed(true)
+                .strafeToConstantHeading(new Vector2d(x3, y15));
 
         Action seg7_5 = segment7_5.build();
-
+//segment 7.6 - getting behind the 3rd sample
         segment7_6 = segment7_5.endTrajectory().fresh()
-                .setReversed(true)
-                .strafeToConstantHeading(new Vector2d(x1, 0));
+//                .setReversed(true)
+                .strafeToConstantHeading(new Vector2d(x3, y20));
 
         Action seg7_6 = segment7_6.build();
 
-        //segment 8 - strafe path back to the zone with a 180
+        //segment 8 - pushing 3rd sample into the obs zone
         // parallel with lift to pickup position
         segment8 = segment7_6.endTrajectory().fresh()
 
-                .strafeToLinearHeading(new Vector2d(x4, y6), Math.toRadians(0));
+                .strafeToConstantHeading(new Vector2d(x4, y20));
 
         Action seg8 = segment8.build();
 
 //segment 8_5 - slowly! to pick up the specimen
         segment8_5 = segment8.endTrajectory().fresh()
-                .strafeToConstantHeading(new Vector2d(x5,y6), new TranslationalVelConstraint(pickup_speed));
+                .strafeToLinearHeading(new Vector2d(x5,y6), Math.toRadians(180));
 
         Action seg8_5 = segment8_5.build();
 //
         segment9 = segment8_5.endTrajectory().fresh()
-                .setReversed(true)
-                .strafeToLinearHeading(new Vector2d(x9, y9), Math.toRadians(180));
+                .strafeToConstantHeading(new Vector2d(x6, y6));
 
         Action seg9 = segment9.build();
-//Turn Around and go to put specimen on the bar
-        segment10 = segment9.endTrajectory().fresh()
-
-                .setReversed(true)
-                .strafeToConstantHeading(new Vector2d(x14, y11));
-
-        Action seg10 = segment10.build();
-//goes back and to the right in anticipation of pushing the block
-        segment11 = segment10.endTrajectory().fresh()
-
-                .strafeToConstantHeading(new Vector2d(x10, y12));
-
-        Action seg11 = segment11.build();
-
-        segment12 = segment11.endTrajectory().fresh()
-                .setReversed(true)
-                .strafeToLinearHeading(new Vector2d(x11, y17), Math.toRadians(0));
-
-        Action seg12 = segment12.build();
-
-        segment13 = segment12.endTrajectory().fresh()
-
-                .strafeToConstantHeading(new Vector2d(x12, y18));
-
-        Action seg13 = segment13.build();
-
-        segment14 = segment13.endTrajectory().fresh()
-
-                .strafeToConstantHeading(new Vector2d(x12, y18));
-
-        Action seg14 = segment14.build();
+////Turn Around and go to put specimen on the bar
+//        segment10 = segment9.endTrajectory().fresh()
+//
+//                .setReversed(true)
+//                .strafeToConstantHeading(new Vector2d(x14, y11));
+//
+//        Action seg10 = segment10.build();
+////goes back and to the right in anticipation of pushing the block
+//        segment11 = segment10.endTrajectory().fresh()
+//
+//                .strafeToConstantHeading(new Vector2d(x10, y12));
+//
+//        Action seg11 = segment11.build();
+//
+//        segment12 = segment11.endTrajectory().fresh()
+//                .setReversed(true)
+//                .strafeToLinearHeading(new Vector2d(x11, y17), Math.toRadians(0));
+//
+//        Action seg12 = segment12.build();
+//
+//        segment13 = segment12.endTrajectory().fresh()
+//
+//                .strafeToConstantHeading(new Vector2d(x12, y18));
+//
+//        Action seg13 = segment13.build();
+//
+//        segment14 = segment13.endTrajectory().fresh()
+//
+//                .strafeToConstantHeading(new Vector2d(x12, y18));
+//
+//        Action seg14 = segment14.build();
 
 
         waitForStart();
@@ -543,7 +575,8 @@ public class SpecimenAuto extends LinearOpMode {
                         seg1,
                         lift.specimenScoreHeight(),
                         lift.specArmScore(),
-                        intake.armDown()
+                        intake.armDown(),
+                        lift.clawOpenOne()
                 ),
 
                 new ParallelAction(
@@ -551,10 +584,10 @@ public class SpecimenAuto extends LinearOpMode {
                         lift.specimenPickupHeight()
                 ),
 
-                new ParallelAction(
-                        seg2_5,
-                        lift.specArmPickup()
-                ),
+                
+                seg2_5,
+                        lift.specArmPickup(),
+                
 
                 seg3,
 
@@ -564,10 +597,8 @@ public class SpecimenAuto extends LinearOpMode {
 
                 seg6,
 
-                lift.specimenScoreHeight(),
-                          //this takes the specimen off the wall
+                
 
-               new SleepAction(lift_time),  //it needs time to go up before driving away
 
                 new ParallelAction(
                         seg7,
@@ -575,10 +606,8 @@ public class SpecimenAuto extends LinearOpMode {
                 ),
 
                 seg7_5,
-                new ParallelAction(
-                        seg7_6,
-                        lift.specimenPickupHeight()
-                ),
+
+                seg7_6,
 
                 new ParallelAction(
                         seg8,
@@ -587,36 +616,36 @@ public class SpecimenAuto extends LinearOpMode {
 
                 seg8_5,
 
-                lift.specimenScoreHeight(),  //this takes the specimen off the wall
+                lift.specimenPickupHeight(),  //this takes the specimen off the wall
 
-//                new SleepAction(lift_time),  //it needs time to go up before driving away
+
 
                 new ParallelAction(
                         seg9,
-                        lift.specArmScore()
-                ),
-
-                new ParallelAction(
-                        seg10,
-                        lift.specArmScore()
-                ),
-
-                new ParallelAction(
-                       seg11,
-                        lift.transferHeight()
-                ),
-                lift.specArmPickup(),
-
-                seg12,
-
-                seg13,
-
-                new ParallelAction(
-
-                        seg14,
-
-                        lift.specArmPark()
+                        lift.clawOpenOne()
                 )));
+//
+//                new ParallelAction(
+//                        seg10,
+//                        lift.specArmScore()
+//                ),
+//
+//                new ParallelAction(
+//                       seg11,
+//                        lift.transferHeight()
+//                ),
+//                lift.specArmPickup(),
+//
+//                seg12,
+//
+//                seg13,
+//
+//                new ParallelAction(
+//
+//                        seg14,
+//
+//                        lift.specArmPark()
+//                )));
 
 
 
