@@ -33,12 +33,12 @@ public class SpecimenAuto extends LinearOpMode {
     public static int lift_high_bucket = -4000;
     public static int lift_transfer = 0;
     public static int lift_spec_pickup = -400;
-    public static int lift_spec_score = -850;
+    public static int lift_spec_score = -600;
     public static double bucket_dump = 1;
     public static double bucket_transfer = 0.43;
     public static double bucket_mid = 0.7;
-    public static double spec_arm_pickup = 0;
-    public static double spec_arm_score = 0.66;
+    public static double spec_arm_pickup = 0.35;
+    public static double spec_arm_score = 0.9;
     public static double claw_closed = 0.85;
     public static double claw_open = 0.5;
     public static int slides_extended = -350;
@@ -48,7 +48,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double arm_transfer = 0.8;
     public static double pickup_speed = 25;
     public static double lift_time = 1;
-    public static double score_time = 0.5;
+    public static double score_time = 0.1;
     public static double spec_arm_park = 0.8;
     public static double claw_time1 = 0;
     public static double claw_time2 = 0;
@@ -464,6 +464,8 @@ public class SpecimenAuto extends LinearOpMode {
 
         Action seg1 = segment1.build();
 
+
+
         //segment 2 - backs off the sub
 
         segment2 = segment1.endTrajectory().fresh()
@@ -597,10 +599,10 @@ public class SpecimenAuto extends LinearOpMode {
                         seg1,
                         lift.specimenScoreHeight(),
                         lift.specArmScore(),
-                        intake.armDown(),
-                        new SleepAction(score_time),
-                        lift.clawOpenOne()
+                        intake.armDown()
                 ),
+                        new SleepAction(score_time),
+                        lift.clawOpenOne(),
 
                 new ParallelAction(
                         seg2,
