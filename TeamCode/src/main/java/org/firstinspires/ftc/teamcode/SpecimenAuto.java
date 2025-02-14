@@ -75,7 +75,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double y9 = 0;
     public static double y11 = 20;
     public static double x10 = 30;
-    public static double y12 = 0;
+    public static double y12 = 30;
     public static double y13 = 110;
     public static double x11 = 120;
     public static double x12 = 20;
@@ -86,6 +86,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double y17 = -110;
     public static double y18 = -110;
     public static double x14 = 80;
+    public static double x15 = 40;
     public static double y19 = -115;
     public static double y20 = -125;
 
@@ -380,9 +381,19 @@ public class SpecimenAuto extends LinearOpMode {
             }
         }
         public Action clawOpenOne() {
-            return new clawOpenOne();
+            return new clawOpenOne(); }
+
+
+            public class clawClosed implements Action {
+                @Override
+                public boolean run(@NonNull TelemetryPacket packet) {
+                    clawServo.setPosition(claw_closed);
+                    return false;
+                }
 
         }
+        public Action clawClosed() {
+            return new clawClosed(); }
         public class clawOpen2 implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
@@ -441,7 +452,8 @@ public class SpecimenAuto extends LinearOpMode {
         TrajectoryActionBuilder segment10;
         TrajectoryActionBuilder segment11;
         TrajectoryActionBuilder segment12;
-//        TrajectoryActionBuilder segment13;
+        TrajectoryActionBuilder segment12_5;
+        TrajectoryActionBuilder segment13;
 //        TrajectoryActionBuilder segment14;
         //segment 1 - drives up to the sub and scores the preload
         // parallel with lift to score height
@@ -530,11 +542,15 @@ public class SpecimenAuto extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(x6, y5));
 
         Action seg9 = segment9.build();
+
+//        segment9_5 = segment9.endTrajectory().fresh()
+//                .strafeToLinearHeading(new Vector2d(x15, y11), Math.toRadians(180));
+//            Action seg9_5 = segment9_5.build();
 //Turn Around and go to put specimen on the bar
         segment10 = segment9.endTrajectory().fresh()
 
-                .setReversed(true)
-                .strafeToLinearHeading(new Vector2d(x14, y11), Math.toRadians(180));
+
+                .strafeToConstantHeading(new Vector2d(x14, y11));
 
         Action seg10 = segment10.build();
 //goes back and to the right in anticipation of pushing the block
@@ -548,12 +564,18 @@ public class SpecimenAuto extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(x6, y5));
 
         Action seg12 = segment12.build();
-//
-//        segment13 = segment12.endTrajectory().fresh()
-//
-//                .strafeToConstantHeading(new Vector2d(x12, y18));
-//
-//        Action seg13 = segment13.build();
+
+        segment12_5 = segment12.endTrajectory().fresh()
+                .setReversed(true)
+                .strafeToLinearHeading(new Vector2d(x15, y12), Math.toRadians(180));
+        Action seg12_5 = segment12_5.build();
+
+        segment13 = segment12_5.endTrajectory().fresh()
+
+
+                .strafeToConstantHeading(new Vector2d(x14, y12));
+
+        Action seg13 = segment13.build();
 //
 //        segment14 = segment13.endTrajectory().fresh()
 //
@@ -619,13 +641,19 @@ public class SpecimenAuto extends LinearOpMode {
 
 
 
-
+                    new ParallelAction(
                         seg9,
-
+                            lift.specimenPickupHeight()
+                            ),
                     new SleepAction(0.5),
+                    lift.clawClosed(),
 
-
-                        seg10,
+                    new ParallelAction(
+                    seg10,
+                    lift.specArmScore(), 5
+                            lift.clawOpenOne(),
+                            lift.specimenScoreHeight()
+                            ),
 
 
 
@@ -634,10 +662,12 @@ public class SpecimenAuto extends LinearOpMode {
 
                 new SleepAction(0.5),
 
-                seg12
+                seg12,
+
+                seg12_5,
+
+                seg13
                 ));
-//
-//                seg13,
 //
 //                new ParallelAction(
 //
