@@ -54,8 +54,8 @@ public class DriveCode extends LinearOpMode {
 
     public static double dump_time = 0.5;
     public static double driveSlow = 0.5;
-    public static double specimen_pickup = 0;
-    public static double specimen_score = 0.66;
+    public static double specimen_pickup = 0.35;
+    public static double specimen_score = 0.9;
     public static double block_open = 0;
     public static double claw_open = 0.5;
     public static double claw_closed = 0.85;

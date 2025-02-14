@@ -597,6 +597,7 @@ public class SpecimenAuto extends LinearOpMode {
                         lift.specimenScoreHeight(),
                         lift.specArmScore(),
                         intake.armDown(),
+                        new SleepAction(),
                         lift.clawOpenOne()
                 ),
 
@@ -650,7 +651,7 @@ public class SpecimenAuto extends LinearOpMode {
 
                     new ParallelAction(
                     seg10,
-                    lift.specArmScore(), 5
+                    lift.specArmScore(),
                             lift.clawOpenOne(),
                             lift.specimenScoreHeight()
                             ),
