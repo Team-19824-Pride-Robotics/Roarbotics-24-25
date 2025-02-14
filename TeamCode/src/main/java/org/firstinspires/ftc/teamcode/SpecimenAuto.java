@@ -48,6 +48,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double arm_transfer = 0.8;
     public static double pickup_speed = 25;
     public static double lift_time = 1;
+    public static double score_time = 0.5;
     public static double spec_arm_park = 0.8;
     public static double claw_time1 = 0;
     public static double claw_time2 = 0;
@@ -597,7 +598,7 @@ public class SpecimenAuto extends LinearOpMode {
                         lift.specimenScoreHeight(),
                         lift.specArmScore(),
                         intake.armDown(),
-                        new SleepAction(),
+                        new SleepAction(score_time),
                         lift.clawOpenOne()
                 ),
 
