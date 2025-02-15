@@ -53,6 +53,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double claw_time1 = 0;
     public static double claw_time2 = 0;
     public static double claw_time3 = 0;
+    public static double pickup_time = 0.2;
 
 
 
@@ -625,10 +626,9 @@ public class SpecimenAuto extends LinearOpMode {
                 
 
 
-                new ParallelAction(
+
                         seg7,
-                        lift.specArmScore()
-                ),
+
 
                 seg7_5,
 
@@ -641,6 +641,7 @@ public class SpecimenAuto extends LinearOpMode {
 
                 seg8_5,
 
+
                 lift.specimenPickupHeight(),  //this takes the specimen off the wall
 
 
@@ -649,13 +650,12 @@ public class SpecimenAuto extends LinearOpMode {
                         seg9,
                             lift.specimenPickupHeight()
                             ),
-                    new SleepAction(0.5),
-                    lift.clawClosed(),
+                    new SleepAction(pickup_time),
+                lift.clawClosed(),
 
                     new ParallelAction(
                     seg10,
                     lift.specArmScore(),
-                            lift.clawOpenOne(),
                             lift.specimenScoreHeight()
                             ),
 
