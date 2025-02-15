@@ -39,8 +39,8 @@ public class SpecimenAuto extends LinearOpMode {
     public static double bucket_mid = 0.7;
     public static double spec_arm_pickup = 0.35;
     public static double spec_arm_score = 0.9;
-    public static double claw_closed = 0.8;
-    public static double claw_open = 0.5;
+    public static double claw_closed = 0.75;
+    public static double claw_open = 0;
     public static int slides_extended = -350;
     public static int slides_transfer = -100;
     public static int slides_mid = -200;
@@ -54,6 +54,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double claw_time2 = 0;
     public static double claw_time3 = 0;
     public static double pickup_time = 0.2;
+    public static double score_time2 = 0.4;
 
 
 
@@ -68,7 +69,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double y3 = -110;
 
     public static double x5 = 35;
-    public static double x6 = 10;
+    public static double x6 = 4;
     public static double y4 = -4;
 
     public static double x7 = 17;
@@ -87,7 +88,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double y16 = 80;
     public static double y17 = -110;
     public static double y18 = -110;
-    public static double x14 = 80;
+    public static double x14 = 70;
     public static double x15 = 40;
     public static double y19 = -115;
     public static double y20 = -125;
@@ -451,12 +452,18 @@ public class SpecimenAuto extends LinearOpMode {
         TrajectoryActionBuilder segment8;
         TrajectoryActionBuilder segment8_5;
         TrajectoryActionBuilder segment9;
+        TrajectoryActionBuilder segment9_5;
         TrajectoryActionBuilder segment10;
+        TrajectoryActionBuilder segment10_5;
         TrajectoryActionBuilder segment11;
         TrajectoryActionBuilder segment12;
         TrajectoryActionBuilder segment12_5;
         TrajectoryActionBuilder segment13;
-//        TrajectoryActionBuilder segment14;
+        TrajectoryActionBuilder segment14;
+        TrajectoryActionBuilder segment15;
+        TrajectoryActionBuilder segment16;
+        TrajectoryActionBuilder segment17;
+        TrajectoryActionBuilder segment18;
         //segment 1 - drives up to the sub and scores the preload
         // parallel with lift to score height
         segment1 = drive.actionBuilder(initialPose)
@@ -547,19 +554,26 @@ public class SpecimenAuto extends LinearOpMode {
 
         Action seg9 = segment9.build();
 
-//        segment9_5 = segment9.endTrajectory().fresh()
-//                .strafeToLinearHeading(new Vector2d(x15, y11), Math.toRadians(180));
-//            Action seg9_5 = segment9_5.build();
+        segment9_5 = segment9.endTrajectory().fresh()
+                .strafeToLinearHeading(new Vector2d(x15, y11), Math.toRadians(180));
+            Action seg9_5 = segment9_5.build();
 //Turn Around and go to put specimen on the bar
-        segment10 = segment9.endTrajectory().fresh()
+        segment10 = segment9_5.endTrajectory().fresh()
 
 
                 .strafeToConstantHeading(new Vector2d(x14, y11));
 
         Action seg10 = segment10.build();
+
+        segment10_5 = segment10.endTrajectory().fresh()
+
+
+                .strafeToConstantHeading(new Vector2d(x15, y11));
+
+        Action seg10_5 = segment10_5.build();
 //goes back and to the right in anticipation of pushing the block
         segment11 = segment10.endTrajectory().fresh()
-                .setReversed(false)
+
                 .strafeToLinearHeading(new Vector2d(x5, y5), Math.toRadians(0));
 
         Action seg11 = segment11.build();
@@ -580,6 +594,36 @@ public class SpecimenAuto extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(x14, y12));
 
         Action seg13 = segment13.build();
+
+        segment14 = segment13.endTrajectory().fresh()
+
+
+                .strafeToConstantHeading(new Vector2d(x15, y11));
+
+        Action seg14 = segment14.build();
+//goes back and to the right in anticipation of pushing the block
+        segment15 = segment14.endTrajectory().fresh()
+
+                .strafeToLinearHeading(new Vector2d(x5, y5), Math.toRadians(0));
+
+        Action seg15 = segment15.build();
+
+        segment16 = segment15.endTrajectory().fresh()
+                .strafeToConstantHeading(new Vector2d(x6, y5));
+
+        Action seg16 = segment16.build();
+
+        segment17 = segment16.endTrajectory().fresh()
+                .setReversed(true)
+                .strafeToLinearHeading(new Vector2d(x15, y12), Math.toRadians(180));
+        Action seg17 = segment17.build();
+
+        segment18 = segment17.endTrajectory().fresh()
+
+
+                .strafeToConstantHeading(new Vector2d(x14, y12));
+
+        Action seg18 = segment18.build();
 //
 //        segment14 = segment13.endTrajectory().fresh()
 //
@@ -649,35 +693,79 @@ public class SpecimenAuto extends LinearOpMode {
                     new ParallelAction(
                         seg9,
                             lift.specimenPickupHeight()
+
+
                             ),
-                    new SleepAction(pickup_time),
                 lift.clawClosed(),
+                new SleepAction(pickup_time),
 
                     new ParallelAction(
-                    seg10,
+                    seg9_5,
                     lift.specArmScore(),
                             lift.specimenScoreHeight()
                             ),
 
+                        seg10,
+
+                        lift.clawOpenOne(),
+                        new SleepAction(score_time),
+
+                        seg10_5,
 
 
-
+new ParallelAction(
                        seg11,
+        lift.specArmPickup()
+        ),
+                new ParallelAction(
+                        seg12,
+                        lift.specimenPickupHeight()
+                ),
+                lift.clawClosed(),
+                new SleepAction(pickup_time),
 
-                new SleepAction(0.5),
-
-                seg12,
-
+                new ParallelAction(
                 seg12_5,
+                        lift.specArmScore(),
+                        lift.specimenScoreHeight()
+                ),
 
-                seg13
+
+
+
+                seg13,
+                lift.clawOpenOne(),
+                new SleepAction(score_time),
+
+                seg14,
+
+
+                new ParallelAction(
+                        seg15,
+                        lift.specArmPickup()
+                ),
+                new ParallelAction(
+                        seg16,
+                        lift.specimenPickupHeight()
+                ),
+                lift.clawClosed(),
+                new SleepAction(pickup_time),
+
+                new ParallelAction(
+                        seg17,
+                        lift.specArmScore(),
+                        lift.specimenScoreHeight()
+                ),
+
+
+
+
+                seg18,
+                lift.clawOpenOne(),
+                new SleepAction(score_time)
                 ));
 //
-//                new ParallelAction(
 //
-//                        seg14,
-//
-//                        lift.specArmPark()
 //                )));
 
 
