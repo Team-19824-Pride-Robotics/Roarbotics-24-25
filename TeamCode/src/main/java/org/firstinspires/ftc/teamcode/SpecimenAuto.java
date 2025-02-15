@@ -39,7 +39,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double bucket_mid = 0.7;
     public static double spec_arm_pickup = 0.35;
     public static double spec_arm_score = 0.9;
-    public static double claw_closed = 0.85;
+    public static double claw_closed = 0.8;
     public static double claw_open = 0.5;
     public static int slides_extended = -350;
     public static int slides_transfer = -100;
