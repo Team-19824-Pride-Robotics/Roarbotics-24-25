@@ -77,7 +77,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double y9 = 0;
     public static double y11 = 20;
     public static double x10 = 30;
-    public static double y12 = 30;
+    public static double y12 = 40;
     public static double y13 = 110;
     public static double x11 = 120;
     public static double x12 = 20;
