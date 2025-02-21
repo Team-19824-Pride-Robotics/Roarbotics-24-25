@@ -33,9 +33,9 @@ public class SampleAuto extends LinearOpMode {
     public static int lift_transfer = 0;
     public static int lift_spec_pickup = -250;
     public static int lift_spec_score = -700;
-    public static double bucket_dump = 1;
-    public static double bucket_transfer = 0.43;
-    public static double bucket_mid = 0.7;
+    public static double bucket_dump = 0.85;
+    public static double bucket_transfer = 0.1;
+    public static double bucket_mid = 0.3;
     public static double spec_arm_pickup = 0.4;
     public static double spec_arm_score = 0.93;
     public static int slides_extended = -350;
@@ -440,12 +440,12 @@ public class SampleAuto extends LinearOpMode {
                 //segment 1 - drives up to the basket and scores the preload
                 // parallel with lift to score position, add wait time for bucket to score
                 segment1 = drive.actionBuilder(initialPose)
-                        .strafeToLinearHeading(new Vector2d(x2, y2), Math.toRadians(hs));
+                        .strafeToLinearHeading(new Vector2d(x2, y2), Math.toRadians(hs), new TranslationalVelConstraint(200));
 
                 Action seg1 = segment1.build();
 
         segment1_5 = segment1.endTrajectory().fresh()
-                .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
+                .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs), new TranslationalVelConstraint(200));
 
         Action seg1_5 = segment1_5.build();
 
@@ -453,7 +453,7 @@ public class SampleAuto extends LinearOpMode {
                 //segment 2 - get in position to grab second sample
                 // parallel with lift and arm to pickup position, add wait time for pickup
                 segment2 = segment1.endTrajectory().fresh()
-                        .strafeToLinearHeading(new Vector2d(x1, y1), Math.toRadians(h1));
+                        .strafeToLinearHeading(new Vector2d(x1, y1), Math.toRadians(h1), new TranslationalVelConstraint(200));
 
                 Action seg2 = segment2.build();
 //
@@ -461,12 +461,12 @@ public class SampleAuto extends LinearOpMode {
                 //segment 3 - moves in position to score the sample
                 // parallel with lift and arm to score position, add wait time for score
                 segment3 = segment2.endTrajectory().fresh()
-                        .strafeToLinearHeading(new Vector2d(x2, y2), Math.toRadians(hs));
+                        .strafeToLinearHeading(new Vector2d(x2, y2), Math.toRadians(hs), new TranslationalVelConstraint(200));
 
                 Action seg3 = segment3.build();
 
         segment3_5 = segment3.endTrajectory().fresh()
-                .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
+                .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs), new TranslationalVelConstraint(200));
 
         Action seg3_5 = segment3_5.build();
 
@@ -476,7 +476,7 @@ public class SampleAuto extends LinearOpMode {
                 //segment 4 - strafe over for the third sample
                 // parallel with lift and arm to pickup position, add wait time for pickupSERAv
                 segment4 = segment3_5.endTrajectory().fresh()
-                        .strafeToLinearHeading(new Vector2d(x1, y3), Math.toRadians(h1));
+                        .strafeToLinearHeading(new Vector2d(x1, y3), Math.toRadians(h1), new TranslationalVelConstraint(200));
 
 
 
@@ -486,19 +486,19 @@ public class SampleAuto extends LinearOpMode {
                 //segment 5 - moves in position to score the sample
                 // parallel with lift and arm to score position, add wait time for score
                 segment5 = segment4.endTrajectory().fresh()
-                        .strafeToLinearHeading(new Vector2d(x2, y2), Math.toRadians(hs));
+                        .strafeToLinearHeading(new Vector2d(x2, y2), Math.toRadians(hs), new TranslationalVelConstraint(200));
 
                 Action seg5 = segment5.build();
 
         segment5_5 = segment5.endTrajectory().fresh()
-                .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
+                .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs), new TranslationalVelConstraint(200));
 
         Action seg5_5 = segment5_5.build();
 
                 //segment 6 - strafe to same position, new angle
                 // parallel with lift and arm to pickup position, add wait time for pickup
                 segment6 = segment5_5.endTrajectory().fresh()
-                        .strafeToLinearHeading(new Vector2d(x3, y4), Math.toRadians(h2));
+                        .strafeToLinearHeading(new Vector2d(x3, y4), Math.toRadians(h2), new TranslationalVelConstraint(200));
 
                 Action seg6 = segment6.build();
 
@@ -506,19 +506,19 @@ public class SampleAuto extends LinearOpMode {
                 //segment 5 - moves in position to score the sample
                 // parallel with lift and arm to score position, add wait time for score
                 segment7 = segment6.endTrajectory().fresh()
-                        .strafeToLinearHeading(new Vector2d(x2, y2), Math.toRadians(hs));
+                        .strafeToLinearHeading(new Vector2d(x2, y2), Math.toRadians(hs), new TranslationalVelConstraint(200));
 
                 Action seg7 = segment7.build();
 
         segment7_5 = segment7.endTrajectory().fresh()
-                .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs));
+                .strafeToLinearHeading(new Vector2d(xs, ys), Math.toRadians(hs), new TranslationalVelConstraint(200));
 
         Action seg7_5 = segment7_5.build();
 //
 //                //segment 8 - park in ascent zone
 //                segment8 = segment7.endTrajectory().fresh()
 //                        .strafeToLinearHeading(new Vector2d(xp, yp), Math.toRadians(hp));
-//
+// sillu willy prank
 //                Action seg8 = segment8.build();
 
 
