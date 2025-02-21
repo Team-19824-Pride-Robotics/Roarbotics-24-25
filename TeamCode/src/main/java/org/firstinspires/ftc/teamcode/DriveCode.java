@@ -39,7 +39,7 @@ public class DriveCode extends LinearOpMode {
     public static int lift_low_bucket = -1000;
     public static int lift_spec_pickup = -400;
     public static int lift_spec_score = -600;
-    public static int lift_high_hang = -3500;
+    public static int lift_high_hang = -3800;
     public static int lift_low_hang = -2500;
     public static double arm_down = 0.1;
     public static double arm_transfer = 0.9;
