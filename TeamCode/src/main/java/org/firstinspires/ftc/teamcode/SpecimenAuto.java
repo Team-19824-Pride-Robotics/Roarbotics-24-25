@@ -32,15 +32,15 @@ public class SpecimenAuto extends LinearOpMode {
     public static double out_speed = 0.5;
     public static int lift_high_bucket = -4000;
     public static int lift_transfer = 0;
-    public static int lift_spec_pickup = -400;
-    public static int lift_spec_score = -600;
+    public static int lift_spec_pickup = -500;
+    public static int lift_spec_score = -900;
     public static double bucket_dump = 1;
     public static double bucket_transfer = 0.43;
     public static double bucket_mid = 0.7;
     public static double spec_arm_pickup = 0.35;
     public static double spec_arm_score = 0.9;
-    public static double claw_closed = 0.75;
-    public static double claw_open = 0;
+    public static double claw_closed = 0.85;
+    public static double claw_open = 0.55;
     public static int slides_extended = -350;
     public static int slides_transfer = -100;
     public static int slides_mid = -200;
@@ -304,6 +304,8 @@ public class SpecimenAuto extends LinearOpMode {
         }
         public Action specimenScoreHeight() {
             return new SpecimenScoreHeight();
+
+
         }
 
         public class BucketTransfer implements Action {
@@ -464,11 +466,12 @@ public class SpecimenAuto extends LinearOpMode {
         TrajectoryActionBuilder segment16;
         TrajectoryActionBuilder segment17;
         TrajectoryActionBuilder segment18;
+        TrajectoryActionBuilder segment19;
         //segment 1 - drives up to the sub and scores the preload
         // parallel with lift to score height
         segment1 = drive.actionBuilder(initialPose)
                 .setReversed(true)
-                .strafeToConstantHeading(new Vector2d(x0, 0));
+                .strafeToConstantHeading(new Vector2d(x0, 0), new TranslationalVelConstraint(150));
 
         Action seg1 = segment1.build();
 
@@ -624,6 +627,10 @@ public class SpecimenAuto extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(x14, y12));
 
         Action seg18 = segment18.build();
+
+        segment19 = segment18.endTrajectory().fresh()
+                .strafeToConstantHeading(new Vector2d(x15, y12));
+        Action seg19 = segment19.build();
 //
 //        segment14 = segment13.endTrajectory().fresh()
 //
@@ -762,7 +769,12 @@ new ParallelAction(
 
                 seg18,
                 lift.clawOpenOne(),
-                new SleepAction(score_time)
+                new SleepAction(score_time),
+        new ParallelAction(
+                seg19,
+                lift.transferHeight(),
+                lift.specArmPickup()
+        )
                 ));
 //
 //
