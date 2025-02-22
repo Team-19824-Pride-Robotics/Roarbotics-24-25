@@ -35,8 +35,8 @@ public class SpecimenAuto extends LinearOpMode {
     public static int lift_spec_pickup = -500;
     public static int lift_spec_score = -900;
     public static double bucket_dump = 1;
-    public static double bucket_transfer = 0.43;
-    public static double bucket_mid = 0.7;
+    public static double bucket_transfer = 0.23;
+    public static double bucket_mid = 0.4;
     public static double spec_arm_pickup = 0.35;
     public static double spec_arm_score = 0.9;
     public static double claw_closed = 0.85;
@@ -62,7 +62,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double x1 = 50;
     public static double x2 = 22;
     public static double y2 = -60;
-    public static double x3 = 120;
+    public static double x3 = 110;
     public static double x8 = 120;
     public static double y6 = -85;
     public static double x4 = 35;
@@ -91,7 +91,7 @@ public class SpecimenAuto extends LinearOpMode {
     public static double x14 = 70;
     public static double x15 = 40;
     public static double y19 = -115;
-    public static double y20 = -125;
+    public static double y20 = -128;
 
 
 
@@ -467,11 +467,12 @@ public class SpecimenAuto extends LinearOpMode {
         TrajectoryActionBuilder segment17;
         TrajectoryActionBuilder segment18;
         TrajectoryActionBuilder segment19;
+        TrajectoryActionBuilder segment20;
         //segment 1 - drives up to the sub and scores the preload
         // parallel with lift to score height
         segment1 = drive.actionBuilder(initialPose)
                 .setReversed(true)
-                .strafeToConstantHeading(new Vector2d(x0, 0), new TranslationalVelConstraint(150));
+                .strafeToConstantHeading(new Vector2d(x0, 0), new TranslationalVelConstraint(75));
 
         Action seg1 = segment1.build();
 
@@ -631,6 +632,9 @@ public class SpecimenAuto extends LinearOpMode {
         segment19 = segment18.endTrajectory().fresh()
                 .strafeToConstantHeading(new Vector2d(x15, y12));
         Action seg19 = segment19.build();
+        segment20 = segment19.endTrajectory().fresh()
+                .strafeToConstantHeading(new Vector2d(x6, y5));
+        Action seg20 = segment20.build();
 //
 //        segment14 = segment13.endTrajectory().fresh()
 //
@@ -651,7 +655,8 @@ public class SpecimenAuto extends LinearOpMode {
                         seg1,
                         lift.specimenScoreHeight(),
                         lift.specArmScore(),
-                        intake.armDown()
+                        lift.bucketTransfer()
+
                 ),
                         new SleepAction(score_time),
                         lift.clawOpenOne(),
@@ -661,9 +666,11 @@ public class SpecimenAuto extends LinearOpMode {
                         lift.specimenPickupHeight()
                 ),
 
-                
+                new ParallelAction(
                 seg2_5,
-                        lift.specArmPickup(),
+                        lift.specArmPickup()
+                        ),
+
                 
 
                 seg3,
@@ -717,12 +724,16 @@ public class SpecimenAuto extends LinearOpMode {
                         lift.clawOpenOne(),
                         new SleepAction(score_time),
 
+                new ParallelAction(
                         seg10_5,
+                        lift.transferHeight()
+
+                ),
+                lift.specArmPickup(),
 
 
 new ParallelAction(
-                       seg11,
-        lift.specArmPickup()
+                       seg11
         ),
                 new ParallelAction(
                         seg12,
@@ -744,8 +755,12 @@ new ParallelAction(
                 lift.clawOpenOne(),
                 new SleepAction(score_time),
 
-                seg14,
+                new ParallelAction(
+                        seg14,
+                        lift.transferHeight()
 
+                ),
+                lift.specArmPickup(),
 
                 new ParallelAction(
                         seg15,
@@ -767,14 +782,18 @@ new ParallelAction(
 
 
 
+
                 seg18,
                 lift.clawOpenOne(),
                 new SleepAction(score_time),
         new ParallelAction(
                 seg19,
-                lift.transferHeight(),
-                lift.specArmPickup()
-        )
+                lift.transferHeight()
+
+        ),
+                lift.specArmPickup(),
+                seg20
+
                 ));
 //
 //

@@ -37,8 +37,8 @@ public class DriveCode extends LinearOpMode {
     public static int lift_transfer = 0;
     public static int lift_high_bucket = -3200;
     public static int lift_low_bucket = -1000;
-    public static int lift_spec_pickup = -400;
-    public static int lift_spec_score = -600;
+    public static int lift_spec_pickup = -600;
+    public static int lift_spec_score = -1000;
     public static int lift_high_hang = -3800;
     public static int lift_low_hang = -2500;
     public static double arm_down = 0.1;
@@ -47,9 +47,9 @@ public class DriveCode extends LinearOpMode {
     public static int slides_extended = -100;
     public static int slides_transfer = -30;
     public static int slides_mid = -80;
-    public static double bucket_transfer = 0;
-    public static double bucket_dump = 0.85;
-    public static double bucket_mid = 0.3;
+    public static double bucket_transfer = 0.23;
+    public static double bucket_dump = 1;
+    public static double bucket_mid = 0.4;
 
 
     public static double dump_time = 0.5;
@@ -57,8 +57,8 @@ public class DriveCode extends LinearOpMode {
     public static double specimen_pickup = 0.35;
     public static double specimen_score = 0.9;
     public static double block_open = 0;
-    public static double claw_open = 0.55;
-    public static double claw_closed = 0.85;
+    public static double claw_open = 0.35;
+    public static double claw_closed = 0.83;
     public static double block_closed = 0.4;
 
     private boolean last_A = false;
@@ -78,7 +78,7 @@ public class DriveCode extends LinearOpMode {
        double driveSpeed = 1;
        double armHeight = 0.1;
        int slidePosition = 0;
-       double bucketPosition = 0;
+       double bucketPosition = 0.27;
        double specimenPosition = 0.4;
        double out_speed = -1;
        double claw_position = 0.5;
@@ -282,9 +282,11 @@ public class DriveCode extends LinearOpMode {
             }
             if(gamepad1.dpad_up) {
                 liftHeight = lift_high_hang;
+                specimenPosition = specimen_score;
             }
             if(gamepad1.dpad_down) {
                 liftHeight = lift_low_hang;
+                specimenPosition = specimen_score;
             }
 
             if(gamepad2.right_trigger > 0.1) {
